@@ -4,6 +4,6 @@ dependencies:
   version: 4.20.1
 - name: falco-exporter
   repository: https://falcosecurity.github.io/charts
-  version: 0.12.1
-digest: sha256:072e5e19acb81b850aa83745996de5371703f5213c772b81da62d9b22dfab77f
-generated: "2025-02-14T12:39:59.837592795Z"
+  version: 0.12.2
+digest: sha256:4789807f1781cceb747d4946726016c388696f3510c8fff110cc3dd062f65af2
+generated: "2025-03-14T17:47:10.73093443Z"

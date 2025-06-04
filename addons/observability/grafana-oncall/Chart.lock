@@ -1,9 +1,9 @@
 dependencies:
 - name: oncall
   repository: https://grafana.github.io/helm-charts
-  version: 1.15.2
+  version: 1.16.1
 - name: redis
   repository: oci://registry-1.docker.io/bitnamicharts
   version: 21.1.11
-digest: sha256:392b2c7207bff61e1db4f9db457becee0be3758ea702569bfbfe5e07a004147c
-generated: "2025-05-31T23:07:46.28231891Z"
+digest: sha256:f2e81a7f72fb0af1a920ab18ab1f44330d9b08acff120a8abf5b055d504c8250
+generated: "2025-06-04T00:51:00.112297357Z"

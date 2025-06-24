@@ -1,6 +1,0 @@
-dependencies:
-- name: tetragon
-  repository: https://helm.cilium.io
-  version: 1.4.0
-digest: sha256:6553843e090282c1947e51a4913a8f89b259cfb4cfc3ee7e45793c1dde7cd936
-generated: "2025-05-31T22:52:15.950641485Z"

@@ -748,7 +748,7 @@ string
 			<td>
 				<div style="max-width: 300px;">
 <pre lang="json">
-"talos-9p3-rge"
+"talos-z9s-i4"
 </pre>
 </div>
 			</td>

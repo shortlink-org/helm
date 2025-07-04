@@ -7,6 +7,6 @@ dependencies:
   version: v0.21.0
 - name: cert-manager-csi-driver-spiffe
   repository: https://charts.jetstack.io
-  version: v0.9.2
-digest: sha256:4cd69e266c9e1704ed44e8979262e751dc51eb3e3d35df29a2a5c167d7504e53
-generated: "2025-07-04T21:03:21.262816129Z"
+  version: v0.10.0
+digest: sha256:ae85cc1ec46afacd691dd5e273965f5efbbd5b1659e7193f6bc171204319cc72
+generated: "2025-07-04T21:09:44.202959038Z"

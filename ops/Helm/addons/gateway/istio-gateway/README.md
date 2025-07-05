@@ -14,7 +14,7 @@ Kubernetes: `>= 1.30.0 || >= v1.30.0-0`
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://istio-release.storage.googleapis.com/charts | gateway | 1.24.0 |
+| https://istio-release.storage.googleapis.com/charts | gateway | 1.26.2 |
 
 ## Values
 
@@ -27,21 +27,21 @@ Kubernetes: `>= 1.30.0 || >= v1.30.0-0`
 	</thead>
 	<tbody>
 		<tr>
-			<td id="gateway--global--logAsJson"><a href="./values.yaml#L26">gateway.global.logAsJson</a></td>
+			<td id="gateway--_internal_defaults_do_not_set--nodeSelector--"kubernetes--io/hostname""><a href="./values.yaml#L8">gateway._internal_defaults_do_not_set.nodeSelector."kubernetes.io/hostname"</a></td>
 			<td>
-bool
+string
 </td>
 			<td>
 				<div style="max-width: 300px;">
 <pre lang="json">
-true
+"talos-lrv-pcr"
 </pre>
 </div>
 			</td>
 			<td></td>
 		</tr>
 		<tr>
-			<td id="gateway--service--ports[0]--name"><a href="./values.yaml#L8">gateway.service.ports[0].name</a></td>
+			<td id="gateway--_internal_defaults_do_not_set--service--ports[0]--name"><a href="./values.yaml#L13">gateway._internal_defaults_do_not_set.service.ports[0].name</a></td>
 			<td>
 string
 </td>
@@ -55,7 +55,7 @@ string
 			<td></td>
 		</tr>
 		<tr>
-			<td id="gateway--service--ports[0]--port"><a href="./values.yaml#L9">gateway.service.ports[0].port</a></td>
+			<td id="gateway--_internal_defaults_do_not_set--service--ports[0]--port"><a href="./values.yaml#L14">gateway._internal_defaults_do_not_set.service.ports[0].port</a></td>
 			<td>
 int
 </td>
@@ -69,7 +69,7 @@ int
 			<td></td>
 		</tr>
 		<tr>
-			<td id="gateway--service--ports[0]--protocol"><a href="./values.yaml#L11">gateway.service.ports[0].protocol</a></td>
+			<td id="gateway--_internal_defaults_do_not_set--service--ports[0]--protocol"><a href="./values.yaml#L16">gateway._internal_defaults_do_not_set.service.ports[0].protocol</a></td>
 			<td>
 string
 </td>
@@ -83,7 +83,7 @@ string
 			<td></td>
 		</tr>
 		<tr>
-			<td id="gateway--service--ports[0]--targetPort"><a href="./values.yaml#L10">gateway.service.ports[0].targetPort</a></td>
+			<td id="gateway--_internal_defaults_do_not_set--service--ports[0]--targetPort"><a href="./values.yaml#L15">gateway._internal_defaults_do_not_set.service.ports[0].targetPort</a></td>
 			<td>
 int
 </td>
@@ -97,7 +97,7 @@ int
 			<td></td>
 		</tr>
 		<tr>
-			<td id="gateway--service--ports[1]--name"><a href="./values.yaml#L12">gateway.service.ports[1].name</a></td>
+			<td id="gateway--_internal_defaults_do_not_set--service--ports[1]--name"><a href="./values.yaml#L17">gateway._internal_defaults_do_not_set.service.ports[1].name</a></td>
 			<td>
 string
 </td>
@@ -111,7 +111,7 @@ string
 			<td></td>
 		</tr>
 		<tr>
-			<td id="gateway--service--ports[1]--port"><a href="./values.yaml#L13">gateway.service.ports[1].port</a></td>
+			<td id="gateway--_internal_defaults_do_not_set--service--ports[1]--port"><a href="./values.yaml#L18">gateway._internal_defaults_do_not_set.service.ports[1].port</a></td>
 			<td>
 int
 </td>
@@ -125,7 +125,7 @@ int
 			<td></td>
 		</tr>
 		<tr>
-			<td id="gateway--service--ports[1]--protocol"><a href="./values.yaml#L15">gateway.service.ports[1].protocol</a></td>
+			<td id="gateway--_internal_defaults_do_not_set--service--ports[1]--protocol"><a href="./values.yaml#L20">gateway._internal_defaults_do_not_set.service.ports[1].protocol</a></td>
 			<td>
 string
 </td>
@@ -139,7 +139,7 @@ string
 			<td></td>
 		</tr>
 		<tr>
-			<td id="gateway--service--ports[1]--targetPort"><a href="./values.yaml#L14">gateway.service.ports[1].targetPort</a></td>
+			<td id="gateway--_internal_defaults_do_not_set--service--ports[1]--targetPort"><a href="./values.yaml#L19">gateway._internal_defaults_do_not_set.service.ports[1].targetPort</a></td>
 			<td>
 int
 </td>
@@ -153,7 +153,7 @@ int
 			<td></td>
 		</tr>
 		<tr>
-			<td id="gateway--service--ports[2]--name"><a href="./values.yaml#L16">gateway.service.ports[2].name</a></td>
+			<td id="gateway--_internal_defaults_do_not_set--service--ports[2]--name"><a href="./values.yaml#L21">gateway._internal_defaults_do_not_set.service.ports[2].name</a></td>
 			<td>
 string
 </td>
@@ -167,7 +167,7 @@ string
 			<td></td>
 		</tr>
 		<tr>
-			<td id="gateway--service--ports[2]--port"><a href="./values.yaml#L17">gateway.service.ports[2].port</a></td>
+			<td id="gateway--_internal_defaults_do_not_set--service--ports[2]--port"><a href="./values.yaml#L22">gateway._internal_defaults_do_not_set.service.ports[2].port</a></td>
 			<td>
 int
 </td>
@@ -181,7 +181,7 @@ int
 			<td></td>
 		</tr>
 		<tr>
-			<td id="gateway--service--ports[2]--protocol"><a href="./values.yaml#L19">gateway.service.ports[2].protocol</a></td>
+			<td id="gateway--_internal_defaults_do_not_set--service--ports[2]--protocol"><a href="./values.yaml#L24">gateway._internal_defaults_do_not_set.service.ports[2].protocol</a></td>
 			<td>
 string
 </td>
@@ -195,7 +195,7 @@ string
 			<td></td>
 		</tr>
 		<tr>
-			<td id="gateway--service--ports[2]--targetPort"><a href="./values.yaml#L18">gateway.service.ports[2].targetPort</a></td>
+			<td id="gateway--_internal_defaults_do_not_set--service--ports[2]--targetPort"><a href="./values.yaml#L23">gateway._internal_defaults_do_not_set.service.ports[2].targetPort</a></td>
 			<td>
 int
 </td>
@@ -209,7 +209,7 @@ int
 			<td></td>
 		</tr>
 		<tr>
-			<td id="gateway--service--ports[3]--name"><a href="./values.yaml#L20">gateway.service.ports[3].name</a></td>
+			<td id="gateway--_internal_defaults_do_not_set--service--ports[3]--name"><a href="./values.yaml#L25">gateway._internal_defaults_do_not_set.service.ports[3].name</a></td>
 			<td>
 string
 </td>
@@ -223,7 +223,7 @@ string
 			<td></td>
 		</tr>
 		<tr>
-			<td id="gateway--service--ports[3]--port"><a href="./values.yaml#L21">gateway.service.ports[3].port</a></td>
+			<td id="gateway--_internal_defaults_do_not_set--service--ports[3]--port"><a href="./values.yaml#L26">gateway._internal_defaults_do_not_set.service.ports[3].port</a></td>
 			<td>
 int
 </td>
@@ -237,7 +237,7 @@ int
 			<td></td>
 		</tr>
 		<tr>
-			<td id="gateway--service--ports[3]--protocol"><a href="./values.yaml#L23">gateway.service.ports[3].protocol</a></td>
+			<td id="gateway--_internal_defaults_do_not_set--service--ports[3]--protocol"><a href="./values.yaml#L28">gateway._internal_defaults_do_not_set.service.ports[3].protocol</a></td>
 			<td>
 string
 </td>
@@ -251,7 +251,7 @@ string
 			<td></td>
 		</tr>
 		<tr>
-			<td id="gateway--service--ports[3]--targetPort"><a href="./values.yaml#L22">gateway.service.ports[3].targetPort</a></td>
+			<td id="gateway--_internal_defaults_do_not_set--service--ports[3]--targetPort"><a href="./values.yaml#L27">gateway._internal_defaults_do_not_set.service.ports[3].targetPort</a></td>
 			<td>
 int
 </td>
@@ -265,7 +265,7 @@ int
 			<td></td>
 		</tr>
 		<tr>
-			<td id="gateway--service--type"><a href="./values.yaml#L6">gateway.service.type</a></td>
+			<td id="gateway--_internal_defaults_do_not_set--service--type"><a href="./values.yaml#L11">gateway._internal_defaults_do_not_set.service.type</a></td>
 			<td>
 string
 </td>

@@ -14,7 +14,7 @@ Kubernetes: `>= 1.30.0 || >= v1.30.0-0`
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://go.temporal.io/helm-charts | temporal | 0.51.0 |
+| https://go.temporal.io/helm-charts | temporal | 0.64.0 |
 
 ## Values
 

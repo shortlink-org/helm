@@ -14,7 +14,7 @@ Kubernetes: `>= 1.30.0 || >= v1.30.0-0`
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://prometheus-community.github.io/helm-charts | kube-prometheus-stack | 66.2.1 |
+| https://prometheus-community.github.io/helm-charts | kube-prometheus-stack | 75.8.1 |
 
 ## Values
 
@@ -118,7 +118,7 @@ string
 			<td>
 				<div style="max-width: 300px;">
 <pre lang="json">
-"v3.0.0-beta.1"
+"v3.0.0"
 </pre>
 </div>
 			</td>

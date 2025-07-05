@@ -22,7 +22,7 @@ Kubernetes: `>= 1.30.0 || >= v1.30.0-0`
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://charts.chaos-mesh.org | chaos-mesh | 2.7.0 |
+| https://charts.chaos-mesh.org | chaos-mesh | 2.7.2 |
 
 ## Values
 

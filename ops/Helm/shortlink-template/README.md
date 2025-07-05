@@ -22,7 +22,7 @@ Kubernetes: `>= 1.30.0 || >= v1.30.0-0`
 
 | Repository | Name | Version |
 |------------|------|---------|
-| oci://registry-1.docker.io/bitnamicharts | common | 2.27.0 |
+| oci://registry-1.docker.io/bitnamicharts | common | 2.31.3 |
 
 ## Values
 
@@ -35,7 +35,7 @@ Kubernetes: `>= 1.30.0 || >= v1.30.0-0`
 	</thead>
 	<tbody>
 		<tr>
-			<td id="admission--replica_count_limit--enabled"><a href="./values.yaml#L7">admission.replica_count_limit.enabled</a></td>
+			<td id="_internal_defaults_do_not_set--admission--replica_count_limit--enabled"><a href="./values.yaml#L10">_internal_defaults_do_not_set.admission.replica_count_limit.enabled</a></td>
 			<td>
 bool
 </td>

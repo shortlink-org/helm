@@ -14,7 +14,7 @@ Kubernetes: `>= 1.30.0 || >= v1.30.0-0`
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://open-telemetry.github.io/opentelemetry-helm-charts | opentelemetry-operator | 0.74.2 |
+| https://open-telemetry.github.io/opentelemetry-helm-charts | opentelemetry-operator | 0.90.4 |
 
 ## Values
 

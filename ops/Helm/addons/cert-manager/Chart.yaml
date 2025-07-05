@@ -15,14 +15,14 @@ deprecated: false
 dependencies:
   - name: cert-manager
     alias: certmanager
-    version: v1.17.2
+    version: v1.18.2
     repository: https://charts.jetstack.io
     condition: certmanager.enabled
     tags:
       - security
       - tls
   - name: cert-manager-approver-policy
-    version: v0.20.0
+    version: v0.21.0
     repository: https://charts.jetstack.io
     condition: cert-manager-approver-policy.enabled
     tags:
@@ -30,7 +30,7 @@ dependencies:
       - tls
   - name: cert-manager-csi-driver-spiffe
     alias: spiffe
-    version: v0.9.1
+    version: v0.10.0
     repository: https://charts.jetstack.io
     condition: spiffe.enabled
     tags:

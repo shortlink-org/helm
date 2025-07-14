@@ -34,7 +34,7 @@ string
 			<td>
 				<div style="max-width: 300px;">
 <pre lang="json">
-"talos-lrv-pcr"
+"talos-z9s-i4f"
 </pre>
 </div>
 			</td>

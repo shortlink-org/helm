@@ -5,7 +5,7 @@ gateway:
   _internal_defaults_do_not_set:
 
     nodeSelector:
-      kubernetes.io/hostname: talos-lrv-pcr
+      kubernetes.io/hostname: talos-z9s-i4f
 
     service:
       type: ClusterIP

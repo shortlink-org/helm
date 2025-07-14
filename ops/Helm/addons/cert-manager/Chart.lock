@@ -9,4 +9,4 @@ dependencies:
   repository: https://charts.jetstack.io
   version: v0.10.0
 digest: sha256:ae85cc1ec46afacd691dd5e273965f5efbbd5b1659e7193f6bc171204319cc72
-generated: "2025-07-05T22:33:52.903396+03:00"
+generated: "2025-07-14T08:18:23.037548+03:00"

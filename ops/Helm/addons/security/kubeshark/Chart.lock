@@ -3,4 +3,4 @@ dependencies:
   repository: https://helm.kubeshark.co
   version: "41.7"
 digest: sha256:9ab1e9cc4301c4f72d9afd0208fe4d299f9a9be06b51e8074b64fe280b19c1e9
-generated: "2025-07-05T22:33:07.58095+03:00"
+generated: "2025-07-14T08:17:50.7051+03:00"

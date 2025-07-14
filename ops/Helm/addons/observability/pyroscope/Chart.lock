@@ -6,4 +6,4 @@ dependencies:
   repository: https://pyroscope-io.github.io/helm-chart
   version: 0.1.31
 digest: sha256:0c145860bd3baa100316305b0878fb1119fd4b36102708b6557ce75bcee7bd5b
-generated: "2025-07-05T22:35:13.913308+03:00"
+generated: "2025-07-14T08:19:00.096433+03:00"

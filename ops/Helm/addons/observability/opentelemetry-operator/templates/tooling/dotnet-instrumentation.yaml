@@ -5,6 +5,8 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "1"
 spec:
+  exporter:
+    endpoint: http://otel-collector-collector.grafana.svc.cluster.local:4318
   propagators:
     - tracecontext
     - baggage
@@ -12,8 +14,6 @@ spec:
     type: always_on
   dotnet:
     env:
-      - name: OTEL_EXPORTER_OTLP_ENDPOINT
-        value: http://otel-collector-collector.grafana.svc.cluster.local:4318
       - name: OTEL_DOTNET_AUTO_TRACES_GRPCNETCLIENT_INSTRUMENTATION_ENABLED
         value: 'true'
       - name: OTEL_DOTNET_AUTO_METRICS_PROCESS_INSTRUMENTATION_ENABLED

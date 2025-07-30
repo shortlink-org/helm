@@ -14,7 +14,7 @@ Kubernetes: `>= 1.30.0 || >= v1.30.0-0`
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://kiali.org/helm-charts | kiali-operator | 2.12.0 |
+| https://kiali.org/helm-charts | kiali-operator | 2.13.0 |
 
 ## Values
 

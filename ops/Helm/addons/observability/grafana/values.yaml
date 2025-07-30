@@ -184,6 +184,11 @@ grafana:
         memory: 64Mi
 
   initChownData:
+    enabled: true
+
+    securityContext:
+      readOnlyRootFilesystem: true
+
     resources:
       limits:
         cpu: 100m

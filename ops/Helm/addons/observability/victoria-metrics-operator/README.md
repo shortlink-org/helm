@@ -14,7 +14,7 @@ Kubernetes: `>= 1.30.0 || >= v1.30.0-0`
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://victoriametrics.github.io/helm-charts/ | victoria-metrics-operator | 0.50.3 |
+| https://victoriametrics.github.io/helm-charts/ | victoria-metrics-operator | 0.51.4 |
 
 ## Values
 

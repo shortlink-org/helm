@@ -26,7 +26,7 @@ Kubernetes: `>= 1.30.0 || >= v1.30.0-0`
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://helm.ngc.nvidia.com/nvidia | gpu-operator | v25.3.1 |
+| https://helm.ngc.nvidia.com/nvidia | gpu-operator | v25.3.2 |
 
 ## Values
 

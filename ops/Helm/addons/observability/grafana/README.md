@@ -14,7 +14,7 @@ Kubernetes: `>= 1.30.0 || >= v1.30.0-0`
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://grafana.github.io/helm-charts | grafana | 9.2.10 |
+| https://grafana.github.io/helm-charts | grafana | 9.3.0 |
 
 ## Values
 
@@ -27,7 +27,7 @@ Kubernetes: `>= 1.30.0 || >= v1.30.0-0`
 	</thead>
 	<tbody>
 		<tr>
-			<td id="grafana--"grafana--ini"--auth--anonymous--enabled"><a href="./values.yaml#L201">grafana."grafana.ini".auth.anonymous.enabled</a></td>
+			<td id="grafana--"grafana--ini"--auth--anonymous--enabled"><a href="./values.yaml#L206">grafana."grafana.ini".auth.anonymous.enabled</a></td>
 			<td>
 bool
 </td>
@@ -41,7 +41,7 @@ true
 			<td></td>
 		</tr>
 		<tr>
-			<td id="grafana--"grafana--ini"--auth--anonymous--hide_version"><a href="./values.yaml#L210">grafana."grafana.ini".auth.anonymous.hide_version</a></td>
+			<td id="grafana--"grafana--ini"--auth--anonymous--hide_version"><a href="./values.yaml#L215">grafana."grafana.ini".auth.anonymous.hide_version</a></td>
 			<td>
 bool
 </td>
@@ -55,7 +55,7 @@ true
 			<td></td>
 		</tr>
 		<tr>
-			<td id="grafana--"grafana--ini"--auth--anonymous--org_name"><a href="./values.yaml#L204">grafana."grafana.ini".auth.anonymous.org_name</a></td>
+			<td id="grafana--"grafana--ini"--auth--anonymous--org_name"><a href="./values.yaml#L209">grafana."grafana.ini".auth.anonymous.org_name</a></td>
 			<td>
 string
 </td>
@@ -69,7 +69,7 @@ string
 			<td></td>
 		</tr>
 		<tr>
-			<td id="grafana--"grafana--ini"--auth--anonymous--org_role"><a href="./values.yaml#L207">grafana."grafana.ini".auth.anonymous.org_role</a></td>
+			<td id="grafana--"grafana--ini"--auth--anonymous--org_role"><a href="./values.yaml#L212">grafana."grafana.ini".auth.anonymous.org_role</a></td>
 			<td>
 string
 </td>
@@ -83,7 +83,7 @@ string
 			<td></td>
 		</tr>
 		<tr>
-			<td id="grafana--"grafana--ini"--reporting--enabled"><a href="./values.yaml#L197">grafana."grafana.ini".reporting.enabled</a></td>
+			<td id="grafana--"grafana--ini"--reporting--enabled"><a href="./values.yaml#L202">grafana."grafana.ini".reporting.enabled</a></td>
 			<td>
 bool
 </td>
@@ -755,7 +755,21 @@ string
 			<td></td>
 		</tr>
 		<tr>
-			<td id="grafana--initChownData--resources--limits--cpu"><a href="./values.yaml#L189">grafana.initChownData.resources.limits.cpu</a></td>
+			<td id="grafana--initChownData--enabled"><a href="./values.yaml#L187">grafana.initChownData.enabled</a></td>
+			<td>
+bool
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+true
+</pre>
+</div>
+			</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td id="grafana--initChownData--resources--limits--cpu"><a href="./values.yaml#L194">grafana.initChownData.resources.limits.cpu</a></td>
 			<td>
 string
 </td>
@@ -769,7 +783,7 @@ string
 			<td></td>
 		</tr>
 		<tr>
-			<td id="grafana--initChownData--resources--limits--memory"><a href="./values.yaml#L190">grafana.initChownData.resources.limits.memory</a></td>
+			<td id="grafana--initChownData--resources--limits--memory"><a href="./values.yaml#L195">grafana.initChownData.resources.limits.memory</a></td>
 			<td>
 string
 </td>
@@ -783,7 +797,7 @@ string
 			<td></td>
 		</tr>
 		<tr>
-			<td id="grafana--initChownData--resources--requests--cpu"><a href="./values.yaml#L192">grafana.initChownData.resources.requests.cpu</a></td>
+			<td id="grafana--initChownData--resources--requests--cpu"><a href="./values.yaml#L197">grafana.initChownData.resources.requests.cpu</a></td>
 			<td>
 string
 </td>
@@ -797,7 +811,7 @@ string
 			<td></td>
 		</tr>
 		<tr>
-			<td id="grafana--initChownData--resources--requests--memory"><a href="./values.yaml#L193">grafana.initChownData.resources.requests.memory</a></td>
+			<td id="grafana--initChownData--resources--requests--memory"><a href="./values.yaml#L198">grafana.initChownData.resources.requests.memory</a></td>
 			<td>
 string
 </td>
@@ -805,6 +819,20 @@ string
 				<div style="max-width: 300px;">
 <pre lang="json">
 "64Mi"
+</pre>
+</div>
+			</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td id="grafana--initChownData--securityContext--readOnlyRootFilesystem"><a href="./values.yaml#L190">grafana.initChownData.securityContext.readOnlyRootFilesystem</a></td>
+			<td>
+bool
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+true
 </pre>
 </div>
 			</td>

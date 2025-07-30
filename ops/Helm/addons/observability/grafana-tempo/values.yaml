@@ -22,7 +22,7 @@ tempo:
         memory: 256Mi
 
     metricsGenerator:
-      enabled: enable
+      enabled: true
       remoteWriteUrl: http://prometheus-prometheus.prometheus-operator:9090/api/v1/write
 
     ingester:
@@ -37,7 +37,7 @@ tempo:
 
     retention: 12h
 
-    query_frontend:
+    queryFrontend:
       max_outstanding_per_tenant: 2000
       search:
         concurrent_jobs: 2000

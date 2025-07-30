@@ -9,7 +9,7 @@ spec:
     serviceAccount: opentelemetry-targetallocator-sa
     prometheusCR:
       enabled: true
-  config: |
+  config:
     receivers:
       otlp:
         protocols:

@@ -30,11 +30,6 @@ tempo:
       max_block_bytes: 500_000_000         # cut the head block when it hits this size or ...
       max_block_duration: 30m              # this much time passes
 
-    querier:
-      max_concurrent_queries: 100
-      search:
-        prefer_self: 50   # only if you're using external endpoints
-
     retention: 12h
 
     queryFrontend:

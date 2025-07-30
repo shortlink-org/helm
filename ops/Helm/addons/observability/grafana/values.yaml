@@ -188,6 +188,12 @@ grafana:
 
     securityContext:
       readOnlyRootFilesystem: true
+      capabilities:
+        add:
+          - CHOWN
+          - DAC_READ_SEARCH
+        drop:
+          - ALL
 
     resources:
       limits:

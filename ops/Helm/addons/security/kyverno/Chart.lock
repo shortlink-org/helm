@@ -1,7 +1,7 @@
 dependencies:
 - name: kyverno
   repository: https://kyverno.github.io/kyverno
-  version: 3.4.4
+  version: 3.5.0
 - name: policy-reporter
   repository: https://kyverno.github.io/policy-reporter
   version: 3.3.2

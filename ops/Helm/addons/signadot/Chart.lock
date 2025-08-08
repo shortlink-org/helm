@@ -1,6 +1,6 @@
 dependencies:
 - name: operator
   repository: https://charts.signadot.com
-  version: 1.0.0
-digest: sha256:8317e6254b66f796142c825a39e191157afeac4d930db55b617055397d975ece
-generated: "2025-07-30T21:22:06.707967+03:00"
+  version: 1.1.0
+digest: sha256:20c54210d5745ee40172273afb239d1aeac22988dc833f29e2b0de10fde9d982
+generated: "2025-08-08T10:52:18.072006057Z"

@@ -1,0 +1,9 @@
+dependencies:
+- name: odd-platform
+  repository: https://opendatadiscovery.github.io/charts
+  version: 0.1.10
+- name: postgresql
+  repository: oci://registry-1.docker.io/bitnamicharts
+  version: 16.7.24
+digest: sha256:c30fb889460ff830d83b67c0b203eb507194881c1282200490d3e0b8b6cb85dc
+generated: "2025-08-09T23:44:50.86702+03:00"

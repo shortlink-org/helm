@@ -1,6 +1,6 @@
 dependencies:
 - name: gateway
   repository: https://istio-release.storage.googleapis.com/charts
-  version: 1.26.3
-digest: sha256:e4aa7462627abd1cf9f2a45b0238018d501e35a276076036fa738454a74dbbbf
-generated: "2025-08-09T23:46:41.748806+03:00"
+  version: 1.27.0
+digest: sha256:753d9f85956e24ce874b7e97161e4025d3d83c9a7c0c9ffad87f6548ed093b3a
+generated: "2025-08-12T02:12:46.284837047Z"

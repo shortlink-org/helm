@@ -3,4 +3,4 @@ dependencies:
   repository: https://victoriametrics.github.io/helm-charts/
   version: 0.51.4
 digest: sha256:cfb7eddceb520805c7428b898fe2be8af3b0052987e2d097de1a0b3eb744d6af
-generated: "2025-08-09T23:44:55.007487+03:00"
+generated: "2025-08-13T01:16:28.637357+05:00"

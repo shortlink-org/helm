@@ -6,4 +6,4 @@ dependencies:
   repository: oci://registry-1.docker.io/bitnamicharts
   version: 22.0.1
 digest: sha256:e0de98b844362cd40d0ad1976754ad913b88a6ca41eb8301631f7e1c0a937f71
-generated: "2025-08-09T23:45:47.761284+03:00"
+generated: "2025-08-13T01:17:46.494999+05:00"

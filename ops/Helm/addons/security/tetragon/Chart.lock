@@ -3,4 +3,4 @@ dependencies:
   repository: https://helm.cilium.io
   version: 1.5.0
 digest: sha256:6a90225c60c6dc102eeb185fe939939243e1b4292636088108fb2f02221a2be7
-generated: "2025-08-09T23:42:33.890123+03:00"
+generated: "2025-08-13T01:14:35.075324+05:00"

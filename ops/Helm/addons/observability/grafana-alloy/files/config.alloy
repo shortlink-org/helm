@@ -17,20 +17,26 @@ otelcol.receiver.otlp "in" {
   }
 }
 
-otelcol.processor.batch "metrics" { output { metrics = [otelcol.exporter.otlphttp.prom.input] } }
-otelcol.processor.batch "traces"  { output { traces  = [otelcol.exporter.otlp.tempo.input] } }
-otelcol.processor.batch "logs"    { output { logs    = [otelcol.exporter.otlphttp.loki.input] } }
+otelcol.processor.batch "metrics" {
+  output { metrics = [otelcol.exporter.otlphttp.prom.input] }
+}
+otelcol.processor.batch "traces" {
+  output { traces  = [otelcol.exporter.otlp.tempo.input] }
+}
+otelcol.processor.batch "logs" {
+  output { logs    = [otelcol.exporter.otlphttp.loki.input] }
+}
 
 //////////////////////////////////////////
 // METRICS → Prometheus (OTLP / HTTP)   //
 //////////////////////////////////////////
 
 otelcol.exporter.otlphttp "prom" {
-  // Prometheus OTLP base path: otelcol adds /v1/metrics to the endpoint below.
-  // Full path becomes: /api/v1/otlp/v1/metrics
-  endpoint = "http://prometheus-prometheus.prometheus-operator.svc:9090/api/v1/otlp"
-  tls { insecure = true }
-  signals { metrics = {} }
+  // otlphttp appends /v1/metrics → full path becomes /api/v1/otlp/v1/metrics
+  client {
+    endpoint = "http://prometheus-prometheus.prometheus-operator.svc:9090/api/v1/otlp"
+    tls { insecure = true }
+  }
 }
 
 /////////////////////////////
@@ -42,7 +48,6 @@ otelcol.exporter.otlp "tempo" {
     endpoint = "grafana-tempo.grafana.svc:4317"
     tls { insecure = true }
   }
-  signals { traces = {} }
 }
 
 ////////////////////////////////
@@ -50,9 +55,10 @@ otelcol.exporter.otlp "tempo" {
 ////////////////////////////////
 
 otelcol.exporter.otlphttp "loki" {
-  endpoint = "http://grafana-loki.grafana.svc:3100/otlp"
-  tls { insecure = true }
-  signals { logs = {} }
+  client {
+    endpoint = "http://grafana-loki.grafana.svc:3100/otlp"
+    tls { insecure = true }
+  }
 }
 
 //////////////////////////////////////////////////////////////

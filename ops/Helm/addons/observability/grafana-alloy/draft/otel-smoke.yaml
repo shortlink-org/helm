@@ -1,0 +1,40 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: otel-smoke
+  namespace: grafana
+  annotations:
+    sidecar.istio.io/inject: "false"
+spec:
+  restartPolicy: Never
+  containers:
+    # Traces (gRPC)
+    - name: traces
+      image: ghcr.io/open-telemetry/opentelemetry-collector-contrib/telemetrygen:latest
+      args:
+        - "traces"
+        - "--otlp-endpoint=grafana-alloy.grafana.svc:4317"
+        - "--otlp-insecure"
+        - "--rate=20"
+        - "--duration=30s"
+        - "--service=demo-service"
+    # Metrics (HTTP)
+    - name: metrics
+      image: ghcr.io/open-telemetry/opentelemetry-collector-contrib/telemetrygen:latest
+      args:
+        - "metrics"
+        - "--otlp-http"
+        - "--otlp-endpoint=grafana-alloy.grafana.svc:4317"
+        - "--otlp-insecure"
+        - "--duration=30s"
+        - "--service=demo-service"
+    # Logs (HTTP)
+    - name: logs
+      image: ghcr.io/open-telemetry/opentelemetry-collector-contrib/telemetrygen:latest
+      args:
+        - "logs"
+        - "--otlp-http"
+        - "--otlp-endpoint=grafana-alloy.grafana.svc:4317"
+        - "--otlp-insecure"
+        - "--duration=30s"
+        - "--service=demo-service"

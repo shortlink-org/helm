@@ -9,8 +9,30 @@ kube-prometheus-stack:
 
   prometheus:
     prometheusSpec:
+      enableOTLPReceiver: true
+
       otlp:
         keepIdentifyingResourceAttributes: true
+        promoteResourceAttributes:
+          - service.instance.id
+          - service.name
+          - service.namespace
+          - service.version
+          - cloud.availability_zone
+          - cloud.region
+          - container.name
+          - deployment.environment
+          - deployment.environment.name
+          - k8s.cluster.name
+          - k8s.container.name
+          - k8s.cronjob.name
+          - k8s.daemonset.name
+          - k8s.deployment.name
+          - k8s.job.name
+          - k8s.namespace.name
+          - k8s.pod.name
+          - k8s.replicaset.name
+          - k8s.statefulset.name
 
   grafana:
     enabled: false

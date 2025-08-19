@@ -26,8 +26,8 @@ otelcol.processor.batch "logs"    { output { logs    = [otelcol.exporter.otlphtt
 //////////////////////////////////////////
 
 otelcol.exporter.otlphttp "prom" {
-  # Prometheus OTLP base path:
-  # otlphttp adds /v1/metrics → full path: /api/v1/otlp/v1/metrics
+  // Prometheus OTLP base path: otelcol adds /v1/metrics to the endpoint below.
+  // Full path becomes: /api/v1/otlp/v1/metrics
   endpoint = "http://prometheus-prometheus.prometheus-operator.svc:9090/api/v1/otlp"
   tls { insecure = true }
   signals { metrics = {} }
@@ -71,9 +71,9 @@ loki.source.kubernetes "pods" {
 loki.process "k8s" {
   stage.labels {
     values = {
-      "k8s.namespace.name" = "namespace"
-      "k8s.pod.name"       = "pod"
-      "k8s.container.name" = "container"
+      namespace = "namespace",
+      pod       = "pod",
+      container = "container",
     }
   }
   forward_to = [loki.write.default.receiver]

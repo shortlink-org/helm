@@ -9,3 +9,9 @@ alloy:
     additionalLabels:
       release: prometheus-operator
 
+  alloy:
+    configMap:
+      create: false
+      name: alloy-config
+      key: config.alloy
+

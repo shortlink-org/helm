@@ -1,10 +1,9 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ .Values.alloy.configMap.name | default (include "chart.fullname" .) }}
+  name: {{ .Values.alloy.alloy.configMap.name }}
   labels:
     app.kubernetes.io/name: alloy
-    {{- include "chart.labels" . | nindent 4 }}
 data:
-  {{ .Values.alloy.configMap.key | default "config.alloy" }}: |-
+  {{ .Values.alloy.alloy.configMap.key | default "config.alloy" }}: |-
     {{- include "alloy.config" . | nindent 4 }}

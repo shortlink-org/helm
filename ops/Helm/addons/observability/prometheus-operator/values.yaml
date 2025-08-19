@@ -9,8 +9,8 @@ kube-prometheus-stack:
 
   prometheus:
     prometheusSpec:
-      image:
-        tag: v3.0.0
+      otlp:
+        keepIdentifyingResourceAttributes: true
 
   grafana:
     enabled: false

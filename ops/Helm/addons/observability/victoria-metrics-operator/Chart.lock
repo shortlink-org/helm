@@ -1,6 +1,6 @@
 dependencies:
 - name: victoria-metrics-operator
   repository: https://victoriametrics.github.io/helm-charts/
-  version: 0.53.0
-digest: sha256:85b44a2dcf2b364d24a76d86d75145522decfc72a84f8965a64497a7d5244844
-generated: "2025-09-14T01:01:08.368493536Z"
+  version: 0.54.0
+digest: sha256:1b9766458b599189213c10c057cd0df891d46b120619301f2e92d8132a866e3b
+generated: "2025-10-09T20:41:03.326638799Z"

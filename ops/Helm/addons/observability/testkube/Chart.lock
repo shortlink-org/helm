@@ -3,4 +3,4 @@ dependencies:
   repository: https://kubeshop.github.io/helm-charts
   version: 2.3.0
 digest: sha256:4d84bdbd9476e66e0c3aeace296cc90a29ef244a87068052e0041d18964b683f
-generated: "2025-10-10T00:47:44.286717+04:00"
+generated: "2025-10-15T00:31:39.506404+04:00"

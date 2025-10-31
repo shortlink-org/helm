@@ -17,6 +17,18 @@ dependencies:
     repository: oci://ghcr.io/shortlink-org/charts
 ```
 
+Then build your dependencies:
+
+```bash
+helm dependencies update
+```
+
+**Note:** You need to authenticate with GitHub Packages to pull from the OCI registry:
+
+```bash
+echo $GITHUB_TOKEN | helm registry login ghcr.io -u USERNAME --password-stdin
+```
+
 ### Publishing
 
 The chart is automatically published to GitHub Packages OCI registry when changes are pushed to the `ops/Helm/shortlink-template/` directory.

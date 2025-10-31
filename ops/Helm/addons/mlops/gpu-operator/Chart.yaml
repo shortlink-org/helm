@@ -20,6 +20,6 @@ type: application
 deprecated: false
 dependencies:
   - name: gpu-operator
-    version: v25.3.4
+    version: v25.10.0
     repository: https://helm.ngc.nvidia.com/nvidia
     condition: gpu-operator.enabled

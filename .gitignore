@@ -1,2 +1,6 @@
 # IDE
 .idea
+
+# Helm packaging artifacts
+*.tgz
+index.yaml

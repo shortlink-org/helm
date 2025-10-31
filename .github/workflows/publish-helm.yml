@@ -1,0 +1,44 @@
+name: Publish Helm Charts
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'ops/Helm/shortlink-template/**'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  packages: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Helm
+        uses: azure/setup-helm@v4
+        with:
+          version: 'latest'
+
+      - name: Build and publish shortlink-template chart
+        run: |
+          cd ops/Helm/shortlink-template
+          
+          # Build dependencies
+          helm dependencies update
+          
+          # Package the chart
+          helm package . --destination /tmp
+          
+          # Configure OCI registry credentials
+          echo ${{ secrets.GITHUB_TOKEN }} | helm registry login ghcr.io -u ${{ github.actor }} --password-stdin
+          
+          # Publish to GitHub Packages OCI registry
+          helm push /tmp/shortlink-template-*.tgz oci://ghcr.io/shortlink-org/charts
+

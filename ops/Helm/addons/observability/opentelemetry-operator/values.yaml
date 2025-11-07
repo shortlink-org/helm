@@ -1,20 +1,30 @@
-opentelemetry-ebpf-instrumentation:
+opentelemetry-operator:
   enabled: true
 
-  fullnameOverride: opentelemetry-ebpf-instrumentation
+  fullnameOverride: opentelemetry-operator
 
-  image:
-    tag: v0.2.0
-
-  config:
-    data:
-      otel_traces_export:
-        endpoint: http://grafana-tempo.grafana:4317
-      otel_metrics_export:
-        endpoint: http://grafana-alloy.grafana.svc.cluster.local:4318
-
-  serviceMonitor:
+  kubeRBACProxy:
     enabled: true
 
-    labels:
-      release: prometheus-operator
+  manager:
+    featureGates: ""
+
+    collectorImage:
+      repository: "otel/opentelemetry-collector-k8s"
+
+    serviceMonitor:
+      enabled: true
+
+      extraLabels:
+        release: prometheus-operator
+
+    prometheusRule:
+      enabled: true
+
+      annotations:
+        app: opentelemetry-operator
+
+      defaultRules:
+        enabled: true
+
+    createRbacPermissions: true

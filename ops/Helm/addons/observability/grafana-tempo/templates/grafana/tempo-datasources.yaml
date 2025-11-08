@@ -11,7 +11,7 @@ stringData:
       - name: Tempo
         type: tempo
         uid: tempo
-        url: http://grafana-tempo:3100
+        url: http://grafana-tempo:3200
         editable: false
         jsonData:
           httpMethod: GET
@@ -20,7 +20,10 @@ stringData:
           nodeGraph:
             enabled: true
           search:
+            enabled: true
             hide: false
+          metrics:
+            enabled: true
           serviceMap:
             datasourceUid: prometheus
           traceQuery:
@@ -30,27 +33,43 @@ stringData:
           spanBar:
             type: 'Tag'
             tag: 'http.path'
+
           tracesToLogsV2:
             datasourceUid: loki
             spanStartTimeShift: '1h'
             spanEndTimeShift: '-1h'
-            tags: ['job', 'instance', 'pod', 'namespace']
+            tags:
+              - { key: 'job', value: 'job' }
+              - { key: 'instance', value: 'instance' }
+              - { key: 'pod', value: 'pod' }
+              - { key: 'namespace', value: 'namespace' }
             filterBySpanID: true
             filterByTraceID: true
             mapTagNamesEnabled: true
             customQuery: true
-            query: 'method="${__span.tags.method}"'
+            query: '{ $__tags } |= "trace_id=\\"${__span.traceId}\\"" and span_id="${__span.spanId}" and method="${__span.tags.method}"'
+
           tracesToMetrics:
+            enabled: true
             datasourceUid: 'prometheus'
             spanStartTimeShift: '1h'
             spanEndTimeShift: '-1h'
-            tags: [{ key: 'service.name', value: 'service' }, { key: 'job' }]
+            tags:
+              - { key: 'service.name', value: 'service' }
+              - { key: 'job', value: 'job' }
             queries:
               - name: 'Sample query'
                 query: 'sum(rate(traces_spanmetrics_latency_bucket{$$__tags}[5m]))'
-          traceToProfiles:
+
+          tracesToProfiles:
             datasourceUid: pyroscope
-            tags: ['job', 'instance', 'pod', 'namespace']
-            profileTypeId: 'process_cpu:cpu:nanoseconds:cpu:nanoseconds'
+            spanStartTimeShift: '1h'
+            spanEndTimeShift: '-1h'
+            tags:
+              - { key: 'service.name', value: 'service' }
+              - { key: 'service.namespace', value: 'service_namespace' }
+              - { key: 'pod', value: 'pod' }
+            profileTypes:
+              - 'process_cpu:cpu:nanoseconds:cpu:nanoseconds'
             customQuery: true
-            query: 'method="${__span.tags.method}"'
+            query: '{ $__tags } and span_id="${__span.spanId}" and trace_id="${__span.traceId}"'

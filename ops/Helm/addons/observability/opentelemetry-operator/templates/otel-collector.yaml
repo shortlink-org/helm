@@ -63,6 +63,7 @@ spec:
             - otlp
           processors:
             - memory_limiter
+            - unroll
             - batch
           exporters:
             - otlp

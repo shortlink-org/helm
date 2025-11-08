@@ -27,7 +27,7 @@ stringData:
           serviceMap:
             datasourceUid: prometheus
           streamingEnabled:
-            search: true
+            search: false
           traceQuery:
             timeShiftEnabled: true
             spanStartTimeShift: '1h'

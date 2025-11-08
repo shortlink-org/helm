@@ -6,7 +6,7 @@ tempo:
 
   tempo:
     reportingEnabled: false
-    stream_over_http_enabled: false
+    stream_over_http_enabled: true
 
     resources:
       limits:

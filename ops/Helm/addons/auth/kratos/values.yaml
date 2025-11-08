@@ -191,8 +191,8 @@ kratos:
           cpu: 100m
           memory: 128Mi
         requests:
-          cpu: 100m
-          memory: 128Mi
+          cpu: 10m
+          memory: 64Mi
 
     #  You can add multiple identity schemas here
     identitySchemas:

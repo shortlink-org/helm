@@ -3,9 +3,6 @@ opentelemetry-ebpf-instrumentation:
 
   fullnameOverride: opentelemetry-ebpf-instrumentation
 
-  image:
-    tag: v0.2.0
-
   config:
     data:
       otel_traces_export:

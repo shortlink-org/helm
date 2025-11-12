@@ -15,7 +15,7 @@ type: application
 deprecated: false
 dependencies:
   - name: opentelemetry-ebpf-instrumentation
-    version: 0.1.1
+    version: 0.2.1
     repository: https://open-telemetry.github.io/opentelemetry-helm-charts
     condition: opentelemetry-ebpf-instrumentation.enabled
     tags:

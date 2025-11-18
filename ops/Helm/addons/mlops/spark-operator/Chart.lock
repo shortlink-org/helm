@@ -3,4 +3,4 @@ dependencies:
   repository: https://kubeflow.github.io/spark-operator
   version: 2.3.0
 digest: sha256:591277b9d7d47f9706993cd41c2e7449ac9a0e81efdcced87a3410e2d98230f3
-generated: "2025-11-07T23:53:35.875491+03:00"
+generated: "2025-11-18T13:15:07.433865+03:00"

@@ -3,4 +3,4 @@ dependencies:
   repository: https://helm.ngc.nvidia.com/nvidia
   version: v25.10.0
 digest: sha256:fb2ab5a984f314f04f6a402992c1627b63427e4dd8f022bc69423f5df5a2a11b
-generated: "2025-11-07T23:53:36.024358+03:00"
+generated: "2025-11-18T13:16:05.640829+03:00"

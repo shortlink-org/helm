@@ -10,21 +10,65 @@ logging {
 otelcol.receiver.otlp "in" {
   grpc { endpoint = "0.0.0.0:4317" }
   http { endpoint = "0.0.0.0:4318" }
+
   output {
-    metrics = [otelcol.processor.batch.metrics.input]
-    traces  = [otelcol.processor.batch.traces.input]
-    logs    = [otelcol.processor.batch.logs.input]
+    // first → resource auto-tagging
+    metrics  = [otelcol.processor.resource.k8s.input]
+    traces   = [otelcol.processor.resource.k8s.input]
+    logs     = [otelcol.processor.resource.k8s.input]
+    profiles = [otelcol.processor.resource.k8s.input]
   }
 }
+
+///////////////////////////////////////
+// Auto-tagging (resource attributes)
+///////////////////////////////////////
+
+otelcol.processor.resource "k8s" {
+  // IMPORTANT — auto tagging all signals including profiles
+  attributes = {
+    "service.name"          = "${K8S_POD_LABEL_app}"
+    "service.namespace"     = "${K8S_NAMESPACE}"
+    "service.instance.id"   = "${K8S_POD_NAME}"
+
+    "k8s.pod.name"          = "${K8S_POD_NAME}"
+    "k8s.pod.uid"           = "${K8S_POD_UID}"
+    "k8s.namespace.name"    = "${K8S_NAMESPACE}"
+    "k8s.node.name"         = "${K8S_NODE_NAME}"
+    "k8s.container.name"    = "${K8S_CONTAINER_NAME}"
+
+    "deployment.environment" = "${ENVIRONMENT}"
+    "version"                = "${APP_VERSION}"
+    "revision"               = "${GIT_COMMIT}"
+    "image"                  = "${CONTAINER_IMAGE}"
+  }
+
+  output {
+    metrics  = [otelcol.processor.batch.metrics.input]
+    traces   = [otelcol.processor.batch.traces.input]
+    logs     = [otelcol.processor.batch.logs.input]
+    profiles = [otelcol.processor.batch.profiles.input]
+  }
+}
+
+//////////////////
+// Batch Processors
+//////////////////
 
 otelcol.processor.batch "metrics" {
   output { metrics = [otelcol.exporter.otlphttp.prom.input] }
 }
+
 otelcol.processor.batch "traces" {
   output { traces  = [otelcol.exporter.otlp.tempo.input] }
 }
+
 otelcol.processor.batch "logs" {
   output { logs    = [otelcol.exporter.otlphttp.loki.input] }
+}
+
+otelcol.processor.batch "profiles" {
+  output { profiles = [otelcol.exporter.otlphttp.pyro.input] }
 }
 
 //////////////////////////////////////////
@@ -61,8 +105,19 @@ otelcol.exporter.otlphttp "loki" {
   }
 }
 
+////////////////////////////////////
+// PROFILES → Pyroscope (OTLP/HTTP)
+////////////////////////////////////
+
+otelcol.exporter.otlphttp "pyro" {
+  client {
+    endpoint = "http://pyroscope.pyroscope.svc:4040"
+    tls { insecure = true }
+  }
+}
+
 //////////////////////////////////////////////////////////////
-// (Optional) K8s container logs → Loki classic /v1/push    //
+// Kubernetes container logs → Loki classic /v1/push        //
 //////////////////////////////////////////////////////////////
 
 discovery.kubernetes "pods" {
@@ -77,11 +132,12 @@ loki.source.kubernetes "pods" {
 loki.process "k8s" {
   stage.labels {
     values = {
-      namespace = "namespace",
-      pod       = "pod",
-      container = "container",
+      namespace = "namespace"
+      pod       = "pod"
+      container = "container"
     }
   }
+
   forward_to = [loki.write.default.receiver]
 }
 

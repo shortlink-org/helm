@@ -52,7 +52,7 @@ spec:
       value: "1"
 
     - name: MINIO_STORAGE_CLASS_STANDARD
-      value: "1"
+      value: "EC:1"
 
     - name: MINIO_STORAGE_CLASS_RRS
       value: "0"

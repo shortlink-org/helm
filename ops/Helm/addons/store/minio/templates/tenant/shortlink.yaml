@@ -38,6 +38,10 @@ spec:
   prometheusOperator: true
   requestAutoCert: false
 
+  features:
+    tls:
+      enabled: false
+
   env:
     - name: MINIO_PROMETHEUS_AUTH_TYPE
       value: "public"

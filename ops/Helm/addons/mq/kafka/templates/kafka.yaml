@@ -16,17 +16,16 @@ spec:
         type: ephemeral
         kraftMetadata: shared
   template:
-    pod:
-      containers:
-        - name: kafka
-          env:
-            - name: STRIMZI_JMX_ENABLED
-              value: "true"
-            - name: STRIMZI_JMX_EXPORTER_CONFIG
-              valueFrom:
-                configMapKeyRef:
-                  name: broker-metrics
-                  key: metrics-config.yml
+    pods:
+      kafkaContainer:
+        env:
+          - name: STRIMZI_JMX_ENABLED
+            value: "true"
+          - name: STRIMZI_JMX_EXPORTER_CONFIG
+            valueFrom:
+              configMapKeyRef:
+                name: broker-metrics
+                key: metrics-config.yml
 
 ---
 apiVersion: kafka.strimzi.io/v1beta2

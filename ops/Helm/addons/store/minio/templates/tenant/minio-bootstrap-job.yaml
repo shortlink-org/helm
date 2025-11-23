@@ -14,6 +14,7 @@ spec:
       containers:
         - name: mc
           image: quay.io/minio/mc:latest
+          imagePullPolicy: Always
           command: ["/bin/sh", "-c"]
           args:
             - |
@@ -26,21 +27,24 @@ spec:
                 sleep 3
               done
 
-              # bucket
+              echo "Creating bucket..."
               mc mb --ignore-existing myminio/shortlink
 
-              # shortlink-user
+              echo "Creating user shortlink-user..."
               mc admin user add myminio shortlink-user "$SHORTLINK_PASSWORD" || true
-              mc admin policy set myminio readwrite user=shortlink-user
+              mc admin policy attach myminio readwrite --user=shortlink-user
 
-              # testkube-user
+              echo "Creating user testkube-user..."
               mc admin user add myminio testkube-user "$TESTKUBE_PASSWORD" || true
-              mc admin policy set myminio readwrite user=testkube-user
+              mc admin policy attach myminio readwrite --user=testkube-user
+
+              echo "Bootstrap completed successfully"
 
           env:
             - name: NAMESPACE
               value: {{ .Release.Namespace | quote }}
 
+            # Root MinIO credentials (из секрета shortlink-configuration)
             - name: MINIO_ROOT_USER
               valueFrom:
                 secretKeyRef:
@@ -53,12 +57,14 @@ spec:
                   name: shortlink-configuration
                   key: rootPassword
 
+            # shortlink-user
             - name: SHORTLINK_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: shortlink-user
                   key: PASSWORD
 
+            # testkube-user
             - name: TESTKUBE_PASSWORD
               valueFrom:
                 secretKeyRef:

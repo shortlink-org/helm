@@ -13,8 +13,10 @@ spec:
     type: jbod
     volumes:
       - id: 0
-        type: ephemeral
+        type: persistent-claim
+        size: 2Gi
         kraftMetadata: shared
+        class: local-path
   template:
     # pod-level settings (nodeSelector, tolerations, affinity etc.)
     pod:

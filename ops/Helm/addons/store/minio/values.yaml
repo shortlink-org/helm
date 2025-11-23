@@ -6,6 +6,7 @@ minio:
   enabled: true
 
   operator:
+    replicas: 1
     image:
       pullPolicy: Always
 

@@ -30,8 +30,23 @@ spec:
             storage: "3221225472"
         storageClassName: local-path
     volumesPerServer: 1
-  prometheusOperator: true
-  requestAutoCert: false
+  
   users:
   - name: shortlink-user
   - name: testkube-user
+  
+  prometheusOperator: true
+  requestAutoCert: false
+
+  env:
+    - name: MINIO_PROMETHEUS_AUTH_TYPE
+      value: "public"
+
+    - name: MINIO_TELEMETRY_TARGET_ENABLE
+      value: "on"
+
+    - name: MINIO_TELEMETRY_TARGET_ENDPOINT
+      value: "http://grafana-alloy.grafana.svc.cluster.local:4318"
+
+    - name: MINIO_TELEMETRY_TARGET_SAMPLE_RATE
+      value: "1"

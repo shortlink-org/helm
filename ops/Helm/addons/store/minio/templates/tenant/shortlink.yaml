@@ -20,7 +20,6 @@ spec:
         memory: 512Mi
     servers: 1
     volumesPerServer: 1
-    size: 1
     volumeClaimTemplate:
       metadata:
         name: data

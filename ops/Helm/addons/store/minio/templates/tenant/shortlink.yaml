@@ -50,6 +50,3 @@ spec:
 
     - name: MINIO_TELEMETRY_TARGET_SAMPLE_RATE
       value: "1"
-
-    - name: MINIO_STORAGE_CLASS_STANDARD
-      value: "EC:0"

@@ -21,12 +21,12 @@ spec:
 
               echo "Waiting for MinIO..."
               until mc alias set myminio \
-                http://shortlink-minio.${NAMESPACE}.svc.cluster.local:9000 \
+                http://shortlink-hl.${NAMESPACE}.svc.cluster.local:9000 \
                 "$MINIO_ROOT_USER" "$MINIO_ROOT_PASSWORD"; do
                 sleep 3
               done
 
-              # Bucket
+              # bucket
               mc mb --ignore-existing myminio/shortlink
 
               # shortlink-user

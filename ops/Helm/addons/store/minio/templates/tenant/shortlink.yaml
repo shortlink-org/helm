@@ -19,7 +19,7 @@ spec:
       requests:
         memory: 512Mi
     servers: 1
-    volumesPerServer: 1
+    volumesPerServer: 2
     volumeClaimTemplate:
       metadata:
         name: data

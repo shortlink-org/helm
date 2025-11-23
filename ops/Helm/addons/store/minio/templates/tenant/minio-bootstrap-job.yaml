@@ -15,32 +15,32 @@ spec:
         - name: mc
           image: quay.io/minio/mc:latest
           command: ["/bin/sh", "-c"]
-          args: |
-            set -ex
+          args:
+            - |
+              set -ex
 
-            echo "Waiting for MinIO..."
-            until mc alias set myminio \
-              http://shortlink-minio.${NAMESPACE}.svc.cluster.local:9000 \
-              "$MINIO_ROOT_USER" "$MINIO_ROOT_PASSWORD"; do
-              sleep 3
-            done
+              echo "Waiting for MinIO..."
+              until mc alias set myminio \
+                http://shortlink-minio.${NAMESPACE}.svc.cluster.local:9000 \
+                "$MINIO_ROOT_USER" "$MINIO_ROOT_PASSWORD"; do
+                sleep 3
+              done
 
-            # bucket
-            mc mb --ignore-existing myminio/shortlink
+              # bucket
+              mc mb --ignore-existing myminio/shortlink
 
-            # shortlink-user
-            mc admin user add myminio shortlink-user "$SHORTLINK_PASSWORD" || true
-            mc admin policy set myminio readwrite user=shortlink-user
+              # shortlink-user
+              mc admin user add myminio shortlink-user "$SHORTLINK_PASSWORD" || true
+              mc admin policy set myminio readwrite user=shortlink-user
 
-            # testkube-user
-            mc admin user add myminio testkube-user "$TESTKUBE_PASSWORD" || true
-            mc admin policy set myminio readwrite user=testkube-user
+              # testkube-user
+              mc admin user add myminio testkube-user "$TESTKUBE_PASSWORD" || true
+              mc admin policy set myminio readwrite user=testkube-user
 
           env:
             - name: NAMESPACE
               value: {{ .Release.Namespace | quote }}
 
-            # root creds — исправлено!
             - name: MINIO_ROOT_USER
               valueFrom:
                 secretKeyRef:

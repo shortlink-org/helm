@@ -1,10 +1,12 @@
-# Common default values for argo-cd.
+# Common default values for minio.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
 minio:
   enabled: true
 
-  operator: {}
+  operator:
+    image:
+      pullPolicy: Always
 
   console: {}

@@ -15,10 +15,10 @@ spec:
   - name: pool-0
     resources:
       limits:
-        memory: 8Gi
-      requests:
         memory: 2Gi
-    servers: 4
+      requests:
+        memory: 512Mi
+    servers: 1
     volumeClaimTemplate:
       metadata:
         name: data
@@ -27,7 +27,7 @@ spec:
         - ReadWriteOnce
         resources:
           requests:
-            storage: "2684354560"
+            storage: "3221225472"
         storageClassName: local-path
     volumesPerServer: 1
   prometheusOperator: true

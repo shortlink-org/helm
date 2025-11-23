@@ -3,4 +3,4 @@ dependencies:
   repository: https://rlex.github.io/helm-charts/
   version: 0.14.3
 digest: sha256:97b1f62836c8c04992d11e8a4e1e3743aa8d2a3415e7a879fce7dca0b2501cdf
-generated: "2025-11-18T13:20:00.959821+03:00"
+generated: "2025-11-23T10:09:07.628697+03:00"

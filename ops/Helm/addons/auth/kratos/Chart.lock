@@ -3,4 +3,4 @@ dependencies:
   repository: https://k8s.ory.sh/helm/charts
   version: 0.60.0
 digest: sha256:96f673038ee04ad9bb0bec11f58a0936e100dd05568d62db0373bfd5c4923068
-generated: "2025-11-18T13:14:18.15608+03:00"
+generated: "2025-11-23T10:07:18.968637+03:00"

@@ -19,6 +19,8 @@ spec:
       requests:
         memory: 512Mi
     servers: 1
+    volumesPerServer: 1
+    size: 1
     volumeClaimTemplate:
       metadata:
         name: data
@@ -29,7 +31,6 @@ spec:
           requests:
             storage: "3221225472"
         storageClassName: local-path
-    volumesPerServer: 1
   
   users:
   - name: shortlink-user

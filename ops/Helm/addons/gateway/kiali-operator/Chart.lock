@@ -3,4 +3,4 @@ dependencies:
   repository: https://kiali.org/helm-charts
   version: 2.18.0
 digest: sha256:c1cc1e7fd3597f2a695af934df90da65150f769f4d8617d3b8fb5f891a031ce1
-generated: "2025-11-23T10:12:10.209864+03:00"
+generated: "2025-11-23T10:24:12.563435+03:00"

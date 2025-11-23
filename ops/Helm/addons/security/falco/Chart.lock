@@ -6,4 +6,4 @@ dependencies:
   repository: https://falcosecurity.github.io/charts
   version: 0.12.2
 digest: sha256:f7b160c858f0055e5c0fb8ee8c42f485db29bd70ae58a1c27c0536f588d769ab
-generated: "2025-11-23T10:07:18.955831+03:00"
+generated: "2025-11-23T10:19:51.546379+03:00"

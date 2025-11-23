@@ -7,3 +7,6 @@ metadata:
 type: Opaque
 data:
   config.env: {{ .Values.EnvConfig | b64enc }}
+
+  rootUser: {{ .Values.MINIO_ROOT_USER | b64enc }}
+  rootPassword: {{ .Values.MINIO_ROOT_PASSWORD | b64enc }}

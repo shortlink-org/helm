@@ -1,4 +1,6 @@
 BUCKET_PASSWORD: ENC[AES256_GCM,data:zM7ZdCSLcIoSBTqpQJV94HqNU7o=,iv:q1hEH/tWyenHTLqV28Gk8/EbHruUmPKsmoCk10u+R74=,tag:PCp7EKZzbAhMC6w3S3NxMA==,type:str]
+MINIO_ROOT_USER: ENC[AES256_GCM,data:CBBA3s2acq3YRJsgj2cbZg==,iv:slTDDJs9NcBoWMeiIGQDDQQhm+ig/cSRMayvgfHid18=,tag:HNltV27CWyMKUYWAl+il4w==,type:str]
+MINIO_ROOT_PASSWORD: ENC[AES256_GCM,data:9kXyYW2OwXmj3X5LhGylaaBTjsKasuLUOutl9zpksn0=,iv:dZ29LS+c/vt8tKhftjh84RRQPQus1uwIUqAQWCWM/I8=,tag:ND5skOBaxBWnEp3f/n0vsg==,type:str]
 EnvConfig: ENC[AES256_GCM,data:zKH3aNJhuUJmh4SVbkwIXxDCFXBRWOHtxjWPC0Z8zPspsih7ny2Bn5UMbHhB3ENYkkgLPyJ5Cwbu3ek6X42xzeVM6o/af7qplN7mXk2ydXCxB210mzF4zJYPlJQJHit4K8OVmmQiXRfYOIL0pGKk4yxCEff0SA3xDeSaKtTaDApQoD442w+Nzmy7aSWJnNHcNdiiMr2nB4MVy4kXsF8CNb91IpulMlWLf+X/Nek=,iv:bPzJr/1eGT6VUoIi9FLp3DaXMRU48OlQs9r2hJDvH08=,tag:5FrnhA0FVBCISiSojYhWuA==,type:str]
 sops:
     kms: []
@@ -6,8 +8,8 @@ sops:
     azure_kv: []
     hc_vault: []
     age: []
-    lastmodified: "2024-09-08T12:12:06Z"
-    mac: ENC[AES256_GCM,data:4Fb5z+W+fvIuoOMEdwWC6MNn66hNMuct3MEyv05NpiSvKSN6Ulq7eAOSVn+kUwfQ0qdfNOwyF1ELA94llSaQTAdm6vIBQJv/m8/U3BJ5URNYEGfugyz24Xhx7MoEh1tbX5uKaYdxrkq1wGprS9gAwRZzPMYyrjnKO0qTOSNwKnA=,iv:96gUF3/pBeCXUJGdd4p0fVdVAANJc3A+FdAOB5oPVdc=,tag:GYvAi5fDyRPQbhanO1UN9w==,type:str]
+    lastmodified: "2025-11-23T12:34:18Z"
+    mac: ENC[AES256_GCM,data:xrA/+N6wGNVgwl27XYO81YVb7dtgkclOpxJgOPj5AroqpNy+Z2lz6b4PfYvQTYlewkI5ambX7z6RuCkzKLSaacT5a29MVEhtKoKl+p85DB35pQnXqjxF9f4NhJezoTYq52fn/C8gxahAjYE+jfzry5lcB3X6KAHcp2sSV/046k8=,iv:y7hjf1R8Cb2j8cuPurLlESgrqRMzJ+ANcgfrUwILqHM=,tag:YumC2D7dGUCgJ/vae+inng==,type:str]
     pgp:
         - created_at: "2023-06-01T12:37:42Z"
           enc: |

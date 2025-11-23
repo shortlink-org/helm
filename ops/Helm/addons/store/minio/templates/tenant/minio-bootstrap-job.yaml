@@ -8,8 +8,8 @@ spec:
   backoffLimit: 3
   template:
     spec:
-      serviceAccountName: mc-job-sa
       restartPolicy: Never
+      serviceAccountName: mc-job-sa
 
       containers:
         - name: mc
@@ -26,7 +26,7 @@ spec:
                 sleep 3
               done
 
-              # bucket
+              # Bucket
               mc mb --ignore-existing myminio/shortlink
 
               # shortlink-user

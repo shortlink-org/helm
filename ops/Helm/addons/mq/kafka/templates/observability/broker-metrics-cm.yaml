@@ -1,0 +1,72 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: broker-metrics
+data:
+  metrics-config.yml: |
+    lowercaseOutputName: true
+    lowercaseOutputLabelNames: true
+
+    rules:
+      # General server metrics
+      - pattern: 'kafka.server<type=(.+), name=(.+)><>(Count|Value|Mean|OneMinuteRate|FiveMinuteRate|FifteenMinuteRate)'
+        name: kafka_server_$1_$2
+        type: GAUGE
+
+      # Request metrics
+      - pattern: 'kafka.network<type=RequestMetrics, name=(.+), request=(.+)><>(Count|Mean|OneMinuteRate|FiveMinuteRate|FifteenMinuteRate)'
+        name: kafka_network_request_$1
+        labels:
+          request: "$2"
+        type: GAUGE
+
+      # Request direct metrics
+      - pattern: 'kafka.network<type=RequestMetrics, name=(.+)><>(Count|Mean|OneMinuteRate|FiveMinuteRate|FifteenMinuteRate)'
+        name: kafka_network_request_$1
+        type: GAUGE
+
+      # Controller metrics
+      - pattern: 'kafka.controller<type=KafkaController, name=(.+)><>(Count|Value|Mean)'
+        name: kafka_controller_$1
+        type: GAUGE
+
+      # Replica manager
+      - pattern: 'kafka.server<type=ReplicaManager, name=(.+)><>(Value|Count|MeanRate)'
+        name: kafka_server_replicamanager_$1
+        type: GAUGE
+
+      # Log metrics
+      - pattern: 'kafka.log<type=Log, name=(.+), topic=(.+), partition=(.+)><>(Count|Value)'
+        name: kafka_log_$1
+        labels:
+          topic: "$2"
+          partition: "$3"
+        type: GAUGE
+
+      # Log cleaner
+      - pattern: 'kafka.log<type=LogCleaner, name=(.+)><>(Count|Value)'
+        name: kafka_logcleaner_$1
+        type: GAUGE
+
+      # Partition metrics
+      - pattern: 'kafka.cluster<type=Partition, name=(.+), topic=(.+), partition=(.+)><>(Count|Value)'
+        name: kafka_partition_$1
+        labels:
+          topic: "$2"
+          partition: "$3"
+        type: GAUGE
+
+      # Fetcher manager
+      - pattern: 'kafka.server<type=FetcherManager, name=(.+)><>(Value|Count)'
+        name: kafka_fetchermanager_$1
+        type: GAUGE
+
+      # Quotas
+      - pattern: 'kafka.server<type=ClientRequestQuotaManager, name=(.+)><>(Count|Value)'
+        name: kafka_quota_clientrequest_$1
+        type: GAUGE
+
+      # Group coordinator
+      - pattern: 'kafka.coordinator.group<type=GroupCoordinator, name=(.+)><>(Value|Count)'
+        name: kafka_groupcoordinator_$1
+        type: GAUGE

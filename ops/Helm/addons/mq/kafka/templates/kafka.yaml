@@ -15,6 +15,18 @@ spec:
       - id: 0
         type: ephemeral
         kraftMetadata: shared
+  template:
+    pod:
+      containers:
+        - name: kafka
+          env:
+            - name: STRIMZI_JMX_ENABLED
+              value: "true"
+            - name: STRIMZI_JMX_EXPORTER_CONFIG
+              valueFrom:
+                configMapKeyRef:
+                  name: broker-metrics
+                  key: metrics-config.yml
 
 ---
 apiVersion: kafka.strimzi.io/v1beta2
@@ -56,12 +68,6 @@ spec:
       limits:
         memory: 2Gi
         cpu: 1000m
-    # metricsConfig:
-    #   type: jmxPrometheusExporter
-    #   valueFrom:
-    #     configMapKeyRef:
-    #       name: connect-metrics
-    #       key: metrics-config.yml
   entityOperator:
     topicOperator: {}
     userOperator: {}
@@ -69,10 +75,4 @@ spec:
     topicRegex: ".*"
     groupRegex: ".*"
     enableSaramaLogging: true
-  cruiseControl:
-    metricsConfig:
-      type: jmxPrometheusExporter
-      valueFrom:
-        configMapKeyRef:
-          name: cruise-control-metrics
-          key: metrics-config.yml
+

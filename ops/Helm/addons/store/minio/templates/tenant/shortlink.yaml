@@ -53,6 +53,3 @@ spec:
 
     - name: MINIO_STORAGE_CLASS_STANDARD
       value: "EC:0"
-
-    - name: MINIO_STORAGE_CLASS_RRS
-      value: "0"

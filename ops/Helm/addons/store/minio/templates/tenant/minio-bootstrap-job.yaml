@@ -5,50 +5,62 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "1"
 spec:
+  backoffLimit: 3
   template:
     spec:
       serviceAccountName: mc-job-sa
       restartPolicy: Never
+
       containers:
         - name: mc
           image: quay.io/minio/mc:latest
           command: ["/bin/sh", "-c"]
-          args:
-            - |
-              set -ex
-              mc alias set myminio http://shortlink-minio.${NAMESPACE}.svc.cluster.local:9000 $MINIO_ROOT_USER $MINIO_ROOT_PASSWORD
+          args: |
+            set -ex
 
-              # bucket
-              mc mb --ignore-existing myminio/shortlink
+            echo "Waiting for MinIO..."
+            until mc alias set myminio \
+              http://shortlink-minio.${NAMESPACE}.svc.cluster.local:9000 \
+              "$MINIO_ROOT_USER" "$MINIO_ROOT_PASSWORD"; do
+              sleep 3
+            done
 
-              # user
-              mc admin user add myminio shortlink-user $SHORTLINK_PASSWORD
-              mc admin policy set myminio readwrite user=shortlink-user
+            # bucket
+            mc mb --ignore-existing myminio/shortlink
 
-              # testkube user
-              mc admin user add myminio testkube-user $TESTKUBE_PASSWORD
-              mc admin policy set myminio readwrite user=testkube-user
+            # shortlink-user
+            mc admin user add myminio shortlink-user "$SHORTLINK_PASSWORD" || true
+            mc admin policy set myminio readwrite user=shortlink-user
+
+            # testkube-user
+            mc admin user add myminio testkube-user "$TESTKUBE_PASSWORD" || true
+            mc admin policy set myminio readwrite user=testkube-user
+
           env:
             - name: NAMESPACE
               value: {{ .Release.Namespace | quote }}
+
+            # root creds — исправлено!
             - name: MINIO_ROOT_USER
               valueFrom:
                 secretKeyRef:
-                  name: shortlink-secret
+                  name: shortlink-configuration
                   key: rootUser
+
             - name: MINIO_ROOT_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: shortlink-secret
+                  name: shortlink-configuration
                   key: rootPassword
+
             - name: SHORTLINK_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: shortlink-user
                   key: PASSWORD
+
             - name: TESTKUBE_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: testkube-user
                   key: PASSWORD
-

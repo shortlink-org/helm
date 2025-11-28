@@ -18,3 +18,7 @@ stringData:
           backendType: phlare
           # Timeout for queries
           timeout: 60s
+          # Enable Profiles Drilldown from traces
+          enableProfilesDrilldown: true
+          # Enable trace linking
+          enableTraceLinking: true

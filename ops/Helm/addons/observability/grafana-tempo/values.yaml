@@ -26,11 +26,12 @@ tempo:
           processors:
             - service-graphs
             - span-metrics
+            - local-blocks
 
     ingester:
-      trace_idle_period: 10s               # the length of time after a trace has not received spans to consider it complete and flush it
-      max_block_bytes: 500_000_000         # cut the head block when it hits this size or ...
-      max_block_duration: 30m              # this much time passes
+      trace_idle_period: 10s # the length of time after a trace has not received spans to consider it complete and flush it
+      max_block_bytes: 500_000_000 # cut the head block when it hits this size or ...
+      max_block_duration: 30m # this much time passes
 
     retention: 24h
 
@@ -44,7 +45,7 @@ tempo:
       trace:
         backend: local
         block:
-          version: vParquet4               # version of the block storage to use
+          version: vParquet4 # version of the block storage to use
           bloom_filter_false_positive: .05 # bloom filter false positive rate.  lower values create larger filters but fewer false positives
 
           parquet_dedicated_columns:
@@ -56,7 +57,7 @@ tempo:
         wal:
           path: /var/tempo/wal
         pool:
-          max_workers: 400                 # the worker pool mainly drives querying, but is also used for polling the blocklist
+          max_workers: 400 # the worker pool mainly drives querying, but is also used for polling the blocklist
           queue_depth: 30000
 
   serviceMonitor:

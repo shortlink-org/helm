@@ -83,8 +83,12 @@ stringData:
             tags:
               - { key: 'service.name', value: 'service' }
               - { key: 'service.namespace', value: 'service_namespace' }
+              - { key: 'service.instance.id', value: 'instance' }
               - { key: 'pod', value: 'pod' }
+              - { key: 'container', value: 'container' }
             profileTypes:
               - 'process_cpu:cpu:nanoseconds:cpu:nanoseconds'
+              - 'memory:alloc_objects:count:space:bytes'
+              - 'memory:alloc_space:bytes:space:bytes'
             customQuery: true
-            query: '{ $__tags } and span_id="${__span.spanId}" and trace_id="${__span.traceId}"'
+            query: '{ service="${__span.tags["service.name"]}", pod="${__span.tags["pod"]}" }'

@@ -5,7 +5,7 @@ metadata:
   labels:
     grafana_datasource: 'true' # default value for: sidecar.datasources.label
 stringData:
-  tempo.yaml: |-
+  pyroscope.yaml: |-
     apiVersion: 1
     datasources:
       - name: Pyroscope
@@ -13,3 +13,8 @@ stringData:
         uid: pyroscope
         url: http://pyroscope.pyroscope:4040
         editable: false
+        jsonData:
+          # Enable backend querying for better performance
+          backendType: phlare
+          # Timeout for queries
+          timeout: 60s

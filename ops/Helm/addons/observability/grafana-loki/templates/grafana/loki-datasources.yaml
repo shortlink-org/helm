@@ -17,16 +17,10 @@ stringData:
           maxLines: 1000
           alertmanagerUid: alertmanager
           derivedFields:
-            # Field with internal link pointing to data source in Grafana.
-            # Right now, Grafana supports only Jaeger and Zipkin data sources as link targets.
-            # datasourceUid value can be anything, but it should be unique across all defined data source uids.
+            # Field with internal link pointing to Tempo data source in Grafana.
+            # Supports both OpenTelemetry format (trace_id) and legacy format (traceID)
             - datasourceUid: tempo
-              matcherRegex: 'traceID":"(\w+)'
+              matcherRegex: '(?:trace_id|traceID)["\s:=]+([a-f0-9]{16,32})'
               name: TraceID
               # url will be interpreted as query for the datasource
               url: "$${__value.raw}"
-
-            # Field with external link.
-            - matcherRegex: 'traceID":"(\w+)'
-              name: TraceID (external)
-              url: "http://grafana-tempo.grafana:16686/trace/$${__value.raw}"

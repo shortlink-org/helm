@@ -41,15 +41,18 @@ stringData:
             spanStartTimeShift: '1h'
             spanEndTimeShift: '-1h'
             tags:
+              - { key: 'service.name', value: 'service' }
+              - { key: 'service.namespace', value: 'service_namespace' }
               - { key: 'job', value: 'job' }
               - { key: 'instance', value: 'instance' }
               - { key: 'pod', value: 'pod' }
               - { key: 'namespace', value: 'namespace' }
+              - { key: 'container', value: 'container' }
             filterBySpanID: true
             filterByTraceID: true
             mapTagNamesEnabled: true
             customQuery: true
-            query: '{ $__tags } |= "trace_id=\\"${__span.traceId}\\"" and span_id="${__span.spanId}" and method="${__span.tags.method}"'
+            query: '{ $__tags } | json | trace_id="${__span.traceId}" or traceID="${__span.traceId}" or trace_id="${__span.traceId}"'
 
           tracesToMetrics:
             enabled: true
@@ -58,10 +61,20 @@ stringData:
             spanEndTimeShift: '-1h'
             tags:
               - { key: 'service.name', value: 'service' }
+              - { key: 'service.namespace', value: 'service_namespace' }
               - { key: 'job', value: 'job' }
+              - { key: 'span_name', value: 'span_name' }
             queries:
-              - name: 'Sample query'
-                query: 'sum(rate(traces_spanmetrics_latency_bucket{$$__tags}[5m]))'
+              - name: 'P95 Latency'
+                query: 'histogram_quantile(0.95, sum(rate(traces_spanmetrics_latency_bucket{$$__tags}[5m])) by (le, span_name))'
+              - name: 'P99 Latency'
+                query: 'histogram_quantile(0.99, sum(rate(traces_spanmetrics_latency_bucket{$$__tags}[5m])) by (le, span_name))'
+              - name: 'Request rate'
+                query: 'sum(rate(traces_spanmetrics_calls_total{$$__tags}[5m])) by (span_name, status_code)'
+              - name: 'Error rate'
+                query: 'sum(rate(traces_spanmetrics_calls_total{$$__tags, status_code=~"ERROR|5.."}[5m])) by (span_name, status_code)'
+              - name: 'Average latency'
+                query: 'sum(rate(traces_spanmetrics_latency_sum{$$__tags}[5m])) by (span_name) / sum(rate(traces_spanmetrics_latency_count{$$__tags}[5m])) by (span_name)'
 
           tracesToProfiles:
             datasourceUid: pyroscope

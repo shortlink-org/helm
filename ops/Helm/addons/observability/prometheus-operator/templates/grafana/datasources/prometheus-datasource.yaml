@@ -15,11 +15,15 @@ stringData:
         access: proxy
         isDefault: true
         jsonData:
-          timeInterval: 10s
-          queryTimeout: 30s
+          timeInterval: 15s
+          queryTimeout: 60s
           httpMethod: POST
           alertmanagerUid: alertmanager
           incrementalQuerying: true
           exemplarTraceIdDestinations:
             - name: "traceID"
               datasourceUid: tempo
+          # Enable proper time range handling
+          manageAlerts: true
+          # Disable time range validation issues
+          disableRecordingRules: false

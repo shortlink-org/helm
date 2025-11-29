@@ -52,13 +52,13 @@ stringData:
             filterByTraceID: true
             mapTagNamesEnabled: true
             customQuery: true
-            query: '{ $__tags } | json | trace_id="${__span.traceId}" or traceID="${__span.traceId}" or trace_id="${__span.traceId}"'
+            query: '{ $__tags } |~ `"(trace_id|traceID|traceId)":\s*"${__span.traceId}"` | json'
 
           tracesToMetrics:
             enabled: true
             datasourceUid: 'prometheus'
-            spanStartTimeShift: '1h'
-            spanEndTimeShift: '-1h'
+            spanStartTimeShift: '-15m'
+            spanEndTimeShift: '15m'
             tags:
               - { key: 'service.name', value: 'service' }
               - { key: 'service.namespace', value: 'service_namespace' }

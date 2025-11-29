@@ -3,4 +3,4 @@ dependencies:
   repository: oci://registry.developers.crunchydata.com/crunchydata
   version: 5.8.5
 digest: sha256:cae88d3651c4de4ef54d267aca349a498b2234963dbd52346fd326a9b100b128
-generated: "2025-11-25T16:34:32.956371708Z"
+generated: "2025-11-29T13:17:22.92301+03:00"

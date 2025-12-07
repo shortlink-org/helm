@@ -7,22 +7,19 @@ metadata:
 spec:
   gatewayClassName: istio
   listeners:
-    # HTTP listener (порт 80) — можно использовать для HTTP→HTTPS redirect через отдельный HTTPRoute
+    # HTTP listener (порт 80) — принимает все домены shortlink.best и поддомены
     - name: http
-      hostname: "shortlink.best"
       port: 80
       protocol: HTTP
       allowedRoutes:
         namespaces:
           from: All
 
-    # HTTPS listener (порт 443) — основной вход
+    # HTTPS listener (порт 443) — принимает все домены shortlink.best и поддомены
     - name: https
-      hostname: "shortlink.best"
       port: 443
       protocol: HTTPS
       tls:
-        # mode: Terminate — по умолчанию для HTTPS, можно явно не задавать
         mode: Terminate
         certificateRefs:
           - name: shortlink-best-tls

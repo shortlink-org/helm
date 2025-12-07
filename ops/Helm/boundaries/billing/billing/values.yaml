@@ -26,22 +26,19 @@ secret:
 
 # ==============================================================================
 ingress:
+  enabled: false
+
+# ==============================================================================
+# HTTPRoute configuration for Gateway API
+httpRoute:
   enabled: true
-  # type ingress-controller: istio, cilium, nginx (default: nginx)
-  ingressClassName: istio
-
-  istio:
-    match:
-      - uri:
-          prefix: /infrastructure.api.rpc.payment.v1.PaymentService/
-      - uri:
-          prefix: /infrastructure.api.rpc.tariff.v1.TariffService/
-      - uri:
-          prefix: /infrastructure.api.rpc.order.v1.OrderService/
-
-    route:
-      destination:
-        port: 50051
+  gatewayName: internal-gateway
+  gatewayNamespace: istio-system
+  port: 50051
+  paths:
+    - "/infrastructure.api.rpc.payment.v1.PaymentService/"
+    - "/infrastructure.api.rpc.tariff.v1.TariffService/"
+    - "/infrastructure.api.rpc.order.v1.OrderService/"
 
 # ==============================================================================
 deploy:

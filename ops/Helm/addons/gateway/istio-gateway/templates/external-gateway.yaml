@@ -1,0 +1,32 @@
+apiVersion: gateway.networking.k8s.io/v1beta1
+kind: Gateway
+metadata:
+  name: external-gateway
+  annotations:
+    cert-manager.io/issuer: cert-manager-production
+spec:
+  gatewayClassName: istio
+  listeners:
+    # HTTP listener (порт 80) — можно использовать для HTTP→HTTPS redirect через отдельный HTTPRoute
+    - name: http
+      hostname: "shortlink.best"
+      port: 80
+      protocol: HTTP
+      allowedRoutes:
+        namespaces:
+          from: All
+
+    # HTTPS listener (порт 443) — основной вход
+    - name: https
+      hostname: "shortlink.best"
+      port: 443
+      protocol: HTTPS
+      tls:
+        # mode: Terminate — по умолчанию для HTTPS, можно явно не задавать
+        mode: Terminate
+        certificateRefs:
+          - name: shortlink-best-tls
+            kind: Secret
+      allowedRoutes:
+        namespaces:
+          from: All

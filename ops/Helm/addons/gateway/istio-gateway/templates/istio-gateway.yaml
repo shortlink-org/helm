@@ -1,20 +1,42 @@
-apiVersion: networking.istio.io/v1
+apiVersion: gateway.networking.k8s.io/v1beta1
 kind: Gateway
 metadata:
-  name: {{ .Release.Namespace }}
+  name: internal-gateway
+  annotations:
+    cert-manager.io/cluster-issuer: ca-issuer
 spec:
-  selector:
-    istio: ingress # use Istio default gateway implementation
-  servers:
-    - port:
-        number: 50051
-        name: grpc
-        protocol: GRPC
-      hosts:
-        - "*"
-    - port:
-        number: 80
-        name: http
-        protocol: HTTP
-      hosts:
-        - "*"
+  gatewayClassName: istio
+  listeners:
+    - name: http
+      port: 80
+      protocol: HTTP
+      allowedRoutes:
+        namespaces:
+          from: Same
+
+    - name: grpc
+      port: 50051
+      protocol: HTTPS
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            group: ""
+            name: internal-gateway-tls
+      allowedRoutes:
+        namespaces:
+          from: Same
+
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: internal-gateway-cert
+spec:
+  secretName: internal-gateway-tls
+  issuerRef:
+    name: ca-issuer
+    kind: ClusterIssuer
+  commonName: internal-gateway.shortlink
+  dnsNames:
+    - "*.shortlink"

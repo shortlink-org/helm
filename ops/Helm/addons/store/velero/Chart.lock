@@ -3,4 +3,4 @@ dependencies:
   repository: https://vmware-tanzu.github.io/helm-charts
   version: 11.2.0
 digest: sha256:d0cfbb41e492978d720c15c0537a92eb1f41829b89a02acd5a96fbbf9da229bd
-generated: "2025-11-29T13:16:47.882842+03:00"
+generated: "2025-12-07T12:13:07.387033+03:00"

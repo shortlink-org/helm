@@ -7,3 +7,6 @@ spec:
     - providers:
         - name: "otel-tracing"
       randomSamplingPercentage: 100
+  accessLogging:
+    - providers:
+        - name: otel

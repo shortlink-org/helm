@@ -9,24 +9,18 @@ serviceAccount:
 
 # ==============================================================================
 ingress:
+  enabled: false
+
+# ==============================================================================
+# HTTPRoute configuration for Gateway API
+httpRoute:
   enabled: true
-  ingressClassName: nginx
-  annotations:
-    cert-manager.io/cluster-issuer: cert-manager-production
-    nginx.ingress.kubernetes.io/enable-owasp-core-rules: "true"
-    nginx.ingress.kubernetes.io/enable-opentelemetry: "true"
-
-  hostname: shop.shortlink.best
-  paths:
-    - path: /
-      service:
-        name: shortlink-shop-ui
-        port: 3000
-
-  tls:
-    - secretName: shop-ui-tls
-      hosts:
-        - shop.shortlink.best
+  gatewayName: external-gateway
+  gatewayNamespace: istio-system
+  hostnames:
+    - shop.shortlink.best
+  path: /
+  port: 3000
 
 # ==============================================================================
 deploy:

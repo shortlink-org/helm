@@ -6,6 +6,8 @@
 
 {{ include "shortlink-common.Ingress" . }}
 
+{{ include "shortlink-common.http_route" . }}
+
 {{ include "shortlink-common.Service" . }}
 
 {{ include "shortlink-common.ServiceMonitor" . }}

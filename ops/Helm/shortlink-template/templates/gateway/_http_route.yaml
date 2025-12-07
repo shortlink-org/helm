@@ -15,7 +15,8 @@ Override points in values:
 - httpRoute.hostnames
 - httpRoute.gatewayName / httpRoute.gatewayNamespace
 - httpRoute.parentRefs (full override)
-- httpRoute.path
+- httpRoute.path (single path)
+- httpRoute.paths (list of paths for multiple path matches)
 - httpRoute.port
 - httpRoute.rules (full override of rules block)
 */}}
@@ -61,9 +62,17 @@ spec:
   {{- else }}
   rules:
     - matches:
+        {{- if .Values.httpRoute.paths }}
+        {{- range .Values.httpRoute.paths }}
+        - path:
+            type: PathPrefix
+            value: {{ . | quote }}
+        {{- end }}
+        {{- else }}
         - path:
             type: PathPrefix
             value: {{ .Values.httpRoute.path | default "/" | quote }}
+        {{- end }}
       backendRefs:
         - name: {{ include "helpers.fullname" . }}
           port: {{ .Values.httpRoute.port | default $defaultBackendPort }}

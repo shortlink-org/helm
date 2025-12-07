@@ -1,6 +1,6 @@
 dependencies:
 - name: shortlink-template
   repository: file://../../../shortlink-template
-  version: 0.9.6
-digest: sha256:4ea902cd930bde8073b396bcc3f7a81eb510687dac8145bc08ea47c026f68763
-generated: "2025-12-07T12:15:12.61242+03:00"
+  version: 0.10.0
+digest: sha256:825361eb166f16423c2fcf8f1b6166752a82f782604e87e4003bf9c55d63e738
+generated: "2025-12-07T16:09:19.02761602Z"

@@ -14,6 +14,6 @@ type: application
 deprecated: false
 dependencies:
   - name: keda
-    version: 2.18.1
+    version: 2.18.3
     repository: https://kedacore.github.io/charts
     condition: keda.enabled

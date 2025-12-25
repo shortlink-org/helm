@@ -29,16 +29,16 @@ ingress:
   enabled: false
 
 # ==============================================================================
-# HTTPRoute configuration for Gateway API
-httpRoute:
+# GRPCRoute configuration for Gateway API
+grpcRoute:
   enabled: true
   gatewayName: internal-gateway
   gatewayNamespace: istio-system
   port: 50051
-  paths:
-    - "/infrastructure.api.rpc.payment.v1.PaymentService/"
-    - "/infrastructure.api.rpc.tariff.v1.TariffService/"
-    - "/infrastructure.api.rpc.order.v1.OrderService/"
+  methods:
+    - "infrastructure.api.rpc.payment.v1.PaymentService"
+    - "infrastructure.api.rpc.tariff.v1.TariffService"
+    - "infrastructure.api.rpc.order.v1.OrderService"
 
 # ==============================================================================
 deploy:

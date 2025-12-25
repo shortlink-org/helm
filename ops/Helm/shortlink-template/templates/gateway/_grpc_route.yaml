@@ -1,0 +1,81 @@
+{{/* vim: set filetype=mustache: */}}
+
+{{/*
+`shortlink-common.grpc_route` Helm template
+
+Behavior:
+- Generates a GRPCRoute when `grpcRoute.enabled` is true.
+- By default attaches to Gateway:
+    name: internal-gateway
+    namespace: istio-system
+- By default routes all gRPC methods to the first `service.ports[]` entry with `public: true`.
+- Backend service name defaults to `helpers.fullname`.
+
+Override points in values:
+- grpcRoute.hostnames
+- grpcRoute.gatewayName / grpcRoute.gatewayNamespace
+- grpcRoute.parentRefs (full override)
+- grpcRoute.method (single gRPC method match)
+- grpcRoute.methods (list of gRPC method matches for multiple method matches)
+- grpcRoute.port
+- grpcRoute.rules (full override of rules block)
+*/}}
+
+{{- define "shortlink-common.grpc_route" }}
+{{- if .Values.grpcRoute.enabled }}
+{{- $ := . }}
+
+{{/* Compute default backend port: first public service port */}}
+{{- $backend := dict }}
+{{- range .Values.service.ports }}
+  {{- if and .public (not (hasKey $backend "port")) }}
+    {{- $_ := set $backend "port" .port }}
+  {{- end }}
+{{- end }}
+{{- $defaultBackendPort := (index $backend "port" | default 50051) }}
+
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: GRPCRoute
+metadata:
+  {{- include "shortlink-common.metadata" . | nindent 2 }}
+spec:
+  {{- if .Values.grpcRoute.parentRefs }}
+  parentRefs:
+    {{- toYaml .Values.grpcRoute.parentRefs | nindent 4 }}
+  {{- else }}
+  parentRefs:
+    - name: {{ .Values.grpcRoute.gatewayName | default "internal-gateway" }}
+      namespace: {{ .Values.grpcRoute.gatewayNamespace | default "istio-system" }}
+  {{- end }}
+
+  {{- with .Values.grpcRoute.hostnames }}
+  hostnames:
+    {{- range . }}
+    - {{ . | quote }}
+    {{- end }}
+  {{- end }}
+
+  {{- if .Values.grpcRoute.rules }}
+  rules:
+    {{- toYaml .Values.grpcRoute.rules | nindent 4 }}
+  {{- else }}
+  rules:
+    - matches:
+        {{- if .Values.grpcRoute.methods }}
+        {{- range .Values.grpcRoute.methods }}
+        - method:
+            type: Exact
+            service: {{ . | quote }}
+        {{- end }}
+        {{- else if .Values.grpcRoute.method }}
+        - method:
+            type: Exact
+            service: {{ .Values.grpcRoute.method | quote }}
+        {{- end }}
+      backendRefs:
+        - name: {{ include "helpers.fullname" . }}
+          port: {{ .Values.grpcRoute.port | default $defaultBackendPort }}
+  {{- end }}
+{{- end }}
+{{- end }}

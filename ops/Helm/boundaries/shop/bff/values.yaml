@@ -8,6 +8,8 @@ serviceAccount:
   create: true
 
 # ==============================================================================
+# NOTE: shop/bff uses nginx ingress with URL rewriting which is not yet
+# supported by our HTTPRoute template. Keep using nginx ingress for now.
 ingress:
   enabled: true
   ingressClassName: nginx

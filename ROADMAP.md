@@ -101,7 +101,7 @@ The repository contains:
 - [ ] Create chart development guidelines
 - [ ] Add pre-commit hooks for chart validation
 - [ ] Implement automated version bumping
-- [ - Create templates for new charts
+- [ ] Create templates for new charts
 
 ## Success Metrics
 

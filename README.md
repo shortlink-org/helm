@@ -1,5 +1,7 @@
 # Helm repository
 
+For information about planned improvements and future features, see our [ROADMAP](ROADMAP.md).
+
 ## shortlink-template
 
 A Helm library chart with common templates for ShortLink applications.

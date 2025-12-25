@@ -1,0 +1,14 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: external-gateway-cert
+  namespace: istio-system
+spec:
+  secretName: shortlink-best-tls
+  issuerRef:
+    name: cert-manager-production
+    kind: ClusterIssuer
+  commonName: shortlink.best
+  dnsNames:
+    - shortlink.best
+    - "*.shortlink.best"

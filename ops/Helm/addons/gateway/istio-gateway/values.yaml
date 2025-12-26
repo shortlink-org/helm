@@ -2,27 +2,25 @@ istio-ingress:
   enabled: true
 
 gateway:
-  _internal_defaults_do_not_set:
+  nodeSelector:
+    kubernetes.io/hostname: talos-z9s-i4f
 
-    nodeSelector:
-      kubernetes.io/hostname: talos-z9s-i4f
-
-    service:
-      type: ClusterIP
-      ports:
-        - name: status-port
-          port: 15021
-          targetPort: 15021
-          protocol: TCP
-        - name: http2
-          port: 80
-          targetPort: 80
-          protocol: TCP
-        - name: https
-          port: 443
-          targetPort: 443
-          protocol: TCP
-        - name: grpc
-          port: 50051
-          targetPort: 50051
-          protocol: TCP
+  service:
+    type: NodePort
+    ports:
+      - name: status-port
+        port: 15021
+        targetPort: 15021
+        protocol: TCP
+      - name: http2
+        port: 80
+        targetPort: 80
+        protocol: TCP
+      - name: https
+        port: 443
+        targetPort: 443
+        protocol: TCP
+      - name: grpc
+        port: 50051
+        targetPort: 50051
+        protocol: TCP

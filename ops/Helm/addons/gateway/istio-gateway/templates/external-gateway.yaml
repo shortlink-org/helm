@@ -27,7 +27,7 @@ spec:
       tls:
         mode: Terminate
         certificateRefs:
-          - name: shortlink-best-tls
+          - name: external-gateway-cert
             kind: Secret
       allowedRoutes:
         namespaces:

@@ -4,6 +4,7 @@ metadata:
   name: external-gateway
   annotations:
     cert-manager.io/cluster-issuer: cert-manager-production
+    networking.istio.io/service-type: NodePort
 spec:
   gatewayClassName: istio
   listeners:

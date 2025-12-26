@@ -1,14 +1,19 @@
-apiVersion: gateway.networking.k8s.io/v1beta1
+apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
 metadata:
   name: external-gateway
+  namespace: istio-ingress
   annotations:
     cert-manager.io/cluster-issuer: cert-manager-production
-    networking.istio.io/service-type: NodePort
 spec:
+  infrastructure:
+    parametersRef:
+      group: ""
+      kind: ConfigMap
+      name: external-gateway-options
+
   gatewayClassName: istio
   listeners:
-    # HTTP listener (порт 80) — принимает все домены shortlink.best и поддомены
     - name: http
       port: 80
       protocol: HTTP
@@ -16,7 +21,6 @@ spec:
         namespaces:
           from: All
 
-    # HTTPS listener (порт 443) — принимает все домены shortlink.best и поддомены
     - name: https
       port: 443
       protocol: HTTPS

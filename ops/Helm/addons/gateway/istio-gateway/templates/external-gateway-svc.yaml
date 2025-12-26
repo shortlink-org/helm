@@ -8,7 +8,8 @@ spec:
   type: LoadBalancer
 
   selector:
-    istio: external-gateway
+    gateway.networking.k8s.io/gateway-name: external-gateway
+    gateway.networking.k8s.io/gateway-class-name: istio
 
   ports:
     - name: status-port

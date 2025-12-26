@@ -2,24 +2,21 @@ apiVersion: v1
 kind: Service
 metadata:
   name: public-gw
+  labels:
+    expose: "public"
 spec:
-  type: NodePort
-  externalTrafficPolicy: Local
+  type: LoadBalancer
+
   selector:
-    app: public-gw
+    istio: external-gateway
+
   ports:
     - name: status-port
       port: 15021
       targetPort: 15021
-      nodePort: 1931
-      protocol: TCP
     - name: http
       port: 80
       targetPort: 8080
-      nodePort: 80
-      protocol: TCP
     - name: https
       port: 443
       targetPort: 8443
-      nodePort: 443
-      protocol: TCP

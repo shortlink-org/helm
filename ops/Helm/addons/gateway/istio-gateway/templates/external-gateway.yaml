@@ -6,10 +6,6 @@ metadata:
   annotations:
     cert-manager.io/cluster-issuer: cert-manager-production
 spec:
-  addresses:
-    - type: Hostname
-      value: istio-ingress.istio-ingress.svc.cluster.local
-
   gatewayClassName: istio
   listeners:
     - name: http

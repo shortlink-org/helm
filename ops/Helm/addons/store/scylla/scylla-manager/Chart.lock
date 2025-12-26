@@ -3,4 +3,4 @@ dependencies:
   repository: https://scylla-operator-charts.storage.googleapis.com/stable
   version: v1.19.0
 digest: sha256:d1add20a8be22e9fe917f999c46c6e93344880e59b1d2ceb5d1cb6b3f980bbc0
-generated: "2025-12-07T12:13:16.070154+03:00"
+generated: "2025-12-26T15:54:06.113689+01:00"

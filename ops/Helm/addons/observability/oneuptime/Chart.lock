@@ -3,4 +3,4 @@ dependencies:
   repository: https://helm-chart.oneuptime.com/
   version: 9.2.27
 digest: sha256:b268484785ca2473bdf9857c181d13d701cb04739419a078db3a5ce54351dc11
-generated: "2025-12-24T00:40:50.849860749Z"
+generated: "2025-12-26T15:52:05.536246+01:00"

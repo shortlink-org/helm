@@ -78,23 +78,10 @@ grafana:
       hostnames:
         - grafana.shortlink.best
 
-  ingress:
-    enabled: true
-
-    annotations:
-      cert-manager.io/cluster-issuer: cert-manager-production
-      nginx.ingress.kubernetes.io/enable-owasp-core-rules: "true"
-      nginx.ingress.kubernetes.io/enable-opentelemetry: "true"
-
-    hosts:
-      - grafana.shortlink.best
-
-    path: /
-
-    tls:
-      - secretName: grafana-ingress-tls
-        hosts:
-          - grafana.shortlink.best
+      parentRefs:
+        - name: external-gateway
+          namespace: istio-ingress
+          sectionName: https
 
   env:
     GF_FEATURE_TOGGLES_ENABLE: flameGraph,traceToProfiles,accessControlOnCall

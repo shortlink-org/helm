@@ -21,11 +21,10 @@ spec:
   commonName: ca
   issuerRef:
     name: self-signed
-    kind: Issuer
 
 ---
 apiVersion: cert-manager.io/v1
-kind: ClusterIssuer
+kind: Issuer
 metadata:
   name: ca-issuer
 spec:

@@ -14,6 +14,6 @@ type: application
 deprecated: false
 dependencies:
   - name: oneuptime
-    version: 9.2.27
+    version: 9.3.2
     repository: https://helm-chart.oneuptime.com/
     condition: oneuptime.enabled

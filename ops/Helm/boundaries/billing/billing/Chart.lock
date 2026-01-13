@@ -3,4 +3,4 @@ dependencies:
   repository: oci://ghcr.io/shortlink-org/charts
   version: 0.10.0
 digest: sha256:7de253856ab8bb3b4726ebe998132409866097b19369e47fd839458273491530
-generated: "2026-01-13T04:03:16.709199+03:00"
+generated: "2026-01-13T04:24:17.403595+03:00"

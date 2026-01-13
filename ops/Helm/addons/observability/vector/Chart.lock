@@ -3,4 +3,4 @@ dependencies:
   repository: https://helm.vector.dev
   version: 0.49.0
 digest: sha256:46ff6d4084eed3077a3bb1d8b7edc349ca919e9913d8d5aaca664d89f822e08b
-generated: "2026-01-13T03:55:22.75071+03:00"
+generated: "2026-01-13T04:16:26.411263+03:00"

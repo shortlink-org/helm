@@ -3,4 +3,4 @@ dependencies:
   repository: https://open-feature.github.io/open-feature-operator
   version: v0.8.9
 digest: sha256:9fd3da1b42aa57e8eea3a25157364e88a225d393fbc9e5ace77560d961b3bc32
-generated: "2026-01-13T03:51:45.511797+03:00"
+generated: "2026-01-13T04:12:27.357069+03:00"

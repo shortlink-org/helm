@@ -3,4 +3,4 @@ dependencies:
   repository: https://charts.chaos-mesh.org
   version: 2.8.1
 digest: sha256:f7cae749ebe77fc49a718a2e0d03c59d36bcb474bcc8149eb2864ad9a315336b
-generated: "2026-01-13T03:52:44.969253+03:00"
+generated: "2026-01-13T04:13:41.792303+03:00"

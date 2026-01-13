@@ -14,8 +14,8 @@ type: application
 deprecated: false
 dependencies:
   - name: shortlink-template
-    version: 0.9.6
-    repository: "file://../../../shortlink-template"
+    version: 0.10.0
+    repository: oci://ghcr.io/shortlink-org/charts
   - name: rabbitmq-cluster-operator
     version: 4.4.34
     repository: oci://registry-1.docker.io/bitnamicharts

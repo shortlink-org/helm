@@ -3,4 +3,4 @@ dependencies:
   repository: https://mongodb.github.io/helm-charts
   version: 0.13.0
 digest: sha256:f5e858429af0727ac1efb7699698242e04f76f7320fc49cfe43ccbc39d5ab973
-generated: "2025-12-26T15:54:38.778759+01:00"
+generated: "2026-01-13T04:01:30.673337+03:00"

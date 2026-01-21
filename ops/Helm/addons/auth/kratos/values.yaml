@@ -19,11 +19,24 @@ httpRoute:
   enabled: true
   hostnames:
     - shortlink.best
-  gatewayName: external-gateway
-  gatewayNamespace: istio-ingress
-  backendRefName: kratos-public
-  path: /api/auth
-  port: 80
+  parentRefs:
+    - name: external-gateway
+      namespace: istio-ingress
+
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /api/auth
+      filters:
+        - type: URLRewrite
+          urlRewrite:
+            path:
+              type: ReplacePrefixMatch
+              replacePrefixMatch: /
+      backendRefs:
+        - name: kratos-public
+          port: 80
 
 # Kratos ===============================================================================================================
 kratos:

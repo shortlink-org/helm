@@ -21,6 +21,7 @@ httpRoute:
     - shortlink.best
   gatewayName: external-gateway
   gatewayNamespace: istio-system
+  backendRefName: kratos-public
   path: /api/auth
   # port: 4433  # Uncomment if you need to override the default port
 

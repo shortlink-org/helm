@@ -1,34 +1,70 @@
 {{/* vim: set filetype=mustache: */}}
 
-{{- define "shortlink-common.volumeMounts" }}
-  {{- if .Values.deploy.volumes }}
-    {{- if gt (len .Values.deploy.volumes) 0 }}
-  volumeMounts:
-    {{- range .Values.deploy.volumes }}
-    - name: {{ include "helpers.fullname" $ }}-{{ .name }}
-      mountPath: {{ .mountPath | quote }}
-      readOnly: {{ .readOnly | default false }}
-      {{- end }}
+{{- define "shortlink-common.volumeMounts" -}}
+{{- with .Values.deploy.volumes -}}
+{{- if gt (len .) 0 -}}
+volumeMounts:
+  {{- range . }}
+  - name: {{ .name | quote }}
+    mountPath: {{ .mountPath | quote }}
+    {{- if .subPath }}
+    subPath: {{ .subPath | quote }}
+    {{- end }}
+    {{- if hasKey . "readOnly" }}
+    readOnly: {{ .readOnly }}
     {{- end }}
   {{- end }}
+{{- end -}}
+{{- end -}}
 {{- end }}
 
-{{- define "shortlink-common.volumes" }}
-  {{- if .Values.deploy.volumes }}
-    {{- if gt (len .Values.deploy.volumes) 0 }}
-  volumes:
-    {{- range .Values.deploy.volumes }}
-    - name: {{ include "helpers.fullname" $ }}-{{ .name }}
-      {{- if eq .type "secret" }}
-      secret:
-        secretName: {{ include "helpers.fullname" $ }}-{{ .name }}
-      {{- else if eq .type "emptyDir" }}
-      emptyDir: { }
-      {{- else if eq .type "configMap" }}
-      configMap:
-        name: {{ include "helpers.fullname" $ }}-{{ .name }}
+{{- define "shortlink-common.volumes" -}}
+{{- with .Values.deploy.volumes -}}
+{{- if gt (len .) 0 -}}
+volumes:
+  {{- range . }}
+  - name: {{ .name | quote }}
+
+    {{- if eq .type "secret" }}
+    secret:
+      secretName: {{ required (printf "deploy.volumes[%s].secretName is required" .name) .secretName | quote }}
+      {{- if .items }}
+      items:
+        {{- toYaml .items | nindent 8 }}
       {{- end }}
+      {{- if hasKey . "defaultMode" }}
+      defaultMode: {{ .defaultMode }}
       {{- end }}
+      {{- if hasKey . "optional" }}
+      optional: {{ .optional }}
+      {{- end }}
+
+    {{- else if eq .type "configMap" }}
+    configMap:
+      name: {{ required (printf "deploy.volumes[%s].configMapName is required" .name) .configMapName | quote }}
+      {{- if .items }}
+      items:
+        {{- toYaml .items | nindent 8 }}
+      {{- end }}
+      {{- if hasKey . "defaultMode" }}
+      defaultMode: {{ .defaultMode }}
+      {{- end }}
+      {{- if hasKey . "optional" }}
+      optional: {{ .optional }}
+      {{- end }}
+
+    {{- else if eq .type "emptyDir" }}
+    emptyDir:
+      {{- if .emptyDir }}
+      {{- toYaml .emptyDir | nindent 6 }}
+      {{- else }}
+      {}
+      {{- end }}
+
+    {{- else }}
+    {{- fail (printf "deploy.volumes[%s]: unsupported type=%v (supported: secret, configMap, emptyDir)" .name .type) }}
     {{- end }}
   {{- end }}
+{{- end -}}
+{{- end -}}
 {{- end }}

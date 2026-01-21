@@ -23,7 +23,7 @@ spec:
             name: internal-gateway-tls
       allowedRoutes:
         namespaces:
-          from: Same
+          from: All
 
 ---
 apiVersion: cert-manager.io/v1

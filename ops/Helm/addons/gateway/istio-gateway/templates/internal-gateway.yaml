@@ -34,17 +34,16 @@ spec:
   secretName: internal-gateway-tls
   issuerRef:
     name: ca-issuer
-  commonName: internal-gateway.istio-ingress.svc.cluster.local
+  commonName: internal-gateway-istio.{{ .Release.Namespace }}.svc.cluster.local
   dnsNames:
-    - internal-gateway
-    - internal-gateway.{{ .Release.Namespace }}
-    - internal-gateway.{{ .Release.Namespace }}.svc
-    - internal-gateway.{{ .Release.Namespace }}.svc.cluster.local
+    - internal-gateway-istio
+    - internal-gateway-istio.{{ .Release.Namespace }}
+    - internal-gateway-istio.{{ .Release.Namespace }}.svc
+    - internal-gateway-istio.{{ .Release.Namespace }}.svc.cluster.local
   usages:
     - digital signature
     - key encipherment
     - server auth
-    - client auth
 
 ---
 
@@ -53,5 +52,8 @@ kind: PeerAuthentication
 metadata:
   name: internal-mtls
 spec:
+  selector:
+    matchLabels:
+      gateway.networking.k8s.io/gateway-name: internal-gateway
   mtls:
-    mode: STRICT
+    mode: PERMISSIVE

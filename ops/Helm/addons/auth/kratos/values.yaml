@@ -31,7 +31,7 @@ kratos:
   fullnameOverride: kratos
 
   image:
-    tag: sha256-e8014c6c58b68e9d8bea4160d3e271b0d05b3db221af379afb6798b603e88ee9.sig
+    tag: "sha256-e8014c6c58b68e9d8bea4160d3e271b0d05b3db221af379afb6798b603e88ee9.sig"
 
   secret:
     enabled: true

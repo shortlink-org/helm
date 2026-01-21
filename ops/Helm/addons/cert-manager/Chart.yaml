@@ -41,7 +41,6 @@ dependencies:
     alias: trustmanager
     version: 0.20.3
     repository: https://charts.jetstack.io
-    condition: trustmanager.enabled
     tags:
       - security
       - tls

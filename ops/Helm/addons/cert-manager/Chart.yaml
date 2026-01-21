@@ -25,7 +25,7 @@ dependencies:
     alias: certmanagerapproverpolicy
     version: v0.23.0
     repository: https://charts.jetstack.io
-    condition: cert-manager-approver-policy.enabled
+    condition: certmanagerapproverpolicy.enabled
     tags:
       - security
       - tls

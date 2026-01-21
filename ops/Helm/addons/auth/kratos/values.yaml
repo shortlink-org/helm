@@ -145,25 +145,25 @@ kratos:
 
           recovery:
             enabled: true
-            ui_url: https://shortlink.best/next/auth/recovery
+            ui_url: https://shortlink.best/auth/recovery
 
           verification:
             enabled: true
-            ui_url: https://shortlink.best/next/auth/verification
+            ui_url: https://shortlink.best/auth/verification
             after:
               default_browser_return_url: https://shortlink.best/next
 
           logout:
             after:
-              default_browser_return_url: https://shortlink.best/next/auth/login
+              default_browser_return_url: https://shortlink.best/auth/login
 
           login:
-            ui_url: https://shortlink.best/next/auth/login
+            ui_url: https://shortlink.best/auth/login
             lifespan: 10m
 
           registration:
             lifespan: 10m
-            ui_url: https://shortlink.best/next/auth/registration
+            ui_url: https://shortlink.best/auth/registration
             after:
               password:
                 hooks:

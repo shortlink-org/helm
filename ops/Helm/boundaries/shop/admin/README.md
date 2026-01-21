@@ -70,7 +70,7 @@ string
 			<td>
 				<div style="max-width: 300px;">
 <pre lang="json">
-"https://shortlink.best/next/auth/login"
+"https://shortlink.best/auth/login"
 </pre>
 </div>
 			</td>
@@ -98,7 +98,7 @@ string
 			<td>
 				<div style="max-width: 300px;">
 <pre lang="json">
-"https://shortlink.best/next/auth"
+"https://shortlink.best/auth"
 </pre>
 </div>
 			</td>

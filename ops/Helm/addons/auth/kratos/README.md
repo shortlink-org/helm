@@ -677,7 +677,7 @@ string
 			<td>
 				<div style="max-width: 300px;">
 <pre lang="json">
-"https://shortlink.best/next/auth/login"
+"https://shortlink.best/auth/login"
 </pre>
 </div>
 			</td>
@@ -691,7 +691,7 @@ string
 			<td>
 				<div style="max-width: 300px;">
 <pre lang="json">
-"https://shortlink.best/next/auth/login"
+"https://shortlink.best/auth/login"
 </pre>
 </div>
 			</td>
@@ -719,7 +719,7 @@ string
 			<td>
 				<div style="max-width: 300px;">
 <pre lang="json">
-"https://shortlink.best/next/auth/recovery"
+"https://shortlink.best/auth/recovery"
 </pre>
 </div>
 			</td>
@@ -775,7 +775,7 @@ string
 			<td>
 				<div style="max-width: 300px;">
 <pre lang="json">
-"https://shortlink.best/next/auth/registration"
+"https://shortlink.best/auth/registration"
 </pre>
 </div>
 			</td>
@@ -859,7 +859,7 @@ string
 			<td>
 				<div style="max-width: 300px;">
 <pre lang="json">
-"https://shortlink.best/next/auth/verification"
+"https://shortlink.best/auth/verification"
 </pre>
 </div>
 			</td>

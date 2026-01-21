@@ -6,4 +6,4 @@ dependencies:
   repository: https://kafbat.github.io/helm-charts
   version: 1.6.0
 digest: sha256:d66106bbf2fdad6d28f54bdde1344f405d5e0b58617c1cdc53280c2cd142dcc8
-generated: "2026-01-21T18:22:55.045813727Z"
+generated: "2026-01-22T00:21:04.507845+02:00"

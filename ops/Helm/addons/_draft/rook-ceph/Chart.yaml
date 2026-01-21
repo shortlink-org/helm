@@ -14,7 +14,7 @@ type: application
 deprecated: false
 dependencies:
   - name: shortlink-template
-    version: 0.10.0
+    version: 0.11.0
     repository: oci://ghcr.io/shortlink-org/charts
   - name: rook-ceph
     version: v1.19.0

@@ -21,13 +21,11 @@ helm-docs: ### Generate HELM docs
 .PHONY: helm-upgrade
 helm-upgrade: ### Upgrade all helm charts
 	@helm repo update
-	# Find all files named "Chart.yaml" in the current directory and its subdirectories
-	@find ./ops/Helm -name "Chart.yaml" | xargs -I '{}' -P 8 bash -c ' \
-            dir=$$(dirname "{}"); \
-            cd "$$dir"; \
-            rm Chart.lock || true; \
-            helm dependencies build --skip-refresh \
-        '
+	@find ./ops/Helm -name "Chart.yaml" -print0 | xargs -0 -I '{}' -P 8 bash -euo pipefail -c '\
+		dir=$$(dirname "{}"); \
+		cd "$$dir"; \
+		helm dependency build --skip-refresh; \
+	'
 
 	@make helm-docs
 

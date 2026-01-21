@@ -1,9 +1,9 @@
 dependencies:
 - name: shortlink-template
   repository: oci://ghcr.io/shortlink-org/charts
-  version: 0.10.0
+  version: 0.11.0
 - name: redis
   repository: oci://registry-1.docker.io/bitnamicharts
   version: 24.1.2
-digest: sha256:4772fafb601a6df7d7d24f4da532f37d4ae7b035758b2ddbc1a017e56a9a90bd
-generated: "2026-01-21T18:21:49.279079976Z"
+digest: sha256:ed11a62ded0036923eaa5505a5af7d6ac56928182d47b1ce7a0f90e0cbaa740e
+generated: "2026-01-22T00:27:54.427658+02:00"

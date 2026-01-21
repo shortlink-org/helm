@@ -3,4 +3,4 @@ dependencies:
   repository: https://operator.min.io/
   version: 7.1.1
 digest: sha256:bc2c36e249eb0bec0e639e3d32c3965643857c092e0f5f54fb2e3b96fa49c09f
-generated: "2026-01-13T04:20:31.411957+03:00"
+generated: "2026-01-22T00:23:40.604397+02:00"

@@ -103,6 +103,13 @@ trustmanager:
     enabled: true
 
   app:
+    webhook:
+      tls:
+        approverPolicy:
+          enabled: true
+          certManagerNamespace: cert-manager
+          certManagerServiceAccount: cert-manager
+
     metrics:
       service:
         servicemonitor:

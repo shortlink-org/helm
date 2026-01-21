@@ -23,7 +23,7 @@ httpRoute:
   gatewayNamespace: istio-system
   backendRefName: kratos-public
   path: /api/auth
-  # port: 4433  # Uncomment if you need to override the default port
+  port: 80
 
 # Kratos ===============================================================================================================
 kratos:

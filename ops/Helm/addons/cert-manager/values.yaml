@@ -67,13 +67,15 @@ certmanager:
         release: prometheus-operator
 
 cert-manager-approver-policy:
-  enabled: false
+  enabled: true
 
   app:
     metrics:
       service:
         servicemonitor:
           enabled: true
+          labels:
+            release: prometheus-operator
 
 spiffe:
   enabled: false

@@ -1,0 +1,18 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: root-ca
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  isCA: true
+  duration: 87600h      # ~10 years
+  renewBefore: 720h     # ~30 days
+  privateKey:
+    algorithm: ECDSA
+    size: 256
+  secretName: root-ca
+  commonName: root-ca
+  issuerRef:
+    name: self-signed
+    kind: Issuer

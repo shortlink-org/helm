@@ -10,6 +10,10 @@ annotations: {}
 # default: http
 type: cloudflare
 
+features:
+  approverPolicy: true
+  trustManager: true
+
 certmanager:
   enabled: true
 

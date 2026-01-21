@@ -16,7 +16,7 @@ ingress:
 httpRoute:
   enabled: true
   gatewayName: external-gateway
-  gatewayNamespace: istio-system
+  gatewayNamespace: istio-ingress
   hostnames:
     - backstage.shortlink.best
   path: /

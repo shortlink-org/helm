@@ -20,7 +20,7 @@ httpRoute:
   hostnames:
     - shortlink.best
   gatewayName: external-gateway
-  gatewayNamespace: istio-system
+  gatewayNamespace: istio-ingress
   backendRefName: kratos-public
   path: /api/auth
   port: 80

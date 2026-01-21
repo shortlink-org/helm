@@ -33,7 +33,7 @@ ingress:
 grpcRoute:
   enabled: true
   gatewayName: internal-gateway
-  gatewayNamespace: istio-system
+  gatewayNamespace: istio-ingress
   port: 50051
   methods:
     - "infrastructure.api.rpc.payment.v1.PaymentService"

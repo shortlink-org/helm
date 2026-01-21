@@ -2,7 +2,7 @@ apiVersion: v2
 appVersion: "1.0.0"
 name: shortlink-template
 description: ShortLink templates
-version: 0.10.0
+version: 0.10.1
 kubeVersion: ">= 1.30.0 || >= v1.30.0-0"
 keywords:
   - shortlink

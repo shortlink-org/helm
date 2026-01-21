@@ -1,38 +1,39 @@
 {{/* vim: set filetype=mustache: */}}
 
-{{/*
-`shortlink-common.http_route` Helm template
+{{- define "shortlink-common.http_route" -}}
+{{- if .Values.httpRoute.enabled -}}
 
-Behavior:
-- Generates an HTTPRoute when `httpRoute.enabled` is true.
-- By default attaches to Gateway:
-    name: external-gateway
-    namespace: istio-system
-- By default routes "/" to the first `service.ports[]` entry with `public: true`.
-- Backend service name defaults to `helpers.fullname`.
+{{- $backendPort := 80 -}}
+{{- range .Values.service.ports -}}
+  {{- if and .public (eq $backendPort 80) -}}
+    {{- $backendPort = .port -}}
+  {{- end -}}
+{{- end -}}
 
-Override points in values:
-- httpRoute.hostnames
-- httpRoute.gatewayName / httpRoute.gatewayNamespace
-- httpRoute.parentRefs (full override)
-- httpRoute.path (single path)
-- httpRoute.paths (list of paths for multiple path matches)
-- httpRoute.port
-- httpRoute.rules (full override of rules block)
-*/}}
+{{- $parentRefs := .Values.httpRoute.parentRefs | default (list (dict
+  "name" (.Values.httpRoute.gatewayName | default "external-gateway")
+  "namespace" (.Values.httpRoute.gatewayNamespace | default "istio-system")
+)) -}}
 
-{{- define "shortlink-common.http_route" }}
-{{- if .Values.httpRoute.enabled }}
-{{- $ := . }}
+{{- $matches := list -}}
+{{- if .Values.httpRoute.paths -}}
+  {{- range .Values.httpRoute.paths -}}
+    {{- $matches = append $matches (dict "path" (dict "type" "PathPrefix" "value" .)) -}}
+  {{- end -}}
+{{- else -}}
+  {{- $matches = list (dict "path" (dict "type" "PathPrefix" "value" (.Values.httpRoute.path | default "/"))) -}}
+{{- end -}}
 
-{{/* Compute default backend port: first public service port */}}
-{{- $backend := dict }}
-{{- range .Values.service.ports }}
-  {{- if and .public (not (hasKey $backend "port")) }}
-    {{- $_ := set $backend "port" .port }}
-  {{- end }}
-{{- end }}
-{{- $defaultBackendPort := (index $backend "port" | default 80) }}
+{{- $ref := dict
+  "name" (.Values.httpRoute.backendRefName | default (include "helpers.fullname" .))
+  "port" (.Values.httpRoute.port | default $backendPort)
+-}}
+{{- with .Values.httpRoute.backendRefNamespace -}}
+  {{- $_ := set $ref "namespace" . -}}
+{{- end -}}
+{{- $backendRefs := .Values.httpRoute.backendRefs | default (list $ref) -}}
+
+{{- $rules := .Values.httpRoute.rules | default (list (dict "matches" $matches "backendRefs" $backendRefs)) -}}
 
 ---
 apiVersion: gateway.networking.k8s.io/v1
@@ -40,14 +41,8 @@ kind: HTTPRoute
 metadata:
   {{- include "shortlink-common.metadata" . | nindent 2 }}
 spec:
-  {{- if .Values.httpRoute.parentRefs }}
   parentRefs:
-    {{- toYaml .Values.httpRoute.parentRefs | nindent 4 }}
-  {{- else }}
-  parentRefs:
-    - name: {{ .Values.httpRoute.gatewayName | default "external-gateway" }}
-      namespace: {{ .Values.httpRoute.gatewayNamespace | default "istio-system" }}
-  {{- end }}
+    {{- toYaml $parentRefs | nindent 4 }}
 
   {{- with .Values.httpRoute.hostnames }}
   hostnames:
@@ -56,26 +51,7 @@ spec:
     {{- end }}
   {{- end }}
 
-  {{- if .Values.httpRoute.rules }}
   rules:
-    {{- toYaml .Values.httpRoute.rules | nindent 4 }}
-  {{- else }}
-  rules:
-    - matches:
-        {{- if .Values.httpRoute.paths }}
-        {{- range .Values.httpRoute.paths }}
-        - path:
-            type: PathPrefix
-            value: {{ . | quote }}
-        {{- end }}
-        {{- else }}
-        - path:
-            type: PathPrefix
-            value: {{ .Values.httpRoute.path | default "/" | quote }}
-        {{- end }}
-      backendRefs:
-        - name: {{ include "helpers.fullname" . }}
-          port: {{ .Values.httpRoute.port | default $defaultBackendPort }}
-  {{- end }}
-{{- end }}
-{{- end }}
+    {{- toYaml $rules | nindent 4 }}
+{{- end -}}
+{{- end -}}

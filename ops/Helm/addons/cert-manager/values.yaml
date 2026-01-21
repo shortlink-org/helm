@@ -93,3 +93,6 @@ spiffe:
         service:
           servicemonitor:
             enabled: true
+
+trustmanager:
+  enabled: true

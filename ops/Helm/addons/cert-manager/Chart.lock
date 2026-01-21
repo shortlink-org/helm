@@ -8,5 +8,8 @@ dependencies:
 - name: cert-manager-csi-driver-spiffe
   repository: https://charts.jetstack.io
   version: v0.11.0
-digest: sha256:b79f9993a1863143326e60b63d56e2f07a8c8e4631b72c43105169d5b0dfea1b
-generated: "2026-01-22T00:13:10.56846+02:00"
+- name: trust-manager
+  repository: https://charts.jetstack.io
+  version: v0.20.3
+digest: sha256:713f83a6c3b0b64383a1222233280e3ddf1ce1eb880afa6dbbb36abd0a3a3938
+generated: "2026-01-22T01:21:45.424952+02:00"

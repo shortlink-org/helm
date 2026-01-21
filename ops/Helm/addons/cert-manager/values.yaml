@@ -98,3 +98,12 @@ spiffe:
 
 trustmanager:
   enabled: true
+
+  secretTargets:
+    enabled: true
+
+  app:
+    metrics:
+      service:
+        servicemonitor:
+          enabled: true

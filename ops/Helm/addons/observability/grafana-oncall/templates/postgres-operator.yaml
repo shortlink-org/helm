@@ -32,10 +32,20 @@ spec:
         resources:
           requests:
             storage: 1Gi
-  monitoring:
-    pgmonitor:
-      exporter:
-        image: registry.developers.crunchydata.com/crunchydata/crunchy-postgres-exporter:latest
+  instrumentation:
+    config:
+      exporters:
+        otlp/logging:
+          endpoint: http://grafana-tempo.grafana:4317
+          tls:
+            insecure: true
+        otlp/metrics:
+          endpoint: http://grafana-alloy.grafana.svc.cluster.local:4318
+    logs:
+      exporters: [ 'otlp/logging' ]
+      retentionPeriod: 2d
+    metrics:
+      exporters: [ 'otlp/metrics' ]
   backups:
     pgbackrest:
       repos:

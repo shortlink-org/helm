@@ -30,9 +30,6 @@ kratos:
 
   fullnameOverride: kratos
 
-  image:
-    tag: latest
-
   secret:
     enabled: true
 

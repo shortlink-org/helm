@@ -9,6 +9,10 @@ spec:
   metadata:
     annotations:
       sidecar.istio.io/inject: "false"
+  customTLSSecret:
+    name: kratos-postgres-cluster-tls
+  customReplicationTLSSecret:
+    name: kratos-postgres-repl-tls
   instances:
     - name: kratos
       replicas: 1

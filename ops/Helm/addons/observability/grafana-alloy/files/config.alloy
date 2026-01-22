@@ -24,8 +24,8 @@ otelcol.receiver.otlp "in" {
 
 otelcol.receiver.pprof "go" {
   targets = [{
-    job = "go-service"
-    url = "http://${K8S_POD_IP}:7071/debug/pprof"
+    job = "go-service",
+    url = "http://${K8S_POD_IP}:7071/debug/pprof",
   }]
 
   output {
@@ -40,19 +40,19 @@ otelcol.receiver.pprof "go" {
 otelcol.processor.resource "k8s" {
   // IMPORTANT — auto tagging all signals including profiles
   attributes = {
-    "service.name"        = "${K8S_POD_LABEL_app}"
-    "service.namespace"   = "${K8S_NAMESPACE}"
-    "service.instance.id" = "${K8S_POD_NAME}"
+    "service.name"        = sys.env(K8S_POD_LABEL_app),
+    "service.namespace"   = sys.env(K8S_NAMESPACE),
+    "service.instance.id" = sys.env(K8S_POD_NAME),
 
-    "k8s.pod.name"        = "${K8S_POD_NAME}"
-    "k8s.pod.uid"         = "${K8S_POD_UID}"
-    "k8s.namespace.name"  = "${K8S_NAMESPACE}"
-    "k8s.node.name"       = "${K8S_NODE_NAME}"
-    "k8s.container.name"  = "${K8S_CONTAINER_NAME}"
+    "k8s.pod.name"        = sys.env(K8S_POD_NAME),
+    "k8s.pod.uid"         = sys.env(K8S_POD_UID),
+    "k8s.namespace.name"  = sys.env(K8S_NAMESPACE),
+    "k8s.node.name"       = sys.env(K8S_NODE_NAME),
+    "k8s.container.name"  = sys.env(K8S_CONTAINER_NAME),
 
-    "deployment.environment" = "${ENVIRONMENT}"
-    "version"                = "${APP_VERSION}"
-    "git.revision"           = "${GIT_COMMIT}"
+    "deployment.environment" = sys.env(ENVIRONMENT),
+    "version"                = sys.env(APP_VERSION),
+    "git.revision"           = sys.env(GIT_COMMIT),
   }
 
   output {
@@ -144,9 +144,9 @@ loki.source.kubernetes "pods" {
 loki.process "k8s" {
   stage.labels {
     values = {
-      namespace = "namespace"
-      pod       = "pod"
-      container = "container"
+      namespace = "namespace",
+      pod       = "pod",
+      container = "container",
     }
   }
 

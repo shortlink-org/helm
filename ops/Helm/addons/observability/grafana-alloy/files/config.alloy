@@ -4,28 +4,6 @@ logging {
 }
 
 ////////////////////////////////////////////////////////////
-// Shared env values (evaluated by River, not by OTTL)
-////////////////////////////////////////////////////////////
-
-constants "env" {
-  // Service identity
-  service_name      = sys.env("K8S_POD_LABEL_app")
-  service_namespace = sys.env("K8S_NAMESPACE")
-  service_instance  = sys.env("K8S_POD_NAME")
-
-  // Kubernetes identity
-  k8s_pod_name       = sys.env("K8S_POD_NAME")
-  k8s_pod_uid        = sys.env("K8S_POD_UID")
-  k8s_namespace_name = sys.env("K8S_NAMESPACE")
-  k8s_node_name      = sys.env("K8S_NODE_NAME")
-
-  // Optional build/deploy metadata
-  deploy_env   = sys.env("ENVIRONMENT")
-  app_version  = sys.env("APP_VERSION")
-  git_revision = sys.env("GIT_COMMIT")
-}
-
-////////////////////////////////////////////////////////////
 // OTLP receiver (metrics, logs, traces)
 ////////////////////////////////////////////////////////////
 
@@ -42,6 +20,8 @@ otelcol.receiver.otlp "in" {
 
 ////////////////////////////////////////////////////////////
 // Enrich OTEL Resource attrs for ALL signals via OTTL
+// IMPORTANT: no sys.env() calls inside OTTL.
+// We only use River env expansion (${VAR}) to build string literals.
 ////////////////////////////////////////////////////////////
 
 otelcol.processor.transform "k8s_enrich" {
@@ -50,54 +30,54 @@ otelcol.processor.transform "k8s_enrich" {
   metric_statements {
     context = "resource"
     statements = [
-      `set(attributes["service.name"],        "${constants.env.service_name}")`,
-      `set(attributes["service.namespace"],   "${constants.env.service_namespace}")`,
-      `set(attributes["service.instance.id"], "${constants.env.service_instance}")`,
+      `set(attributes["service.name"],        "${K8S_POD_LABEL_app}")`,
+      `set(attributes["service.namespace"],   "${K8S_NAMESPACE}")`,
+      `set(attributes["service.instance.id"], "${K8S_POD_NAME}")`,
 
-      `set(attributes["k8s.pod.name"],        "${constants.env.k8s_pod_name}")`,
-      `set(attributes["k8s.pod.uid"],         "${constants.env.k8s_pod_uid}")`,
-      `set(attributes["k8s.namespace.name"],  "${constants.env.k8s_namespace_name}")`,
-      `set(attributes["k8s.node.name"],       "${constants.env.k8s_node_name}")`,
+      `set(attributes["k8s.pod.name"],        "${K8S_POD_NAME}")`,
+      `set(attributes["k8s.pod.uid"],         "${K8S_POD_UID}")`,
+      `set(attributes["k8s.namespace.name"],  "${K8S_NAMESPACE}")`,
+      `set(attributes["k8s.node.name"],       "${K8S_NODE_NAME}")`,
 
-      `set(attributes["deployment.environment"], "${constants.env.deploy_env}")`,
-      `set(attributes["version"],                "${constants.env.app_version}")`,
-      `set(attributes["git.revision"],           "${constants.env.git_revision}")`,
+      `set(attributes["deployment.environment"], "${ENVIRONMENT}")`,
+      `set(attributes["version"],                "${APP_VERSION}")`,
+      `set(attributes["git.revision"],           "${GIT_COMMIT}")`,
     ]
   }
 
   log_statements {
     context = "resource"
     statements = [
-      `set(attributes["service.name"],        "${constants.env.service_name}")`,
-      `set(attributes["service.namespace"],   "${constants.env.service_namespace}")`,
-      `set(attributes["service.instance.id"], "${constants.env.service_instance}")`,
+      `set(attributes["service.name"],        "${K8S_POD_LABEL_app}")`,
+      `set(attributes["service.namespace"],   "${K8S_NAMESPACE}")`,
+      `set(attributes["service.instance.id"], "${K8S_POD_NAME}")`,
 
-      `set(attributes["k8s.pod.name"],        "${constants.env.k8s_pod_name}")`,
-      `set(attributes["k8s.pod.uid"],         "${constants.env.k8s_pod_uid}")`,
-      `set(attributes["k8s.namespace.name"],  "${constants.env.k8s_namespace_name}")`,
-      `set(attributes["k8s.node.name"],       "${constants.env.k8s_node_name}")`,
+      `set(attributes["k8s.pod.name"],        "${K8S_POD_NAME}")`,
+      `set(attributes["k8s.pod.uid"],         "${K8S_POD_UID}")`,
+      `set(attributes["k8s.namespace.name"],  "${K8S_NAMESPACE}")`,
+      `set(attributes["k8s.node.name"],       "${K8S_NODE_NAME}")`,
 
-      `set(attributes["deployment.environment"], "${constants.env.deploy_env}")`,
-      `set(attributes["version"],                "${constants.env.app_version}")`,
-      `set(attributes["git.revision"],           "${constants.env.git_revision}")`,
+      `set(attributes["deployment.environment"], "${ENVIRONMENT}")`,
+      `set(attributes["version"],                "${APP_VERSION}")`,
+      `set(attributes["git.revision"],           "${GIT_COMMIT}")`,
     ]
   }
 
   trace_statements {
     context = "resource"
     statements = [
-      `set(attributes["service.name"],        "${constants.env.service_name}")`,
-      `set(attributes["service.namespace"],   "${constants.env.service_namespace}")`,
-      `set(attributes["service.instance.id"], "${constants.env.service_instance}")`,
+      `set(attributes["service.name"],        "${K8S_POD_LABEL_app}")`,
+      `set(attributes["service.namespace"],   "${K8S_NAMESPACE}")`,
+      `set(attributes["service.instance.id"], "${K8S_POD_NAME}")`,
 
-      `set(attributes["k8s.pod.name"],        "${constants.env.k8s_pod_name}")`,
-      `set(attributes["k8s.pod.uid"],         "${constants.env.k8s_pod_uid}")`,
-      `set(attributes["k8s.namespace.name"],  "${constants.env.k8s_namespace_name}")`,
-      `set(attributes["k8s.node.name"],       "${constants.env.k8s_node_name}")`,
+      `set(attributes["k8s.pod.name"],        "${K8S_POD_NAME}")`,
+      `set(attributes["k8s.pod.uid"],         "${K8S_POD_UID}")`,
+      `set(attributes["k8s.namespace.name"],  "${K8S_NAMESPACE}")`,
+      `set(attributes["k8s.node.name"],       "${K8S_NODE_NAME}")`,
 
-      `set(attributes["deployment.environment"], "${constants.env.deploy_env}")`,
-      `set(attributes["version"],                "${constants.env.app_version}")`,
-      `set(attributes["git.revision"],           "${constants.env.git_revision}")`,
+      `set(attributes["deployment.environment"], "${ENVIRONMENT}")`,
+      `set(attributes["version"],                "${APP_VERSION}")`,
+      `set(attributes["git.revision"],           "${GIT_COMMIT}")`,
     ]
   }
 
@@ -187,16 +167,3 @@ loki.write "default" {
     url = "http://grafana-loki.grafana.svc:3100/loki/api/v1/push"
   }
 }
-
-////////////////////////////////////////////////////////////
-// NOTE ABOUT PROFILES / PYROSCOPE
-////////////////////////////////////////////////////////////
-//
-// You asked to remove the "go-service" example.
-// This config does NOT include profiling scrape targets.
-//
-// When you’re ready, we’ll add:
-// - pyroscope.write "pyro" (your Pyroscope endpoint)
-// - pyroscope.scrape "..." (targets discovered via discovery.kubernetes + relabel)
-//
-////////////////////////////////////////////////////////////

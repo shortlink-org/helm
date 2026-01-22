@@ -1,0 +1,45 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: trustmanager
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
+rules:
+  # Читать sources
+  - apiGroups: [""]
+    resources: ["secrets", "configmaps"]
+    verbs: ["get", "list", "watch"]
+
+  # Чтобы выбирать namespaces по selector и писать targets
+  - apiGroups: [""]
+    resources: ["namespaces"]
+    verbs: ["get", "list", "watch"]
+
+  # Создавать/обновлять target ConfigMap'ы в выбранных namespace
+  - apiGroups: [""]
+    resources: ["configmaps"]
+    verbs: ["create", "update", "patch", "delete"]
+
+  # Читать/обновлять свои CRD статусы
+  - apiGroups: ["trust.cert-manager.io"]
+    resources: ["bundles"]
+    verbs: ["get", "list", "watch"]
+  - apiGroups: ["trust.cert-manager.io"]
+    resources: ["bundles/status"]
+    verbs: ["get", "update", "patch"]
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: trustmanager
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: trustmanager
+subjects:
+  - kind: ServiceAccount
+    name: trustmanager
+    namespace: {{ .Release.Namespace }}

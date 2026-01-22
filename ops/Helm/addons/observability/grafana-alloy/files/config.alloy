@@ -3,101 +3,111 @@ logging {
   format = "json"
 }
 
-//////////////////////////////
-// OTLP (metrics, logs, traces)
-//////////////////////////////
+//////////////////////////////////////
+// OTLP receiver (metrics, logs, traces)
+//////////////////////////////////////
 
 otelcol.receiver.otlp "in" {
   grpc { endpoint = "0.0.0.0:4317" }
   http { endpoint = "0.0.0.0:4318" }
 
   output {
-    metrics = [otelcol.processor.resource.k8s.input]
-    traces  = [otelcol.processor.resource.k8s.input]
-    logs    = [otelcol.processor.resource.k8s.input]
+    metrics = [otelcol.processor.transform.k8s_enrich.input]
+    logs    = [otelcol.processor.transform.k8s_enrich.input]
+    traces  = [otelcol.processor.transform.k8s_enrich.input]
   }
 }
 
-////////////////////////////////////////
-// Pull-mode profiling (Go / pprof)
-////////////////////////////////////////
+//////////////////////////////////////////////////////
+// Resource enrichment (service.*, k8s.*) for ALL signals
+//////////////////////////////////////////////////////
 
-otelcol.receiver.pprof "go" {
-  targets = [{
-    job = "go-service",
-    url = "http://${K8S_POD_IP}:7071/debug/pprof",
-  }]
+otelcol.processor.transform "k8s_enrich" {
+  error_mode = "ignore"
+
+  metric_statements {
+    context = "resource"
+    statements = [
+      `set(attributes["service.name"],        sys.env("K8S_POD_LABEL_app"))`,
+      `set(attributes["service.namespace"],   sys.env("K8S_NAMESPACE"))`,
+      `set(attributes["service.instance.id"], sys.env("K8S_POD_NAME"))`,
+
+      `set(attributes["k8s.pod.name"],        sys.env("K8S_POD_NAME"))`,
+      `set(attributes["k8s.pod.uid"],         sys.env("K8S_POD_UID"))`,
+      `set(attributes["k8s.namespace.name"],  sys.env("K8S_NAMESPACE"))`,
+      `set(attributes["k8s.node.name"],       sys.env("K8S_NODE_NAME"))`,
+
+      `set(attributes["deployment.environment"], sys.env("ENVIRONMENT"))`,
+      `set(attributes["version"],                sys.env("APP_VERSION"))`,
+      `set(attributes["git.revision"],           sys.env("GIT_COMMIT"))`,
+    ]
+  }
+
+  log_statements {
+    context = "resource"
+    statements = [
+      `set(attributes["service.name"],        sys.env("K8S_POD_LABEL_app"))`,
+      `set(attributes["service.namespace"],   sys.env("K8S_NAMESPACE"))`,
+      `set(attributes["service.instance.id"], sys.env("K8S_POD_NAME"))`,
+
+      `set(attributes["k8s.pod.name"],        sys.env("K8S_POD_NAME"))`,
+      `set(attributes["k8s.pod.uid"],         sys.env("K8S_POD_UID"))`,
+      `set(attributes["k8s.namespace.name"],  sys.env("K8S_NAMESPACE"))`,
+      `set(attributes["k8s.node.name"],       sys.env("K8S_NODE_NAME"))`,
+
+      `set(attributes["deployment.environment"], sys.env("ENVIRONMENT"))`,
+      `set(attributes["version"],                sys.env("APP_VERSION"))`,
+      `set(attributes["git.revision"],           sys.env("GIT_COMMIT"))`,
+    ]
+  }
+
+  trace_statements {
+    context = "resource"
+    statements = [
+      `set(attributes["service.name"],        sys.env("K8S_POD_LABEL_app"))`,
+      `set(attributes["service.namespace"],   sys.env("K8S_NAMESPACE"))`,
+      `set(attributes["service.instance.id"], sys.env("K8S_POD_NAME"))`,
+
+      `set(attributes["k8s.pod.name"],        sys.env("K8S_POD_NAME"))`,
+      `set(attributes["k8s.pod.uid"],         sys.env("K8S_POD_UID"))`,
+      `set(attributes["k8s.namespace.name"],  sys.env("K8S_NAMESPACE"))`,
+      `set(attributes["k8s.node.name"],       sys.env("K8S_NODE_NAME"))`,
+
+      `set(attributes["deployment.environment"], sys.env("ENVIRONMENT"))`,
+      `set(attributes["version"],                sys.env("APP_VERSION"))`,
+      `set(attributes["git.revision"],           sys.env("GIT_COMMIT"))`,
+    ]
+  }
 
   output {
-    profiles = [otelcol.processor.resource.k8s.input]
+    metrics = [otelcol.processor.batch.metrics.input]
+    logs    = [otelcol.processor.batch.logs.input]
+    traces  = [otelcol.processor.batch.traces.input]
   }
 }
 
-///////////////////////////////////////
-// Auto-tagging for ALL SIGNALS
-///////////////////////////////////////
+////////////////////
+// Batch processors
+////////////////////
 
-otelcol.processor.resource "k8s" {
-  // IMPORTANT — auto tagging all signals including profiles
-  attributes = {
-    "service.name"        = sys.env(K8S_POD_LABEL_app),
-    "service.namespace"   = sys.env(K8S_NAMESPACE),
-    "service.instance.id" = sys.env(K8S_POD_NAME),
-
-    "k8s.pod.name"        = sys.env(K8S_POD_NAME),
-    "k8s.pod.uid"         = sys.env(K8S_POD_UID),
-    "k8s.namespace.name"  = sys.env(K8S_NAMESPACE),
-    "k8s.node.name"       = sys.env(K8S_NODE_NAME),
-    "k8s.container.name"  = sys.env(K8S_CONTAINER_NAME),
-
-    "deployment.environment" = sys.env(ENVIRONMENT),
-    "version"                = sys.env(APP_VERSION),
-    "git.revision"           = sys.env(GIT_COMMIT),
-  }
-
-  output {
-    metrics  = [otelcol.processor.batch.metrics.input]
-    traces   = [otelcol.processor.batch.traces.input]
-    logs     = [otelcol.processor.batch.logs.input]
-    profiles = [otelcol.processor.batch.profiles.input]
-  }
-}
-
-//////////////////
-// Batch Processors
-//////////////////
-
-otelcol.processor.batch "metrics" {
-  output { metrics = [otelcol.exporter.otlphttp.prom.input] }
-}
-
-otelcol.processor.batch "traces" {
-  output { traces  = [otelcol.exporter.otlp.tempo.input] }
-}
-
-otelcol.processor.batch "logs" {
-  output { logs    = [otelcol.exporter.otlphttp.loki.input] }
-}
-
-otelcol.processor.batch "profiles" {
-  output { profiles = [otelcol.exporter.otlphttp.pyro.input] }
-}
+otelcol.processor.batch "metrics" { output { metrics = [otelcol.exporter.otlphttp.prom.input] } }
+otelcol.processor.batch "traces"  { output { traces  = [otelcol.exporter.otlp.tempo.input] } }
+otelcol.processor.batch "logs"    { output { logs    = [otelcol.exporter.otlphttp.loki.input] } }
 
 //////////////////////////////
-// PROMETHEUS (metrics)
+// Metrics → Prometheus (OTLP/HTTP)
 //////////////////////////////
 
 otelcol.exporter.otlphttp "prom" {
-  // otlphttp appends /v1/metrics → full path becomes /api/v1/otlp/v1/metrics
   client {
     endpoint = "http://prometheus-prometheus.prometheus-operator.svc:9090/api/v1/otlp"
     tls { insecure = true }
   }
 }
 
-/////////////////////////////
-// TRACES → Tempo (gRPC)   //
-/////////////////////////////
+//////////////////////////////
+// Traces → Tempo (OTLP/gRPC)
+//////////////////////////////
 
 otelcol.exporter.otlp "tempo" {
   client {
@@ -106,9 +116,9 @@ otelcol.exporter.otlp "tempo" {
   }
 }
 
-////////////////////////////////
-// LOGS → Loki (OTLP / HTTP)  //
-////////////////////////////////
+//////////////////////////////
+// Logs → Loki (OTLP/HTTP)
+//////////////////////////////
 
 otelcol.exporter.otlphttp "loki" {
   client {
@@ -117,19 +127,29 @@ otelcol.exporter.otlphttp "loki" {
   }
 }
 
-////////////////////////////////////
-// PROFILES → Pyroscope (OTLP/HTTP)
-////////////////////////////////////
+//////////////////////////////////////////////////////////////
+// Pull-mode profiling (Go pprof) → Pyroscope (native pipeline)
+//////////////////////////////////////////////////////////////
 
-otelcol.exporter.otlphttp "pyro" {
-  client {
-    endpoint = "http://pyroscope.pyroscope.svc:4040/otlp/v1/profiles"
-    tls { insecure = true }
+pyroscope.write "pyro" {
+  endpoint {
+    url = "http://pyroscope.pyroscope.svc:4040"
   }
 }
 
+pyroscope.scrape "go" {
+  // IMPORTANT:
+  // This must point to your Go app pprof endpoint (service DNS, pod IP, etc).
+  // Do NOT use K8S_POD_IP for Alloy itself unless your Go app runs in the same pod.
+  targets = [
+    // { "__address__" = "go-service.default.svc:7071", "service_name" = "go-service" },
+  ]
+
+  forward_to = [pyroscope.write.pyro.receiver]
+}
+
 //////////////////////////////////////////////////////////////
-// Kubernetes container logs → Loki classic /v1/push        //
+// Kubernetes container logs → Loki classic /loki/api/v1/push
 //////////////////////////////////////////////////////////////
 
 discovery.kubernetes "pods" {

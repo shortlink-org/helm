@@ -9,6 +9,16 @@ spec:
   roles:
     - controller
     - broker
+  resources:
+    requests:
+      memory: 100Mi
+      cpu: 50m
+    limits:
+      memory: 2Gi
+      cpu: 1000m
+  jvmOptions:
+    "-Xms": "2g"
+    "-Xmx": "2g"
   storage:
     type: jbod
     volumes:
@@ -66,15 +76,6 @@ spec:
       log.retention.hours: 168 # 7 days
       log.retention.check.interval.ms: 300000
       log.segment.bytes: 1073741824 # 1 GB
-    storage:
-      type: ephemeral
-    resources:
-      requests:
-        memory: 100Mi
-        cpu: 50m
-      limits:
-        memory: 2Gi
-        cpu: 1000m
   entityOperator:
     topicOperator: {}
     userOperator: {}

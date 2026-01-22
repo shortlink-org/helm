@@ -1,70 +1,67 @@
 {{/* vim: set filetype=mustache: */}}
 
-{{- define "shortlink-common.volumeMounts" -}}
-{{- with .Values.deploy.volumes -}}
-{{- if gt (len .) 0 -}}
+{{- define "shortlink-common.volumeMounts" }}
+{{- $vols := .Values.deploy.volumes }}
+{{- if and $vols (gt (len $vols) 0) }}
 volumeMounts:
-  {{- range . }}
+{{- range $vols }}
   - name: {{ .name | quote }}
     mountPath: {{ .mountPath | quote }}
-    {{- if .subPath }}
+{{- if .subPath }}
     subPath: {{ .subPath | quote }}
-    {{- end }}
-    {{- if hasKey . "readOnly" }}
+{{- end }}
+{{- if hasKey . "readOnly" }}
     readOnly: {{ .readOnly }}
-    {{- end }}
-  {{- end }}
-{{- end -}}
-{{- end -}}
+{{- end }}
+{{- end }}
+{{- end }}
 {{- end }}
 
-{{- define "shortlink-common.volumes" -}}
-{{- with .Values.deploy.volumes -}}
-{{- if gt (len .) 0 -}}
+{{- define "shortlink-common.volumes" }}
+{{- $vols := .Values.deploy.volumes }}
+{{- if and $vols (gt (len $vols) 0) }}
 volumes:
-  {{- range . }}
+{{- range $vols }}
   - name: {{ .name | quote }}
-
-    {{- if eq .type "secret" }}
+{{- if eq .type "secret" }}
     secret:
       secretName: {{ required (printf "deploy.volumes[%s].secretName is required" .name) .secretName | quote }}
-      {{- if .items }}
+{{- if .items }}
       items:
-        {{- toYaml .items | nindent 8 }}
-      {{- end }}
-      {{- if hasKey . "defaultMode" }}
+{{ toYaml .items | nindent 8 }}
+{{- end }}
+{{- if hasKey . "defaultMode" }}
       defaultMode: {{ .defaultMode }}
-      {{- end }}
-      {{- if hasKey . "optional" }}
+{{- end }}
+{{- if hasKey . "optional" }}
       optional: {{ .optional }}
-      {{- end }}
+{{- end }}
 
-    {{- else if eq .type "configMap" }}
+{{- else if eq .type "configMap" }}
     configMap:
       name: {{ required (printf "deploy.volumes[%s].configMapName is required" .name) .configMapName | quote }}
-      {{- if .items }}
+{{- if .items }}
       items:
-        {{- toYaml .items | nindent 8 }}
-      {{- end }}
-      {{- if hasKey . "defaultMode" }}
+{{ toYaml .items | nindent 8 }}
+{{- end }}
+{{- if hasKey . "defaultMode" }}
       defaultMode: {{ .defaultMode }}
-      {{- end }}
-      {{- if hasKey . "optional" }}
+{{- end }}
+{{- if hasKey . "optional" }}
       optional: {{ .optional }}
-      {{- end }}
+{{- end }}
 
-    {{- else if eq .type "emptyDir" }}
+{{- else if eq .type "emptyDir" }}
     emptyDir:
-      {{- if .emptyDir }}
-      {{- toYaml .emptyDir | nindent 6 }}
-      {{- else }}
+{{- if .emptyDir }}
+{{ toYaml .emptyDir | nindent 6 }}
+{{- else }}
       {}
-      {{- end }}
+{{- end }}
 
-    {{- else }}
-    {{- fail (printf "deploy.volumes[%s]: unsupported type=%v (supported: secret, configMap, emptyDir)" .name .type) }}
-    {{- end }}
-  {{- end }}
-{{- end -}}
-{{- end -}}
+{{- else }}
+{{- fail (printf "deploy.volumes[%s]: unsupported type=%v (supported: secret, configMap, emptyDir)" .name .type) }}
+{{- end }}
+{{- end }}
+{{- end }}
 {{- end }}

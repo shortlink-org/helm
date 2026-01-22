@@ -53,5 +53,5 @@
     requests:
       cpu: {{ ((.Values.deploy.resources).requests).cpu | default "10m" }}
       memory: {{ ((.Values.deploy.resources).requests).memory | default "32Mi" }}
-  {{- include "shortlink-common.volumeMounts" . | nindent 2 }}
+{{ include "shortlink-common.volumeMounts" . | nindent 2 }}
 {{- end }}

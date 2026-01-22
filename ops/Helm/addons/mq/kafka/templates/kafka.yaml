@@ -31,6 +31,7 @@ spec:
     # pod-level settings (nodeSelector, tolerations, affinity etc.)
     pod:
       metadata: {}
+      tmpDirSizeLimit: 500Mi
     
     # container-level settings for Kafka broker container
     kafkaContainer:

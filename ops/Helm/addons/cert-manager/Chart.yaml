@@ -17,7 +17,7 @@ dependencies:
     alias: certmanager
     version: v1.19.2
     repository: https://charts.jetstack.io
-    condition: certmanager.enabled
+    condition: features.certManager
     tags:
       - security
       - tls
@@ -33,7 +33,7 @@ dependencies:
     alias: spiffe
     version: v0.11.0
     repository: https://charts.jetstack.io
-    condition: spiffe.enabled
+    condition: features.spiffe
     tags:
       - security
       - tls

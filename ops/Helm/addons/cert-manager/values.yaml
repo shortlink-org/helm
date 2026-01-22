@@ -71,8 +71,6 @@ certmanager:
         release: prometheus-operator
 
 certmanagerapproverpolicy:
-  enabled: true
-
   app:
     metrics:
       service:

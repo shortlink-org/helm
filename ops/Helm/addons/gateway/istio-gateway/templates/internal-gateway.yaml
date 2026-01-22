@@ -33,7 +33,8 @@ metadata:
 spec:
   secretName: internal-gateway-tls
   issuerRef:
-    name: ca-issuer
+    kind: ClusterIssuer
+    name: root-ca-issuer
   commonName: internal-gateway-istio.{{ .Release.Namespace }}.svc.cluster.local
   dnsNames:
     - internal-gateway-istio

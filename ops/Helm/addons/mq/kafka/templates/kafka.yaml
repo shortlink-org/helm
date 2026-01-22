@@ -63,8 +63,6 @@ spec:
       default.replication.factor: 3
       min.insync.replicas: 2
       inter.broker.protocol.version: "4.1"
-    storage:
-      type: ephemeral
   entityOperator:
     topicOperator: {}
     userOperator: {}

@@ -3,9 +3,31 @@ logging {
   format = "json"
 }
 
-//////////////////////////////////////
+////////////////////////////////////////////////////////////
+// Shared env values (evaluated by River, not by OTTL)
+////////////////////////////////////////////////////////////
+
+constants "env" {
+  // Service identity
+  service_name      = sys.env("K8S_POD_LABEL_app")
+  service_namespace = sys.env("K8S_NAMESPACE")
+  service_instance  = sys.env("K8S_POD_NAME")
+
+  // Kubernetes identity
+  k8s_pod_name       = sys.env("K8S_POD_NAME")
+  k8s_pod_uid        = sys.env("K8S_POD_UID")
+  k8s_namespace_name = sys.env("K8S_NAMESPACE")
+  k8s_node_name      = sys.env("K8S_NODE_NAME")
+
+  // Optional build/deploy metadata
+  deploy_env   = sys.env("ENVIRONMENT")
+  app_version  = sys.env("APP_VERSION")
+  git_revision = sys.env("GIT_COMMIT")
+}
+
+////////////////////////////////////////////////////////////
 // OTLP receiver (metrics, logs, traces)
-//////////////////////////////////////
+////////////////////////////////////////////////////////////
 
 otelcol.receiver.otlp "in" {
   grpc { endpoint = "0.0.0.0:4317" }
@@ -18,9 +40,9 @@ otelcol.receiver.otlp "in" {
   }
 }
 
-//////////////////////////////////////////////////////
-// Resource enrichment (service.*, k8s.*) for ALL signals
-//////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
+// Enrich OTEL Resource attrs for ALL signals via OTTL
+////////////////////////////////////////////////////////////
 
 otelcol.processor.transform "k8s_enrich" {
   error_mode = "ignore"
@@ -28,54 +50,54 @@ otelcol.processor.transform "k8s_enrich" {
   metric_statements {
     context = "resource"
     statements = [
-      `set(attributes["service.name"],        sys.env("K8S_POD_LABEL_app"))`,
-      `set(attributes["service.namespace"],   sys.env("K8S_NAMESPACE"))`,
-      `set(attributes["service.instance.id"], sys.env("K8S_POD_NAME"))`,
+      `set(attributes["service.name"],        "${constants.env.service_name}")`,
+      `set(attributes["service.namespace"],   "${constants.env.service_namespace}")`,
+      `set(attributes["service.instance.id"], "${constants.env.service_instance}")`,
 
-      `set(attributes["k8s.pod.name"],        sys.env("K8S_POD_NAME"))`,
-      `set(attributes["k8s.pod.uid"],         sys.env("K8S_POD_UID"))`,
-      `set(attributes["k8s.namespace.name"],  sys.env("K8S_NAMESPACE"))`,
-      `set(attributes["k8s.node.name"],       sys.env("K8S_NODE_NAME"))`,
+      `set(attributes["k8s.pod.name"],        "${constants.env.k8s_pod_name}")`,
+      `set(attributes["k8s.pod.uid"],         "${constants.env.k8s_pod_uid}")`,
+      `set(attributes["k8s.namespace.name"],  "${constants.env.k8s_namespace_name}")`,
+      `set(attributes["k8s.node.name"],       "${constants.env.k8s_node_name}")`,
 
-      `set(attributes["deployment.environment"], sys.env("ENVIRONMENT"))`,
-      `set(attributes["version"],                sys.env("APP_VERSION"))`,
-      `set(attributes["git.revision"],           sys.env("GIT_COMMIT"))`,
+      `set(attributes["deployment.environment"], "${constants.env.deploy_env}")`,
+      `set(attributes["version"],                "${constants.env.app_version}")`,
+      `set(attributes["git.revision"],           "${constants.env.git_revision}")`,
     ]
   }
 
   log_statements {
     context = "resource"
     statements = [
-      `set(attributes["service.name"],        sys.env("K8S_POD_LABEL_app"))`,
-      `set(attributes["service.namespace"],   sys.env("K8S_NAMESPACE"))`,
-      `set(attributes["service.instance.id"], sys.env("K8S_POD_NAME"))`,
+      `set(attributes["service.name"],        "${constants.env.service_name}")`,
+      `set(attributes["service.namespace"],   "${constants.env.service_namespace}")`,
+      `set(attributes["service.instance.id"], "${constants.env.service_instance}")`,
 
-      `set(attributes["k8s.pod.name"],        sys.env("K8S_POD_NAME"))`,
-      `set(attributes["k8s.pod.uid"],         sys.env("K8S_POD_UID"))`,
-      `set(attributes["k8s.namespace.name"],  sys.env("K8S_NAMESPACE"))`,
-      `set(attributes["k8s.node.name"],       sys.env("K8S_NODE_NAME"))`,
+      `set(attributes["k8s.pod.name"],        "${constants.env.k8s_pod_name}")`,
+      `set(attributes["k8s.pod.uid"],         "${constants.env.k8s_pod_uid}")`,
+      `set(attributes["k8s.namespace.name"],  "${constants.env.k8s_namespace_name}")`,
+      `set(attributes["k8s.node.name"],       "${constants.env.k8s_node_name}")`,
 
-      `set(attributes["deployment.environment"], sys.env("ENVIRONMENT"))`,
-      `set(attributes["version"],                sys.env("APP_VERSION"))`,
-      `set(attributes["git.revision"],           sys.env("GIT_COMMIT"))`,
+      `set(attributes["deployment.environment"], "${constants.env.deploy_env}")`,
+      `set(attributes["version"],                "${constants.env.app_version}")`,
+      `set(attributes["git.revision"],           "${constants.env.git_revision}")`,
     ]
   }
 
   trace_statements {
     context = "resource"
     statements = [
-      `set(attributes["service.name"],        sys.env("K8S_POD_LABEL_app"))`,
-      `set(attributes["service.namespace"],   sys.env("K8S_NAMESPACE"))`,
-      `set(attributes["service.instance.id"], sys.env("K8S_POD_NAME"))`,
+      `set(attributes["service.name"],        "${constants.env.service_name}")`,
+      `set(attributes["service.namespace"],   "${constants.env.service_namespace}")`,
+      `set(attributes["service.instance.id"], "${constants.env.service_instance}")`,
 
-      `set(attributes["k8s.pod.name"],        sys.env("K8S_POD_NAME"))`,
-      `set(attributes["k8s.pod.uid"],         sys.env("K8S_POD_UID"))`,
-      `set(attributes["k8s.namespace.name"],  sys.env("K8S_NAMESPACE"))`,
-      `set(attributes["k8s.node.name"],       sys.env("K8S_NODE_NAME"))`,
+      `set(attributes["k8s.pod.name"],        "${constants.env.k8s_pod_name}")`,
+      `set(attributes["k8s.pod.uid"],         "${constants.env.k8s_pod_uid}")`,
+      `set(attributes["k8s.namespace.name"],  "${constants.env.k8s_namespace_name}")`,
+      `set(attributes["k8s.node.name"],       "${constants.env.k8s_node_name}")`,
 
-      `set(attributes["deployment.environment"], sys.env("ENVIRONMENT"))`,
-      `set(attributes["version"],                sys.env("APP_VERSION"))`,
-      `set(attributes["git.revision"],           sys.env("GIT_COMMIT"))`,
+      `set(attributes["deployment.environment"], "${constants.env.deploy_env}")`,
+      `set(attributes["version"],                "${constants.env.app_version}")`,
+      `set(attributes["git.revision"],           "${constants.env.git_revision}")`,
     ]
   }
 
@@ -86,17 +108,25 @@ otelcol.processor.transform "k8s_enrich" {
   }
 }
 
-////////////////////
+////////////////////////////////////////////////////////////
 // Batch processors
-////////////////////
+////////////////////////////////////////////////////////////
 
-otelcol.processor.batch "metrics" { output { metrics = [otelcol.exporter.otlphttp.prom.input] } }
-otelcol.processor.batch "traces"  { output { traces  = [otelcol.exporter.otlp.tempo.input] } }
-otelcol.processor.batch "logs"    { output { logs    = [otelcol.exporter.otlphttp.loki.input] } }
+otelcol.processor.batch "metrics" {
+  output { metrics = [otelcol.exporter.otlphttp.prom.input] }
+}
 
-//////////////////////////////
-// Metrics → Prometheus (OTLP/HTTP)
-//////////////////////////////
+otelcol.processor.batch "traces" {
+  output { traces = [otelcol.exporter.otlp.tempo.input] }
+}
+
+otelcol.processor.batch "logs" {
+  output { logs = [otelcol.exporter.otlphttp.loki.input] }
+}
+
+////////////////////////////////////////////////////////////
+// Metrics -> Prometheus (OTLP/HTTP)
+////////////////////////////////////////////////////////////
 
 otelcol.exporter.otlphttp "prom" {
   client {
@@ -105,9 +135,9 @@ otelcol.exporter.otlphttp "prom" {
   }
 }
 
-//////////////////////////////
-// Traces → Tempo (OTLP/gRPC)
-//////////////////////////////
+////////////////////////////////////////////////////////////
+// Traces -> Tempo (OTLP/gRPC)
+////////////////////////////////////////////////////////////
 
 otelcol.exporter.otlp "tempo" {
   client {
@@ -116,9 +146,9 @@ otelcol.exporter.otlp "tempo" {
   }
 }
 
-//////////////////////////////
-// Logs → Loki (OTLP/HTTP)
-//////////////////////////////
+////////////////////////////////////////////////////////////
+// Logs -> Loki (OTLP/HTTP)
+////////////////////////////////////////////////////////////
 
 otelcol.exporter.otlphttp "loki" {
   client {
@@ -127,30 +157,9 @@ otelcol.exporter.otlphttp "loki" {
   }
 }
 
-//////////////////////////////////////////////////////////////
-// Pull-mode profiling (Go pprof) → Pyroscope (native pipeline)
-//////////////////////////////////////////////////////////////
-
-pyroscope.write "pyro" {
-  endpoint {
-    url = "http://pyroscope.pyroscope.svc:4040"
-  }
-}
-
-pyroscope.scrape "go" {
-  // IMPORTANT:
-  // This must point to your Go app pprof endpoint (service DNS, pod IP, etc).
-  // Do NOT use K8S_POD_IP for Alloy itself unless your Go app runs in the same pod.
-  targets = [
-    // { "__address__" = "go-service.default.svc:7071", "service_name" = "go-service" },
-  ]
-
-  forward_to = [pyroscope.write.pyro.receiver]
-}
-
-//////////////////////////////////////////////////////////////
-// Kubernetes container logs → Loki classic /loki/api/v1/push
-//////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
+// Kubernetes container logs -> Loki classic push API
+////////////////////////////////////////////////////////////
 
 discovery.kubernetes "pods" {
   role = "pod"
@@ -178,3 +187,16 @@ loki.write "default" {
     url = "http://grafana-loki.grafana.svc:3100/loki/api/v1/push"
   }
 }
+
+////////////////////////////////////////////////////////////
+// NOTE ABOUT PROFILES / PYROSCOPE
+////////////////////////////////////////////////////////////
+//
+// You asked to remove the "go-service" example.
+// This config does NOT include profiling scrape targets.
+//
+// When you’re ready, we’ll add:
+// - pyroscope.write "pyro" (your Pyroscope endpoint)
+// - pyroscope.scrape "..." (targets discovered via discovery.kubernetes + relabel)
+//
+////////////////////////////////////////////////////////////

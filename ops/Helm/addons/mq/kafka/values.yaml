@@ -14,6 +14,8 @@ strimzi-kafka-operator:
 
   createAggregateRoles: true
 
+  tmpDirSizeLimit: 100Mi
+
   dashboards:
     enabled: true
     label: grafana_dashboard

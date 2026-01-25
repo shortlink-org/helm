@@ -38,6 +38,10 @@ kube-prometheus-stack:
         - new-service-discovery-manager
         - auto-gomaxprocs
         - native-histograms
+        - promql-experimental-functions
+        - promql-duration-expr
+        - otlp-deltatocumulative
+        - otlp-native-delta-ingestion
 
     ingress:
       enabled: true

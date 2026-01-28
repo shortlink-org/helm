@@ -35,11 +35,11 @@ istiod:
     extensionProviders:
       - name: otel
         envoyOtelAls:
-          service: grafana-tempo.grafana.svc.cluster.local
+          service: grafana-alloy.grafana.svc.cluster.local
           port: 4317
       - name: otel-tracing
         opentelemetry:
-          service: otel-collector-collector.grafana.svc.cluster.local
+          service: grafana-tempo.grafana.svc.cluster.local
           port: 4317
 
   telemetry:

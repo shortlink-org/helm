@@ -1,12 +1,12 @@
-apiVersion: telemetry.istio.io/v1alpha1
+apiVersion: telemetry.istio.io/v1
 kind: Telemetry
 metadata:
-  name: otel-tracing
+  name: mesh-otel
 spec:
   tracing:
     - providers:
         - name: "otel-tracing"
-      randomSamplingPercentage: 100
-  accessLogging:
-    - providers:
-        - name: otel
+      randomSamplingPercentage: 100.00
+  # accessLogging:
+  #   - providers:
+  #       - name: otel

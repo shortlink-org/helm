@@ -40,7 +40,6 @@ kube-prometheus-stack:
         - native-histograms
         - promql-experimental-functions
         - promql-duration-expr
-        - otlp-deltatocumulative
         - otlp-native-delta-ingestion
 
     ingress:

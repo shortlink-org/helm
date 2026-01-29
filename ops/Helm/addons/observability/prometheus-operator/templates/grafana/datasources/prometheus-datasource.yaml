@@ -11,7 +11,7 @@ stringData:
       - name: Prometheus
         uid: prometheus
         type: prometheus
-        url: http://prometheus-operated.prometheus-operator:9090/prometheus
+        url: http://prometheus-prometheus.prometheus-operator.svc:9090
         access: proxy
         isDefault: true
         jsonData:

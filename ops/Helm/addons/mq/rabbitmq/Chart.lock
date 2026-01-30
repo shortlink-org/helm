@@ -1,9 +1,9 @@
 dependencies:
 - name: shortlink-template
   repository: oci://ghcr.io/shortlink-org/charts
-  version: 0.11.3
+  version: 0.12.0
 - name: rabbitmq-cluster-operator
   repository: oci://registry-1.docker.io/bitnamicharts
   version: 4.4.34
-digest: sha256:9fda41b1e1309a897ce19f6e700dd01ba217f2d461ba2b7401a410675ee5f938
-generated: "2026-01-22T01:11:36.046745725Z"
+digest: sha256:45375d4ab633c34bae73752ec61cebb0b1a3d19f761913a06c6e5b903a5eeeb4
+generated: "2026-01-30T21:29:51.003154867Z"

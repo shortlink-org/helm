@@ -3,6 +3,15 @@
 {{/*
 `shortlink-common.grpc_route` Helm template
 
+GRPCRoute for Gateway API traffic routing.
+
+When used with Argo Rollouts Canary, creates GRPCRoute with two backendRefs:
+- stable service (weight 100)
+- canary/preview service (weight 0)
+
+Argo Rollouts will manage the weights during canary deployment.
+Docs: https://rollouts-plugin-trafficrouter-gatewayapi.readthedocs.io/
+
 Behavior:
 - Generates a GRPCRoute when `grpcRoute.enabled` is true.
 - By default attaches to Gateway:
@@ -19,6 +28,7 @@ Override points in values:
 - grpcRoute.methods (list of gRPC method matches for multiple method matches)
 - grpcRoute.port
 - grpcRoute.rules (full override of rules block)
+- grpcRoute.backendRefs (full override of backendRefs)
 */}}
 
 {{- define "shortlink-common.grpc_route" }}
@@ -33,6 +43,26 @@ Override points in values:
   {{- end }}
 {{- end }}
 {{- $defaultBackendPort := (index $backend "port" | default 50051) }}
+
+{{- $serviceName := (include "helpers.fullname" .) }}
+{{- $servicePort := (.Values.grpcRoute.port | default $defaultBackendPort) }}
+
+{{- /* Check if using Rollout with Canary strategy */ -}}
+{{- $isCanary := and (eq (.Values.deploy.type | default "Deployment") "Rollout") (eq (.Values.deploy.strategy.type | default "") "Canary") -}}
+
+{{- /* Build backendRefs based on deployment type */ -}}
+{{- $backendRefs := list -}}
+{{- if .Values.grpcRoute.backendRefs -}}
+  {{- $backendRefs = .Values.grpcRoute.backendRefs -}}
+{{- else if $isCanary -}}
+  {{- /* For Canary: stable (100%) and canary (0%) services */ -}}
+  {{- $stableRef := dict "name" $serviceName "port" $servicePort "weight" 100 -}}
+  {{- $canaryRef := dict "name" (printf "%s-preview" $serviceName) "port" $servicePort "weight" 0 -}}
+  {{- $backendRefs = list $stableRef $canaryRef -}}
+{{- else -}}
+  {{- /* For regular deployment: single backend */ -}}
+  {{- $backendRefs = list (dict "name" $serviceName "port" $servicePort) -}}
+{{- end -}}
 
 ---
 apiVersion: gateway.networking.k8s.io/v1
@@ -74,8 +104,7 @@ spec:
             service: {{ .Values.grpcRoute.method | quote }}
         {{- end }}
       backendRefs:
-        - name: {{ include "helpers.fullname" . }}
-          port: {{ .Values.grpcRoute.port | default $defaultBackendPort }}
+        {{- toYaml $backendRefs | nindent 8 }}
   {{- end }}
 {{- end }}
 {{- end }}

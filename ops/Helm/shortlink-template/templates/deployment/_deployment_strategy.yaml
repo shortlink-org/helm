@@ -1,5 +1,18 @@
 {{/* vim: set filetype=mustache: */}}
 
+{{/*
+Deployment strategy for Rollout/Deployment resources.
+
+Supports:
+- RollingUpdate (default for Deployment)
+- BlueGreen (Rollout)
+- Canary with traffic routing via:
+  - Gateway API (HTTPRoute/GRPCRoute) - preferred
+  - NGINX Ingress - legacy
+
+Docs: https://rollouts-plugin-trafficrouter-gatewayapi.readthedocs.io/
+*/}}
+
 {{- define "shortlink-common.deploymentStrategy" -}}
 strategy:
 {{- if .Values.deploy.strategy }}
@@ -16,20 +29,52 @@ strategy:
     # when using traffic routed canary. This is to ensure high availability
     # of each ReplicaSet.
     minPodsPerReplicaSet: {{ .Values.deploy.strategy.minPodsPerReplicaSet | default 1 }}
-    {{- if eq .Values.ingress.enabled true }}
-    dynamicStableScale: {{ ne .Values.deploy.strategy.canary.dynamicStableScale false }}
+    {{- /* Check if any traffic routing is enabled */ -}}
+    {{- $hasHttpRoute := and .Values.httpRoute .Values.httpRoute.enabled }}
+    {{- $hasGrpcRoute := and .Values.grpcRoute .Values.grpcRoute.enabled }}
+    {{- $hasIngress := and .Values.ingress .Values.ingress.enabled }}
+    {{- $hasTrafficRouting := or $hasHttpRoute $hasGrpcRoute $hasIngress }}
+    {{- /* Enable dynamicStableScale when using traffic routing */ -}}
+    {{- if $hasTrafficRouting }}
+    dynamicStableScale: {{ .Values.deploy.strategy.canary.dynamicStableScale | default true }}
     {{- end }}
+    {{- /* Traffic routing configuration */ -}}
+    {{- if $hasTrafficRouting }}
     trafficRouting:
-    {{- if eq .Values.ingress.enabled true }}
-      {{- if eq .Values.ingress.ingressClassName "nginx" }}
+      {{- /* Gateway API traffic routing via plugin (preferred) */ -}}
+      {{- if or $hasHttpRoute $hasGrpcRoute }}
+      plugins:
+        argoproj-labs/gatewayAPI:
+          {{- if $hasHttpRoute }}
+          httpRoutes:
+            - name: {{ include "helpers.fullname" . }}
+              {{- with .Values.httpRoute.namespace }}
+              namespace: {{ . }}
+              {{- end }}
+          {{- end }}
+          {{- if $hasGrpcRoute }}
+          grpcRoutes:
+            - name: {{ include "helpers.fullname" . }}
+              {{- with .Values.grpcRoute.namespace }}
+              namespace: {{ . }}
+              {{- end }}
+          {{- end }}
+      {{- /* NGINX Ingress traffic routing (legacy) */ -}}
+      {{- else if and $hasIngress (eq (.Values.ingress.ingressClassName | default "") "nginx") }}
       nginx:
-        # Reference to an Ingress which has a rule pointing to the stable service (e.g. rollouts-demo-stable)
+        # Reference to an Ingress which has a rule pointing to the stable service
         # This ingress will be cloned with a new name, in order to achieve NGINX traffic splitting.
         stableIngress: {{ include "helpers.fullname" . }}
       {{- end }}
     {{- end }}
-    {{- toYaml .Values.deploy.strategy.canary | nindent 4 }}
+    {{- /* Additional canary configuration from values */ -}}
+    {{- with .Values.deploy.strategy.canary }}
+    {{- $canary := omit . "dynamicStableScale" }}
+    {{- if $canary }}
+    {{- toYaml $canary | nindent 4 }}
     {{- end }}
+    {{- end }}
+  {{- end }}
 {{- else }}
   type: RollingUpdate
   rollingUpdate:

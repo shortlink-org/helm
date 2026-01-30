@@ -1,5 +1,16 @@
 {{/* vim: set filetype=mustache: */}}
 
+{{/*
+HTTPRoute for Gateway API traffic routing.
+
+When used with Argo Rollouts Canary, creates HTTPRoute with two backendRefs:
+- stable service (weight 100)
+- canary/preview service (weight 0)
+
+Argo Rollouts will manage the weights during canary deployment.
+Docs: https://rollouts-plugin-trafficrouter-gatewayapi.readthedocs.io/
+*/}}
+
 {{- define "shortlink-common.http_route" -}}
 {{- if .Values.httpRoute.enabled -}}
 
@@ -12,7 +23,7 @@
 
 {{- $parentRefs := .Values.httpRoute.parentRefs | default (list (dict
   "name" (.Values.httpRoute.gatewayName | default "external-gateway")
-  "namespace" (.Values.httpRoute.gatewayNamespace | default "istio-system")
+  "namespace" (.Values.httpRoute.gatewayNamespace | default "istio-ingress")
 )) -}}
 
 {{- $matches := list -}}
@@ -24,14 +35,33 @@
   {{- $matches = list (dict "path" (dict "type" "PathPrefix" "value" (.Values.httpRoute.path | default "/"))) -}}
 {{- end -}}
 
-{{- $ref := dict
-  "name" (.Values.httpRoute.backendRefName | default (include "helpers.fullname" .))
-  "port" (.Values.httpRoute.port | default $backendPort)
--}}
-{{- with .Values.httpRoute.backendRefNamespace -}}
-  {{- $_ := set $ref "namespace" . -}}
+{{- $serviceName := (.Values.httpRoute.backendRefName | default (include "helpers.fullname" .)) -}}
+{{- $servicePort := (.Values.httpRoute.port | default $backendPort) -}}
+
+{{- /* Check if using Rollout with Canary strategy */ -}}
+{{- $isCanary := and (eq (.Values.deploy.type | default "Deployment") "Rollout") (eq (.Values.deploy.strategy.type | default "") "Canary") -}}
+
+{{- /* Build backendRefs based on deployment type */ -}}
+{{- $backendRefs := list -}}
+{{- if .Values.httpRoute.backendRefs -}}
+  {{- $backendRefs = .Values.httpRoute.backendRefs -}}
+{{- else if $isCanary -}}
+  {{- /* For Canary: stable (100%) and canary (0%) services */ -}}
+  {{- $stableRef := dict "name" $serviceName "port" $servicePort "weight" 100 -}}
+  {{- $canaryRef := dict "name" (printf "%s-preview" $serviceName) "port" $servicePort "weight" 0 -}}
+  {{- with .Values.httpRoute.backendRefNamespace -}}
+    {{- $_ := set $stableRef "namespace" . -}}
+    {{- $_ := set $canaryRef "namespace" . -}}
+  {{- end -}}
+  {{- $backendRefs = list $stableRef $canaryRef -}}
+{{- else -}}
+  {{- /* For regular deployment: single backend */ -}}
+  {{- $ref := dict "name" $serviceName "port" $servicePort -}}
+  {{- with .Values.httpRoute.backendRefNamespace -}}
+    {{- $_ := set $ref "namespace" . -}}
+  {{- end -}}
+  {{- $backendRefs = list $ref -}}
 {{- end -}}
-{{- $backendRefs := .Values.httpRoute.backendRefs | default (list $ref) -}}
 
 {{- $rules := .Values.httpRoute.rules | default (list (dict "matches" $matches "backendRefs" $backendRefs)) -}}
 

@@ -1,9 +1,9 @@
 dependencies:
 - name: shortlink-template
   repository: oci://ghcr.io/shortlink-org/charts
-  version: 0.11.3
+  version: 0.12.0
 - name: rook-ceph
   repository: https://charts.rook.io/release
   version: v1.19.0
-digest: sha256:7085d5846777c31eeadf9c29d3c0dd9363d443a335c56c0f8173327cd64e916d
-generated: "2026-01-22T01:10:56.331665537Z"
+digest: sha256:48998a6706cec07cf45ac796356ff20dd74c6fbc38e5f7a884ea0d4737f6dac5
+generated: "2026-01-30T21:29:25.196894651Z"

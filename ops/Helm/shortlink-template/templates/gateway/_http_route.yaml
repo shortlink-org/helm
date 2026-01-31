@@ -15,9 +15,11 @@ Docs: https://rollouts-plugin-trafficrouter-gatewayapi.readthedocs.io/
 {{- if .Values.httpRoute.enabled -}}
 
 {{- $backendPort := 80 -}}
+{{- $portFound := false -}}
 {{- range .Values.service.ports -}}
-  {{- if and .public (eq $backendPort 80) -}}
+  {{- if and .public (not $portFound) -}}
     {{- $backendPort = .port -}}
+    {{- $portFound = true -}}
   {{- end -}}
 {{- end -}}
 

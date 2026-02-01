@@ -15,7 +15,7 @@ type: application
 deprecated: false
 dependencies:
   - name: tempo
-    version: 1.26.0
+    version: 1.26.1
     repository: https://grafana-community.github.io/helm-charts
     condition: tempo.enabled
     tags:

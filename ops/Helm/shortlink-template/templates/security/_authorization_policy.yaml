@@ -1,0 +1,42 @@
+{{/* vim: set filetype=mustache: */}}
+
+{{/*
+AuthorizationPolicy template for Istio JWT-based authorization
+*/}}
+{{- define "shortlink-common.AuthorizationPolicy" }}
+{{- if .Values.authorizationPolicy.enabled }}
+{{- $proxySA := .Values.authorizationPolicy.proxyServiceAccount | default "" }}
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: {{ include "common.names.fullname" . }}-require-jwt
+  namespace: {{ include "common.names.namespace" . }}
+  labels:
+    {{- include "common.labels.standard" ( dict "customLabels" .Values.commonLabels "context" . ) | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "shortlink-common.matchLabels" . | nindent 6 }}
+  action: ALLOW
+  rules:
+    # Allow health checks (kubelet) and metrics (Prometheus) without JWT
+    - to:
+        - operation:
+            paths: ["/live", "/ready", "/healthz", "/metrics"]
+    # Allow gRPC health checks
+    - to:
+        - operation:
+            paths: ["/grpc.health.v1.Health/*"]
+    {{- if $proxySA }}
+    # Allow proxy service account (mTLS) without JWT
+    - from:
+        - source:
+            principals:
+              - "cluster.local/ns/{{ .Release.Namespace }}/sa/{{ $proxySA }}"
+    {{- end }}
+    # Require valid JWT for all other requests
+    - from:
+        - source:
+            requestPrincipals: ["*"]
+{{- end }}
+{{- end }}

@@ -3,6 +3,13 @@
 {{- define "shortlink-common.probe" }}
   {{- if and .startupProbe .startupProbe.enabled }}
   startupProbe:
+    {{- if .startupProbe.grpc }}
+    grpc:
+      port: {{ .startupProbe.grpc.port }}
+      {{- if .startupProbe.grpc.service }}
+      service: {{ .startupProbe.grpc.service }}
+      {{- end }}
+    {{- else }}
     httpGet:
       path: {{ .startupProbe.httpGet.path | default "/healthz" }}
       port: {{ .startupProbe.httpGet.port | default 9090 }}
@@ -13,6 +20,7 @@
           value: {{ .value }}
         {{- end }}
       {{- end }}
+    {{- end }}
     initialDelaySeconds: {{ .startupProbe.initialDelaySeconds | default 5 }}
     periodSeconds: {{ .startupProbe.periodSeconds | default 5 }}
     successThreshold: {{ .startupProbe.successThreshold | default 1 }}
@@ -23,6 +31,13 @@
   {{- if and .livenessProbe .livenessProbe.enabled }}
   # -- define a liveness probe that checks every 5 seconds, starting after 5 seconds
   livenessProbe:
+    {{- if .livenessProbe.grpc }}
+    grpc:
+      port: {{ .livenessProbe.grpc.port }}
+      {{- if .livenessProbe.grpc.service }}
+      service: {{ .livenessProbe.grpc.service }}
+      {{- end }}
+    {{- else }}
     httpGet:
       path: {{ .livenessProbe.httpGet.path | default "/live" }}
       port: {{ .livenessProbe.httpGet.port | default 9090 }}
@@ -33,6 +48,7 @@
           value: {{ .value }}
         {{- end }}
       {{- end }}
+    {{- end }}
     initialDelaySeconds: {{ .livenessProbe.initialDelaySeconds | default 5 }}
     periodSeconds: {{ .livenessProbe.periodSeconds | default 5 }}
     terminationGracePeriodSeconds: {{ .livenessProbe.periodSeconds | default 5 }}
@@ -44,6 +60,13 @@
   {{- if and .readinessProbe .readinessProbe.enabled }}
   # -- define a readiness probe that checks every 5 seconds, starting after 5 seconds
   readinessProbe:
+    {{- if .readinessProbe.grpc }}
+    grpc:
+      port: {{ .readinessProbe.grpc.port }}
+      {{- if .readinessProbe.grpc.service }}
+      service: {{ .readinessProbe.grpc.service }}
+      {{- end }}
+    {{- else }}
     httpGet:
       path: {{ .readinessProbe.httpGet.path | default "/ready" }}
       port: {{ .readinessProbe.httpGet.port | default 9090 }}
@@ -54,6 +77,7 @@
           value: {{ .value }}
         {{- end }}
       {{- end }}
+    {{- end }}
     initialDelaySeconds: {{ .readinessProbe.initialDelaySeconds | default 5 }}
     periodSeconds: {{ .readinessProbe.periodSeconds | default 5 }}
     successThreshold: {{ .readinessProbe.successThreshold | default 1 }}

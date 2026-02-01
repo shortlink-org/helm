@@ -1,0 +1,34 @@
+{{/* vim: set filetype=mustache: */}}
+
+{{/*
+RequestAuthentication template for Istio JWT validation
+*/}}
+{{- define "shortlink-common.RequestAuthentication" }}
+{{- if .Values.requestAuthentication.enabled }}
+apiVersion: security.istio.io/v1beta1
+kind: RequestAuthentication
+metadata:
+  name: {{ include "common.names.fullname" . }}-jwt
+  namespace: {{ include "common.names.namespace" . }}
+  labels:
+    {{- include "common.labels.standard" ( dict "customLabels" .Values.commonLabels "context" . ) | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "shortlink-common.matchLabels" . | nindent 6 }}
+  jwtRules:
+    - issuer: {{ .Values.requestAuthentication.issuer | quote }}
+      jwksUri: {{ .Values.requestAuthentication.jwksUri | quote }}
+      forwardOriginalToken: {{ .Values.requestAuthentication.forwardOriginalToken | default true }}
+      {{- with .Values.requestAuthentication.outputClaimToHeaders }}
+      outputClaimToHeaders:
+        {{- toYaml . | nindent 8 }}
+      {{- else }}
+      outputClaimToHeaders:
+        - header: "x-user-id"
+          claim: "sub"
+        - header: "x-user-email"
+          claim: "email"
+      {{- end }}
+{{- end }}
+{{- end }}

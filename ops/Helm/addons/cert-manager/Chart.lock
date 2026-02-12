@@ -1,7 +1,7 @@
 dependencies:
 - name: cert-manager
   repository: https://charts.jetstack.io
-  version: v1.19.2
+  version: v1.19.3
 - name: cert-manager-approver-policy
   repository: https://charts.jetstack.io
   version: v0.23.0
@@ -11,5 +11,5 @@ dependencies:
 - name: trust-manager
   repository: https://charts.jetstack.io
   version: v0.20.3
-digest: sha256:f74789de52d3643738e505d6d91daaa80f220694ecb4b9051fd453a067d386af
-generated: "2026-01-22T02:14:14.050902+02:00"
+digest: sha256:0e084f47372d9301769b990a3406d973853d9d56a297bab6c40c1ecb9606d49e
+generated: "2026-02-12T17:28:31.933832348Z"

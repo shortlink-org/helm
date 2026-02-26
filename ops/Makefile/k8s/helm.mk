@@ -32,8 +32,12 @@ helm-upgrade: ### Upgrade all helm charts
 			if helm dependency build --skip-refresh >/dev/null 2>&1; then \
 				return 0; \
 			fi; \
+			if helm dependency update --skip-refresh >/dev/null 2>&1; then \
+				echo "[sync]  $$dir (updated Chart.lock/dependencies)"; \
+				return 0; \
+			fi; \
 			echo "[retry] $$dir (refresh repo cache for this chart)"; \
-			helm dependency build; \
+			helm dependency update; \
 		}; \
 		if [ "$(FORCE_DEPS)" = "1" ]; then \
 			echo "[build] $$dir (force)"; \

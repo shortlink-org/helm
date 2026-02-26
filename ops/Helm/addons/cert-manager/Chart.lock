@@ -1,7 +1,7 @@
 dependencies:
 - name: cert-manager
   repository: https://charts.jetstack.io
-  version: v1.19.2
+  version: v1.19.4
 - name: cert-manager-approver-policy
   repository: https://charts.jetstack.io
   version: v0.23.0

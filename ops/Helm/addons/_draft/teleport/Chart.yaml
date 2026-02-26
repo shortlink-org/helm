@@ -28,5 +28,5 @@ dependencies:
       - idp
       - teleport
   - name: shortlink-template
-    version: 0.12.1
+    version: 0.12.2
     repository: oci://ghcr.io/shortlink-org/charts

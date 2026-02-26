@@ -1,6 +1,6 @@
 dependencies:
 - name: testkube
   repository: https://kubeshop.github.io/helm-charts
-  version: 2.5.7
-digest: sha256:e853e31af5054a79522833e6cf2c90e67aacdca1120f33511bdc20f581c56f71
-generated: "2026-01-23T09:54:12.280685964Z"
+  version: 2.6.3
+digest: sha256:c93c8442b6eaf9cfcc606ba418f99f93b83ca9ae5405592b2a74a5b05f5a9252
+generated: "2026-02-26T12:21:07.020318944Z"

@@ -18,14 +18,33 @@ helm-docs: ### Generate HELM docs
 	# TODO: remove artifact after generation docs
 	@rm ops/Helm/README.md.gotmpl
 
+P ?= 8
+FORCE_DEPS ?= 0
+
 .PHONY: helm-upgrade
 helm-upgrade: ### Upgrade all helm charts
 	@helm repo update
-	@find ./ops/Helm -name "Chart.yaml" -print0 | xargs -0 -I '{}' -P 8 bash -euo pipefail -c '\
-		dir=$$(dirname "{}"); \
+	@find ./ops/Helm -name "Chart.yaml" -print0 | xargs -0 -n1 -P $(P) bash -euo pipefail -c '\
+		chart_path="$$1"; \
+		dir=$$(dirname "$$chart_path"); \
 		cd "$$dir"; \
-		helm dependency build --skip-refresh; \
-	'
+		build_deps() { \
+			if helm dependency build --skip-refresh >/dev/null 2>&1; then \
+				return 0; \
+			fi; \
+			echo "[retry] $$dir (refresh repo cache for this chart)"; \
+			helm dependency build; \
+		}; \
+		if [ "$(FORCE_DEPS)" = "1" ]; then \
+			echo "[build] $$dir (force)"; \
+			build_deps; \
+		elif helm dependency list 2>/dev/null | awk '\''NR==1{next} NF && $$4!="ok"{bad=1} END{exit bad}'\''; then \
+			echo "[skip]  $$dir (deps up-to-date)"; \
+		else \
+			echo "[build] $$dir"; \
+			build_deps; \
+		fi; \
+	' _
 
 	@make helm-docs
 

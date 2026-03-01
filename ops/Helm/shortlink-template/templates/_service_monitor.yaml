@@ -2,6 +2,12 @@
 
 {{- define "shortlink-common.ServiceMonitor" -}}
 {{- if and .Values.monitoring .Values.monitoring.enabled }}
+{{- $serviceMonitorPort := "http" -}}
+{{- range .Values.service.ports -}}
+  {{- if and .public (eq .name "metrics") -}}
+    {{- $serviceMonitorPort = "metrics" -}}
+  {{- end -}}
+{{- end -}}
 ---
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
@@ -26,7 +32,7 @@ spec:
     matchNames:
       - {{ .Release.Namespace }}
   endpoints:
-    - port: metrics
+    - port: {{ $serviceMonitorPort }}
   targetLabels:
     - app.kubernetes.io/name
     - helm.sh/chart

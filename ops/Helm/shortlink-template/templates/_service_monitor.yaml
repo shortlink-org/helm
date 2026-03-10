@@ -2,8 +2,11 @@
 
 {{- define "shortlink-common.ServiceMonitor" -}}
 {{- if and .Values.monitoring .Values.monitoring.enabled }}
-{{- $serviceMonitorPort := "http" -}}
+{{- $serviceMonitorPort := .Values.monitoring.port | default "metrics" -}}
 {{- range .Values.service.ports -}}
+  {{- if and .public (eq $serviceMonitorPort "") -}}
+    {{- $serviceMonitorPort = .name -}}
+  {{- end -}}
   {{- if and .public (eq .name "metrics") -}}
     {{- $serviceMonitorPort = "metrics" -}}
   {{- end -}}

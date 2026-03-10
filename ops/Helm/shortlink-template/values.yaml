@@ -8,3 +8,9 @@ _internal_defaults_do_not_set:
   admission:
     replica_count_limit:
       enabled: true
+
+# Prometheus Operator ServiceMonitor defaults
+monitoring:
+  # Explicit service port name for ServiceMonitor endpoint selection.
+  # Defaults to `metrics`. Override when the scrape port should be another named service port.
+  port: metrics

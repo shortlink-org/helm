@@ -27,7 +27,7 @@ Kubernetes: `>= 1.30.0 || >= v1.30.0-0`
 	</thead>
 	<tbody>
 		<tr>
-			<td id="minio--console"><a href="./values.yaml#L10">minio.console</a></td>
+			<td id="minio--console"><a href="./values.yaml#L13">minio.console</a></td>
 			<td>
 object
 </td>
@@ -55,14 +55,28 @@ true
 			<td></td>
 		</tr>
 		<tr>
-			<td id="minio--operator"><a href="./values.yaml#L8">minio.operator</a></td>
+			<td id="minio--operator--image--pullPolicy"><a href="./values.yaml#L11">minio.operator.image.pullPolicy</a></td>
 			<td>
-object
+string
 </td>
 			<td>
 				<div style="max-width: 300px;">
 <pre lang="json">
-{}
+"Always"
+</pre>
+</div>
+			</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td id="minio--operator--replicas"><a href="./values.yaml#L9">minio.operator.replicas</a></td>
+			<td>
+int
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+1
 </pre>
 </div>
 			</td>

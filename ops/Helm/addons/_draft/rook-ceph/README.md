@@ -14,8 +14,8 @@ Kubernetes: `>= 1.30.0 || >= v1.30.0-0`
 
 | Repository | Name | Version |
 |------------|------|---------|
-| file://../shortlink-template | shortlink-template | 0.9.6 |
-| https://charts.rook.io/release | rook-ceph | v1.17.6 |
+| https://charts.rook.io/release | rook-ceph | v1.19.2 |
+| oci://ghcr.io/shortlink-org/charts | shortlink-template | 0.12.3 |
 
 ## Values
 

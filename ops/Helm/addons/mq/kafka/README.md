@@ -14,8 +14,8 @@ Kubernetes: `>= 1.30.0 || >= v1.30.0-0`
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://kafbat.github.io/helm-charts | kafka-ui | 1.5.3 |
-| https://strimzi.io/charts/ | strimzi-kafka-operator | 0.49.0 |
+| https://kafbat.github.io/helm-charts | kafka-ui | 1.6.0 |
+| https://strimzi.io/charts/ | strimzi-kafka-operator | 0.51.0 |
 
 ## Values
 
@@ -42,7 +42,7 @@ true
 			<td></td>
 		</tr>
 		<tr>
-			<td id="strimzi-kafka-operator--dashboards--annotations--grafana_dashboard_folder"><a href="./values.yaml#L22">strimzi-kafka-operator.dashboards.annotations.grafana_dashboard_folder</a></td>
+			<td id="strimzi-kafka-operator--dashboards--annotations--grafana_dashboard_folder"><a href="./values.yaml#L24">strimzi-kafka-operator.dashboards.annotations.grafana_dashboard_folder</a></td>
 			<td>
 string
 </td>
@@ -56,7 +56,7 @@ string
 			<td></td>
 		</tr>
 		<tr>
-			<td id="strimzi-kafka-operator--dashboards--enabled"><a href="./values.yaml#L18">strimzi-kafka-operator.dashboards.enabled</a></td>
+			<td id="strimzi-kafka-operator--dashboards--enabled"><a href="./values.yaml#L20">strimzi-kafka-operator.dashboards.enabled</a></td>
 			<td>
 bool
 </td>
@@ -70,7 +70,7 @@ true
 			<td></td>
 		</tr>
 		<tr>
-			<td id="strimzi-kafka-operator--dashboards--label"><a href="./values.yaml#L19">strimzi-kafka-operator.dashboards.label</a></td>
+			<td id="strimzi-kafka-operator--dashboards--label"><a href="./values.yaml#L21">strimzi-kafka-operator.dashboards.label</a></td>
 			<td>
 string
 </td>
@@ -84,7 +84,7 @@ string
 			<td></td>
 		</tr>
 		<tr>
-			<td id="strimzi-kafka-operator--dashboards--labelValue"><a href="./values.yaml#L20">strimzi-kafka-operator.dashboards.labelValue</a></td>
+			<td id="strimzi-kafka-operator--dashboards--labelValue"><a href="./values.yaml#L22">strimzi-kafka-operator.dashboards.labelValue</a></td>
 			<td>
 string
 </td>
@@ -106,6 +106,20 @@ bool
 				<div style="max-width: 300px;">
 <pre lang="json">
 true
+</pre>
+</div>
+			</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td id="strimzi-kafka-operator--tmpDirSizeLimit"><a href="./values.yaml#L17">strimzi-kafka-operator.tmpDirSizeLimit</a></td>
+			<td>
+string
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+"100Mi"
 </pre>
 </div>
 			</td>

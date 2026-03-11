@@ -1,4 +1,4 @@
-# opentelemetry-operator
+# opentelemetry-ebpf-instrumentation
 
 ![Version: 0.2.2](https://img.shields.io/badge/Version-0.2.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
 
@@ -14,7 +14,7 @@ Kubernetes: `>= 1.30.0 || >= v1.30.0-0`
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://open-telemetry.github.io/opentelemetry-helm-charts | opentelemetry-operator | 0.92.1 |
+| https://open-telemetry.github.io/opentelemetry-helm-charts | opentelemetry-ebpf-instrumentation | 0.4.3 |
 
 ## Values
 
@@ -27,63 +27,35 @@ Kubernetes: `>= 1.30.0 || >= v1.30.0-0`
 	</thead>
 	<tbody>
 		<tr>
-			<td id="opentelemetry-operator--enabled"><a href="./values.yaml#L2">opentelemetry-operator.enabled</a></td>
-			<td>
-bool
-</td>
-			<td>
-				<div style="max-width: 300px;">
-<pre lang="json">
-true
-</pre>
-</div>
-			</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td id="opentelemetry-operator--fullnameOverride"><a href="./values.yaml#L4">opentelemetry-operator.fullnameOverride</a></td>
+			<td id="opentelemetry-ebpf-instrumentation--config--data--otel_metrics_export--endpoint"><a href="./values.yaml#L11">opentelemetry-ebpf-instrumentation.config.data.otel_metrics_export.endpoint</a></td>
 			<td>
 string
 </td>
 			<td>
 				<div style="max-width: 300px;">
 <pre lang="json">
-"opentelemetry-operator"
+"http://grafana-alloy.grafana.svc.cluster.local:4318"
 </pre>
 </div>
 			</td>
 			<td></td>
 		</tr>
 		<tr>
-			<td id="opentelemetry-operator--kubeRBACProxy--enabled"><a href="./values.yaml#L7">opentelemetry-operator.kubeRBACProxy.enabled</a></td>
-			<td>
-bool
-</td>
-			<td>
-				<div style="max-width: 300px;">
-<pre lang="json">
-true
-</pre>
-</div>
-			</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td id="opentelemetry-operator--manager--collectorImage--repository"><a href="./values.yaml#L13">opentelemetry-operator.manager.collectorImage.repository</a></td>
+			<td id="opentelemetry-ebpf-instrumentation--config--data--otel_traces_export--endpoint"><a href="./values.yaml#L9">opentelemetry-ebpf-instrumentation.config.data.otel_traces_export.endpoint</a></td>
 			<td>
 string
 </td>
 			<td>
 				<div style="max-width: 300px;">
 <pre lang="json">
-"otel/opentelemetry-collector-k8s"
+"http://grafana-tempo.grafana:4317"
 </pre>
 </div>
 			</td>
 			<td></td>
 		</tr>
 		<tr>
-			<td id="opentelemetry-operator--manager--createRbacPermissions"><a href="./values.yaml#L30">opentelemetry-operator.manager.createRbacPermissions</a></td>
+			<td id="opentelemetry-ebpf-instrumentation--enabled"><a href="./values.yaml#L2">opentelemetry-ebpf-instrumentation.enabled</a></td>
 			<td>
 bool
 </td>
@@ -97,35 +69,21 @@ true
 			<td></td>
 		</tr>
 		<tr>
-			<td id="opentelemetry-operator--manager--featureGates"><a href="./values.yaml#L10">opentelemetry-operator.manager.featureGates</a></td>
+			<td id="opentelemetry-ebpf-instrumentation--fullnameOverride"><a href="./values.yaml#L4">opentelemetry-ebpf-instrumentation.fullnameOverride</a></td>
 			<td>
 string
 </td>
 			<td>
 				<div style="max-width: 300px;">
 <pre lang="json">
-""
+"opentelemetry-ebpf-instrumentation"
 </pre>
 </div>
 			</td>
 			<td></td>
 		</tr>
 		<tr>
-			<td id="opentelemetry-operator--manager--prometheusRule--annotations--app"><a href="./values.yaml#L25">opentelemetry-operator.manager.prometheusRule.annotations.app</a></td>
-			<td>
-string
-</td>
-			<td>
-				<div style="max-width: 300px;">
-<pre lang="json">
-"opentelemetry-operator"
-</pre>
-</div>
-			</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td id="opentelemetry-operator--manager--prometheusRule--defaultRules--enabled"><a href="./values.yaml#L28">opentelemetry-operator.manager.prometheusRule.defaultRules.enabled</a></td>
+			<td id="opentelemetry-ebpf-instrumentation--serviceMonitor--enabled"><a href="./values.yaml#L14">opentelemetry-ebpf-instrumentation.serviceMonitor.enabled</a></td>
 			<td>
 bool
 </td>
@@ -139,35 +97,7 @@ true
 			<td></td>
 		</tr>
 		<tr>
-			<td id="opentelemetry-operator--manager--prometheusRule--enabled"><a href="./values.yaml#L22">opentelemetry-operator.manager.prometheusRule.enabled</a></td>
-			<td>
-bool
-</td>
-			<td>
-				<div style="max-width: 300px;">
-<pre lang="json">
-true
-</pre>
-</div>
-			</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td id="opentelemetry-operator--manager--serviceMonitor--enabled"><a href="./values.yaml#L16">opentelemetry-operator.manager.serviceMonitor.enabled</a></td>
-			<td>
-bool
-</td>
-			<td>
-				<div style="max-width: 300px;">
-<pre lang="json">
-true
-</pre>
-</div>
-			</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td id="opentelemetry-operator--manager--serviceMonitor--extraLabels--release"><a href="./values.yaml#L19">opentelemetry-operator.manager.serviceMonitor.extraLabels.release</a></td>
+			<td id="opentelemetry-ebpf-instrumentation--serviceMonitor--labels--release"><a href="./values.yaml#L17">opentelemetry-ebpf-instrumentation.serviceMonitor.labels.release</a></td>
 			<td>
 string
 </td>

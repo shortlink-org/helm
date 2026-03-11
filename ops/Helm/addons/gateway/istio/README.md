@@ -14,8 +14,8 @@ Kubernetes: `>= 1.30.0 || >= v1.30.0-0`
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://istio-release.storage.googleapis.com/charts | base | 1.26.3 |
-| https://istio-release.storage.googleapis.com/charts | istiod | 1.26.3 |
+| https://istio-release.storage.googleapis.com/charts | base | 1.29.1 |
+| https://istio-release.storage.googleapis.com/charts | istiod | 1.29.1 |
 
 ## Values
 
@@ -161,7 +161,7 @@ string
 			<td>
 				<div style="max-width: 300px;">
 <pre lang="json">
-"grafana-tempo.grafana.svc.cluster.local"
+"grafana-alloy.grafana.svc.cluster.local"
 </pre>
 </div>
 			</td>
@@ -217,7 +217,7 @@ string
 			<td>
 				<div style="max-width: 300px;">
 <pre lang="json">
-"otel-collector-collector.grafana.svc.cluster.local"
+"grafana-tempo.grafana.svc.cluster.local"
 </pre>
 </div>
 			</td>

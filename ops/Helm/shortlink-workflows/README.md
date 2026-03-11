@@ -22,7 +22,7 @@ Kubernetes: `>= 1.30.0 || >= v1.30.0-0`
 
 | Repository | Name | Version |
 |------------|------|---------|
-| file://../shortlink-template | shortlink-template | 0.9.6 |
+| oci://ghcr.io/shortlink-org/charts | shortlink-template | 0.12.3 |
 
 ## Values
 

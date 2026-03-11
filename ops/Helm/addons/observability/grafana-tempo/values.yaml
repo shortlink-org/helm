@@ -27,6 +27,10 @@ tempo:
             - service-graphs
             - span-metrics
             - local-blocks
+          # Cardinality limit: once reached, no new series are created.
+          # See https://grafana.com/blog/generating-metrics-from-traces-with-cardinality-control-a-closer-look-at-hyperloglog-in-tempo/
+          # Monitor: tempo_metrics_generator_registry_active_series_demand_estimate
+          max_active_series: 500000
 
     ingester:
       trace_idle_period: 10s # the length of time after a trace has not received spans to consider it complete and flush it

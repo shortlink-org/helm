@@ -13,5 +13,5 @@ opentelemetry-ebpf-instrumentation:
   serviceMonitor:
     enabled: true
 
-    labels:
+    additionalLabels:
       release: prometheus-operator

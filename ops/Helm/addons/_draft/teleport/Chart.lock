@@ -1,12 +1,12 @@
 dependencies:
 - name: teleport-cluster
   repository: https://charts.releases.teleport.dev
-  version: 18.7.1
+  version: 18.7.3
 - name: teleport-kube-agent
   repository: https://charts.releases.teleport.dev
   version: 18.7.3
 - name: shortlink-template
   repository: oci://ghcr.io/shortlink-org/charts
   version: 0.12.4
-digest: sha256:150c3cea6af5790ad7534c7a92f9f8de7ae8e7bc9188bd797e1cddb0e059aa47
-generated: "2026-03-14T10:23:40.985002854Z"
+digest: sha256:def66f0a8cb503f5f8fb8241b3d9f27ea753c7bc62858af4ef07ae6058a0be46
+generated: "2026-03-14T18:36:43.117333668Z"

@@ -110,7 +110,7 @@ otelcol.processor.batch "logs" {
 
 otelcol.exporter.otlphttp "prom" {
   client {
-    endpoint = "http://prometheus-prometheus.prometheus-operator.svc:9090/api/v1/otlp"
+    endpoint = "http://prometheus-prometheus.prometheus-operator.svc:9090/prometheus/api/v1/otlp"
     tls { insecure = true }
   }
 }

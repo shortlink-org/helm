@@ -18,13 +18,19 @@ helm-docs: ### Generate HELM docs
 	# TODO: remove artifact after generation docs
 	@rm ops/Helm/README.md.gotmpl
 
-P ?= 8
+# Parallel helm dependency updates contend on the shared repo cache (~/.cache/helm or
+# ~/Library/Caches/helm), which can yield missing index files and flaky network timeouts.
+# Override only if you accept that risk, e.g. P=4 make helm-upgrade
+P ?= 1
 FORCE_DEPS ?= 0
+# Skip slow steps when iterating locally (repos were just updated, no README regen needed)
+SKIP_HELM_DOCS ?= 0
+SKIP_HELM_REPO_UPDATE ?= 0
 
-.PHONY: helm-upgrade
-helm-upgrade: ### Upgrade all helm charts
-	@helm repo update
-	@find ./ops/Helm -name "Chart.yaml" -print0 | xargs -0 -n1 -P $(P) bash -euo pipefail -c '\
+.PHONY: helm-upgrade-deps
+helm-upgrade-deps: ### helm dependency build/update for all charts (no helm-docs, no docker)
+	@if [ "$(SKIP_HELM_REPO_UPDATE)" != "1" ]; then helm repo update; fi
+	@find "$(SELF_DIR)ops/Helm" \( -path '*/_draft' -prune \) -o -name "Chart.yaml" -print0 | xargs -0 -n1 -P $(P) bash -euo pipefail -c '\
 		chart_path="$$1"; \
 		dir=$$(dirname "$$chart_path"); \
 		cd "$$dir"; \
@@ -50,18 +56,15 @@ helm-upgrade: ### Upgrade all helm charts
 		fi; \
 	' _
 
-	@make helm-docs
+.PHONY: helm-upgrade
+helm-upgrade: helm-upgrade-deps ### helm-upgrade-deps + helm-docs (set SKIP_HELM_DOCS=1 to skip README regen)
+	@if [ "$(SKIP_HELM_DOCS)" != "1" ]; then $(MAKE) helm-docs; fi
 
 .PHONY: helm-values-generate
-helm-values-generate: ### Generate or process values schema for all Helm charts
-	@find "$(CURDIR)/ops/Helm" -type f -name "Chart.yaml" -print0 | \
-	while IFS= read -r -d '' file; do \
-		dir="$$(dirname "$$file")"; \
-		echo "Processing directory: $$dir"; \
-		if [ -f "$$dir/.schema.yaml" ]; then \
-			echo "Generating values.schema.json in $$dir from .schema.yaml..."; \
-			cd "$$dir" && helm schema; \
-		else \
-			echo "No .schema.yaml found in $$dir, skipping..."; \
-		fi; \
+helm-values-generate: ### Generate values.schema.json where .schema.yaml exists (skips charts without schema)
+	@find "$(CURDIR)/ops/Helm" \( -path '*/_draft' -prune \) -o -name ".schema.yaml" -print0 | \
+	while IFS= read -r -d '' schema; do \
+		dir="$$(dirname "$$schema")"; \
+		echo "Generating values.schema.json in $$dir from .schema.yaml..."; \
+		cd "$$dir" && helm schema; \
 	done

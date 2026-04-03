@@ -3,8 +3,8 @@
 # Define the base directory for your monorepo
 BASE_DIR="./ops/Helm"
 
-# Find all Chart.yaml files in the monorepo
-CHARTS=$(find "$BASE_DIR" -name "Chart.yaml")
+# Find all Chart.yaml files (skip draft charts under addons/_draft)
+CHARTS=$(find "$BASE_DIR" \( -path '*/_draft' -prune \) -o -name "Chart.yaml" -print)
 
 # Loop through each found Chart.yaml and run helm lint
 for CHART in $CHARTS;

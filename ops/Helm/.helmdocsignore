@@ -1,0 +1,2 @@
+# Draft charts: skip in helm-docs (same paths excluded in Makefile helm-upgrade / helm-values-generate)
+addons/_draft/

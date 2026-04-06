@@ -27,8 +27,8 @@ FORCE_DEPS ?= 0
 SKIP_HELM_DOCS ?= 0
 SKIP_HELM_REPO_UPDATE ?= 0
 
-.PHONY: helm-upgrade-deps
-helm-upgrade-deps: ### helm dependency build/update for all charts (no helm-docs, no docker)
+.PHONY: helm-upgrade
+helm-upgrade: ### Upgrade chart dependencies; SKIP_HELM_DOCS=1 skips helm-docs; SKIP_HELM_REPO_UPDATE=1 skips repo update
 	@if [ "$(SKIP_HELM_REPO_UPDATE)" != "1" ]; then helm repo update; fi
 	@find "$(SELF_DIR)ops/Helm" \( -path '*/_draft' -prune \) -o -name "Chart.yaml" -print0 | xargs -0 -n1 -P $(P) bash -euo pipefail -c '\
 		chart_path="$$1"; \
@@ -55,9 +55,6 @@ helm-upgrade-deps: ### helm dependency build/update for all charts (no helm-docs
 			build_deps; \
 		fi; \
 	' _
-
-.PHONY: helm-upgrade
-helm-upgrade: helm-upgrade-deps ### helm-upgrade-deps + helm-docs (set SKIP_HELM_DOCS=1 to skip README regen)
 	@if [ "$(SKIP_HELM_DOCS)" != "1" ]; then $(MAKE) helm-docs; fi
 
 .PHONY: helm-values-generate

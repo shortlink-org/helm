@@ -9,6 +9,8 @@ data:
         spec:
           hostNetwork: true
           dnsPolicy: ClusterFirstWithHostNet
+          securityContext:
+            sysctls: []
   service: |
     spec:
       type: ClusterIP

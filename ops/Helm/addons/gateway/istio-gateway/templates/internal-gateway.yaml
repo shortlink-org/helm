@@ -1,4 +1,4 @@
-apiVersion: gateway.networking.k8s.io/v1beta1
+apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
 metadata:
   name: internal-gateway
@@ -48,7 +48,7 @@ spec:
 
 ---
 
-apiVersion: security.istio.io/v1beta1
+apiVersion: security.istio.io/v1
 kind: PeerAuthentication
 metadata:
   name: internal-mtls
@@ -57,4 +57,11 @@ spec:
     matchLabels:
       gateway.networking.k8s.io/gateway-name: internal-gateway
   mtls:
-    mode: PERMISSIVE
+    mode: STRICT
+  # Gateway listeners terminate downstream HTTP/TLS themselves, so these ports
+  # must not require Istio mTLS on the workload.
+  portLevelMtls:
+    80:
+      mode: DISABLE
+    50051:
+      mode: DISABLE

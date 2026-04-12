@@ -15,7 +15,7 @@ type: application
 deprecated: false
 dependencies:
   - name: scylla-manager
-    version: v1.20.1
+    version: v1.20.2
     repository: https://scylla-operator-charts.storage.googleapis.com/stable
     condition: scylla-manager.enabled
     tags:

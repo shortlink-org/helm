@@ -11,6 +11,20 @@ data:
           dnsPolicy: ClusterFirstWithHostNet
           securityContext:
             sysctls: []
+          containers:
+            - name: istio-proxy
+              securityContext:
+                allowPrivilegeEscalation: false
+                privileged: false
+                readOnlyRootFilesystem: true
+                runAsUser: 1337
+                runAsGroup: 1337
+                runAsNonRoot: true
+                capabilities:
+                  drop:
+                    - ALL
+                  add:
+                    - NET_BIND_SERVICE
   service: |
     spec:
       type: ClusterIP

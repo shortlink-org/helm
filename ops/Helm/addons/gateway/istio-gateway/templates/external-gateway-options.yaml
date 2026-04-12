@@ -3,28 +3,22 @@ kind: ConfigMap
 metadata:
   name: external-gateway-options
 data:
-  deployment: |
-    spec:
-      template:
-        spec:
-          hostNetwork: true
-          dnsPolicy: ClusterFirstWithHostNet
-          securityContext:
-            sysctls: []
-          containers:
-            - name: istio-proxy
-              securityContext:
-                allowPrivilegeEscalation: false
-                privileged: false
-                readOnlyRootFilesystem: true
-                runAsUser: 1337
-                runAsGroup: 1337
-                runAsNonRoot: true
-                capabilities:
-                  drop:
-                    - ALL
-                  add:
-                    - NET_BIND_SERVICE
   service: |
     spec:
-      type: ClusterIP
+      type: NodePort
+      ports:
+        - name: status-port
+          port: 15021
+          protocol: TCP
+          targetPort: 15021
+          nodePort: 15021
+        - name: http
+          port: 80
+          protocol: TCP
+          targetPort: 80
+          nodePort: 80
+        - name: https
+          port: 443
+          protocol: TCP
+          targetPort: 443
+          nodePort: 443

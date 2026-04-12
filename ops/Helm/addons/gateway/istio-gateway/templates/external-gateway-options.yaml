@@ -9,3 +9,6 @@ data:
         spec:
           hostNetwork: true
           dnsPolicy: ClusterFirstWithHostNet
+  service: |
+    spec:
+      type: ClusterIP

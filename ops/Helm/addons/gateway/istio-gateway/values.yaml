@@ -1,8 +1,2 @@
 istio-ingress:
-  enabled: true
-
-# Upstream istio/gateway subchart: default LoadBalancer stays pending without a working LB pool.
-# With Cilium gatewayAPI.hostNetwork, external 80/443 are on the node; in-cluster uses ClusterIP.
-gateway:
-  service:
-    type: ClusterIP
+  enabled: false

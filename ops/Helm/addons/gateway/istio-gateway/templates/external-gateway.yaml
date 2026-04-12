@@ -4,10 +4,14 @@ metadata:
   name: external-gateway
   annotations:
     cert-manager.io/cluster-issuer: cert-manager-production
-    # No cilium.io/lb-ipam-ips: with gatewayAPI.hostNetwork and a single public IP equal to the
-    # node IP, LB IPAM/L2 on that address breaks reachability; traffic hits the node ports directly.
+    networking.istio.io/service-type: ClusterIP
 spec:
   gatewayClassName: istio
+  infrastructure:
+    parametersRef:
+      group: ""
+      kind: ConfigMap
+      name: external-gateway-options
   listeners:
     - name: http
       port: 80

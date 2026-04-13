@@ -8,6 +8,9 @@ When used with Argo Rollouts Canary, creates HTTPRoute with two backendRefs:
 - canary/preview service (weight 0)
 
 Argo Rollouts will manage the weights during canary deployment.
+
+Each generated backendRef includes group (empty), kind Service, and weight (default 1;
+override with httpRoute.backendRefWeight or per-entry fields when using httpRoute.backendRefs).
 Docs: https://rollouts-plugin-trafficrouter-gatewayapi.readthedocs.io/
 */}}
 
@@ -23,10 +26,19 @@ Docs: https://rollouts-plugin-trafficrouter-gatewayapi.readthedocs.io/
   {{- end -}}
 {{- end -}}
 
-{{- $parentRefs := .Values.httpRoute.parentRefs | default (list (dict
+{{- $parentRefDefaults := dict "group" "gateway.networking.k8s.io" "kind" "Gateway" -}}
+{{- $defaultParentRef := mergeOverwrite $parentRefDefaults (dict
   "name" (.Values.httpRoute.gatewayName | default "external-gateway")
   "namespace" (.Values.httpRoute.gatewayNamespace | default "istio-ingress")
-)) -}}
+) -}}
+{{- $parentRefs := list -}}
+{{- if .Values.httpRoute.parentRefs -}}
+  {{- range .Values.httpRoute.parentRefs -}}
+    {{- $parentRefs = append $parentRefs (mergeOverwrite $parentRefDefaults .) -}}
+  {{- end -}}
+{{- else -}}
+  {{- $parentRefs = list $defaultParentRef -}}
+{{- end -}}
 
 {{- $matches := list -}}
 {{- if .Values.httpRoute.paths -}}
@@ -39,6 +51,8 @@ Docs: https://rollouts-plugin-trafficrouter-gatewayapi.readthedocs.io/
 
 {{- $serviceName := (.Values.httpRoute.backendRefName | default (include "helpers.fullname" .)) -}}
 {{- $servicePort := (.Values.httpRoute.port | default $backendPort) -}}
+{{- $backendRefSvcDefaults := dict "group" "" "kind" "Service" -}}
+{{- $defaultBackendWeight := .Values.httpRoute.backendRefWeight | default 1 -}}
 
 {{- /* Check if using Rollout with Canary strategy */ -}}
 {{- $isCanary := and (eq (.Values.deploy.type | default "Deployment") "Rollout") (eq (.Values.deploy.strategy.type | default "") "Canary") -}}
@@ -46,11 +60,13 @@ Docs: https://rollouts-plugin-trafficrouter-gatewayapi.readthedocs.io/
 {{- /* Build backendRefs based on deployment type */ -}}
 {{- $backendRefs := list -}}
 {{- if .Values.httpRoute.backendRefs -}}
-  {{- $backendRefs = .Values.httpRoute.backendRefs -}}
+  {{- range .Values.httpRoute.backendRefs -}}
+    {{- $backendRefs = append $backendRefs (mergeOverwrite (mergeOverwrite $backendRefSvcDefaults (dict "weight" $defaultBackendWeight)) .) -}}
+  {{- end -}}
 {{- else if $isCanary -}}
   {{- /* For Canary: stable (100%) and canary (0%) services */ -}}
-  {{- $stableRef := dict "name" $serviceName "port" $servicePort "weight" 100 -}}
-  {{- $canaryRef := dict "name" (printf "%s-preview" $serviceName) "port" $servicePort "weight" 0 -}}
+  {{- $stableRef := mergeOverwrite (mergeOverwrite $backendRefSvcDefaults (dict "weight" 100)) (dict "name" $serviceName "port" $servicePort) -}}
+  {{- $canaryRef := mergeOverwrite (mergeOverwrite $backendRefSvcDefaults (dict "weight" 0)) (dict "name" (printf "%s-preview" $serviceName) "port" $servicePort) -}}
   {{- with .Values.httpRoute.backendRefNamespace -}}
     {{- $_ := set $stableRef "namespace" . -}}
     {{- $_ := set $canaryRef "namespace" . -}}
@@ -58,7 +74,7 @@ Docs: https://rollouts-plugin-trafficrouter-gatewayapi.readthedocs.io/
   {{- $backendRefs = list $stableRef $canaryRef -}}
 {{- else -}}
   {{- /* For regular deployment: single backend */ -}}
-  {{- $ref := dict "name" $serviceName "port" $servicePort -}}
+  {{- $ref := mergeOverwrite (mergeOverwrite $backendRefSvcDefaults (dict "weight" $defaultBackendWeight)) (dict "name" $serviceName "port" $servicePort) -}}
   {{- with .Values.httpRoute.backendRefNamespace -}}
     {{- $_ := set $ref "namespace" . -}}
   {{- end -}}

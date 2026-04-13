@@ -1,17 +1,39 @@
 {{/* vim: set filetype=mustache: */}}
 
 {{/*
-HTTPRoute for Gateway API traffic routing.
+  shortlink-common.http_route
+  ---------------------------
+  Gateway API HTTPRoute (gateway.networking.k8s.io/v1). Renders when httpRoute.enabled.
 
-When used with Argo Rollouts Canary, creates HTTPRoute with two backendRefs:
-- stable service (weight 100)
-- canary/preview service (weight 0)
+  parentRefs
+  ----------
+  - If httpRoute.parentRefs is unset: one ref from gatewayName / gatewayNamespace
+    (defaults: external-gateway, istio-ingress).
+  - Every ref (default or from values) is merged with group gateway.networking.k8s.io
+    and kind Gateway so list items need only name/namespace plus any optional fields.
 
-Argo Rollouts will manage the weights during canary deployment.
+  backendRefs (only for refs this template builds; see rules below)
+  ------------------------------------------------------------------
+  - Each generated ref includes group: "" and kind: Service.
+  - Single service: name from httpRoute.backendRefName or helpers.fullname; port from
+    httpRoute.port or first public service.ports[].port (see loop above, else 80).
+    weight defaults to 1; set httpRoute.backendRefWeight for a different default.
+  - deploy.type Rollout + deploy.strategy.type Canary: two refs — stable weight 100,
+    <fullname>-preview weight 0 (plugin adjusts traffic). Same Service group/kind on both.
+  - If httpRoute.backendRefs is set: merge each entry with Service defaults + default weight;
+    keys in values override (per-ref weight, name, port, namespace, …).
+  - httpRoute.backendRefNamespace adds namespace to generated refs when set.
 
-Each generated backendRef includes group (empty), kind Service, and weight (default 1;
-override with httpRoute.backendRefWeight or per-entry fields when using httpRoute.backendRefs).
-Docs: https://rollouts-plugin-trafficrouter-gatewayapi.readthedocs.io/
+  rules / matches
+  ---------------
+  - If httpRoute.rules is unset: one rule with PathPrefix matches from httpRoute.paths or
+    httpRoute.path (default "/"), and backendRefs from above.
+  - If httpRoute.rules is set: value replaces spec.rules entirely (toYaml); no merging
+    inside that YAML — supply full Gateway API shapes.
+
+  Optional: httpRoute.hostnames.
+
+  Ref: https://rollouts-plugin-trafficrouter-gatewayapi.readthedocs.io/
 */}}
 
 {{- define "shortlink-common.http_route" -}}

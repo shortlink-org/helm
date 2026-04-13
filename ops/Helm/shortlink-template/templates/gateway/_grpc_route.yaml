@@ -1,34 +1,36 @@
 {{/* vim: set filetype=mustache: */}}
 
 {{/*
-`shortlink-common.grpc_route` Helm template
+  shortlink-common.grpc_route
+  ---------------------------
+  Renders gateway.networking.k8s.io/v1 GRPCRoute when .Values.grpcRoute.enabled.
 
-GRPCRoute for Gateway API traffic routing.
+  parentRefs
+  ----------
+  - If grpcRoute.parentRefs is unset: one ref from gatewayName / gatewayNamespace
+    (defaults: internal-gateway, istio-system).
+  - Every ref is merged with group: gateway.networking.k8s.io, kind: Gateway.
 
-When used with Argo Rollouts Canary, creates GRPCRoute with two backendRefs:
-- stable service (weight 100)
-- canary/preview service (weight 0)
+  backendRefs (generated refs only; see rules caveat below)
+  ------------------------------------------------------------
+  - Always include group: "" and kind: Service on refs this template builds.
+  - Single backend: name from grpcRoute.backendRefName or helpers.fullname; port from
+    grpcRoute.port or first public service.ports[].port (else 50051). Default weight 1
+    unless grpcRoute.backendRefWeight is set.
+  - Rollout + Canary: stable weight 100, <fullname>-preview weight 0; Argo adjusts weights.
+  - grpcRoute.backendRefs: each entry merged with Service defaults + default weight;
+    values fields override.
+  - Optional grpcRoute.backendRefNamespace on generated refs.
 
-Argo Rollouts will manage the weights during canary deployment.
-Docs: https://rollouts-plugin-trafficrouter-gatewayapi.readthedocs.io/
+  rules (default path)
+  --------------------
+  - If grpcRoute.rules is unset: one rule with gRPC method matches from grpcRoute.methods
+    (list) or grpcRoute.method (single Exact), and backendRefs from above.
+  - If grpcRoute.rules is set: emitted as-is — no merging inside your rules YAML.
 
-Behavior:
-- Generates a GRPCRoute when `grpcRoute.enabled` is true.
-- By default attaches to Gateway:
-    name: internal-gateway
-    namespace: istio-system
-- By default routes all gRPC methods to the first `service.ports[]` entry with `public: true`.
-- Backend service name defaults to `helpers.fullname`.
+  Other: grpcRoute.hostnames; default backend port discovery uses service.ports (public).
 
-Override points in values:
-- grpcRoute.hostnames
-- grpcRoute.gatewayName / grpcRoute.gatewayNamespace
-- grpcRoute.parentRefs (full override)
-- grpcRoute.method (single gRPC method match)
-- grpcRoute.methods (list of gRPC method matches for multiple method matches)
-- grpcRoute.port
-- grpcRoute.rules (full override of rules block)
-- grpcRoute.backendRefs (full override of backendRefs)
+  Ref: https://rollouts-plugin-trafficrouter-gatewayapi.readthedocs.io/
 */}}
 
 {{- define "shortlink-common.grpc_route" }}
@@ -44,8 +46,24 @@ Override points in values:
 {{- end }}
 {{- $defaultBackendPort := (index $backend "port" | default 50051) }}
 
-{{- $serviceName := (include "helpers.fullname" .) }}
+{{- $parentRefDefaults := dict "group" "gateway.networking.k8s.io" "kind" "Gateway" -}}
+{{- $defaultParentRef := mergeOverwrite $parentRefDefaults (dict
+  "name" (.Values.grpcRoute.gatewayName | default "internal-gateway")
+  "namespace" (.Values.grpcRoute.gatewayNamespace | default "istio-system")
+) -}}
+{{- $parentRefs := list -}}
+{{- if .Values.grpcRoute.parentRefs -}}
+  {{- range .Values.grpcRoute.parentRefs -}}
+    {{- $parentRefs = append $parentRefs (mergeOverwrite $parentRefDefaults .) -}}
+  {{- end -}}
+{{- else -}}
+  {{- $parentRefs = list $defaultParentRef -}}
+{{- end -}}
+
+{{- $serviceName := (.Values.grpcRoute.backendRefName | default (include "helpers.fullname" .)) }}
 {{- $servicePort := (.Values.grpcRoute.port | default $defaultBackendPort) }}
+{{- $backendRefSvcDefaults := dict "group" "" "kind" "Service" -}}
+{{- $defaultBackendWeight := .Values.grpcRoute.backendRefWeight | default 1 -}}
 
 {{- /* Check if using Rollout with Canary strategy */ -}}
 {{- $isCanary := and (eq (.Values.deploy.type | default "Deployment") "Rollout") (eq (.Values.deploy.strategy.type | default "") "Canary") -}}
@@ -53,15 +71,25 @@ Override points in values:
 {{- /* Build backendRefs based on deployment type */ -}}
 {{- $backendRefs := list -}}
 {{- if .Values.grpcRoute.backendRefs -}}
-  {{- $backendRefs = .Values.grpcRoute.backendRefs -}}
+  {{- range .Values.grpcRoute.backendRefs -}}
+    {{- $backendRefs = append $backendRefs (mergeOverwrite (mergeOverwrite $backendRefSvcDefaults (dict "weight" $defaultBackendWeight)) .) -}}
+  {{- end -}}
 {{- else if $isCanary -}}
   {{- /* For Canary: stable (100%) and canary (0%) services */ -}}
-  {{- $stableRef := dict "name" $serviceName "port" $servicePort "weight" 100 -}}
-  {{- $canaryRef := dict "name" (printf "%s-preview" $serviceName) "port" $servicePort "weight" 0 -}}
+  {{- $stableRef := mergeOverwrite (mergeOverwrite $backendRefSvcDefaults (dict "weight" 100)) (dict "name" $serviceName "port" $servicePort) -}}
+  {{- $canaryRef := mergeOverwrite (mergeOverwrite $backendRefSvcDefaults (dict "weight" 0)) (dict "name" (printf "%s-preview" $serviceName) "port" $servicePort) -}}
+  {{- with .Values.grpcRoute.backendRefNamespace -}}
+    {{- $_ := set $stableRef "namespace" . -}}
+    {{- $_ := set $canaryRef "namespace" . -}}
+  {{- end -}}
   {{- $backendRefs = list $stableRef $canaryRef -}}
 {{- else -}}
   {{- /* For regular deployment: single backend */ -}}
-  {{- $backendRefs = list (dict "name" $serviceName "port" $servicePort) -}}
+  {{- $ref := mergeOverwrite (mergeOverwrite $backendRefSvcDefaults (dict "weight" $defaultBackendWeight)) (dict "name" $serviceName "port" $servicePort) -}}
+  {{- with .Values.grpcRoute.backendRefNamespace -}}
+    {{- $_ := set $ref "namespace" . -}}
+  {{- end -}}
+  {{- $backendRefs = list $ref -}}
 {{- end -}}
 
 ---
@@ -70,14 +98,8 @@ kind: GRPCRoute
 metadata:
   {{- include "shortlink-common.metadata" . | nindent 2 }}
 spec:
-  {{- if .Values.grpcRoute.parentRefs }}
   parentRefs:
-    {{- toYaml .Values.grpcRoute.parentRefs | nindent 4 }}
-  {{- else }}
-  parentRefs:
-    - name: {{ .Values.grpcRoute.gatewayName | default "internal-gateway" }}
-      namespace: {{ .Values.grpcRoute.gatewayNamespace | default "istio-system" }}
-  {{- end }}
+    {{- toYaml $parentRefs | nindent 4 }}
 
   {{- with .Values.grpcRoute.hostnames }}
   hostnames:

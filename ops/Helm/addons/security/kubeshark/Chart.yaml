@@ -10,13 +10,12 @@ maintainers:
   - email: batazor111@gmail.com
     name: batazor
     url: batazor.ru
-engine: gotpl
 type: application
 deprecated: false
 dependencies:
   - name: kubeshark
-    version: 41.0
-    repository: https://helm.kubeshark.co
+    version: 53.2.0
+    repository: https://helm.kubeshark.com
     condition: kubeshark.enabled
     tags:
       - kubeshark

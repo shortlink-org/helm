@@ -13,7 +13,6 @@ maintainers:
   - email: batazor111@gmail.com
     name: batazor
     url: batazor.ru
-engine: gotpl
 type: application
 deprecated: false
 dependencies:

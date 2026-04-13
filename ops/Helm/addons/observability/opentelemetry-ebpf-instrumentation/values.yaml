@@ -10,6 +10,27 @@ opentelemetry-ebpf-instrumentation:
       otel_metrics_export:
         endpoint: http://grafana-alloy.grafana.svc.cluster.local:4318
 
+      # HTTP header enrichment (OBI >= v0.7.0): only x-user-id on spans.
+      # Ref: https://opentelemetry.io/docs/zero-code/obi/configure/metrics-traces-attributes/#http-header-enrichment-for-spans
+      ebpf:
+        buffer_sizes:
+          http: 8192
+        payload_extraction:
+          http:
+            enrichment:
+              enabled: true
+              policy:
+                default_action: exclude
+                match_order: first_match_wins
+              rules:
+                - action: include
+                  type: headers
+                  scope: all
+                  match:
+                    patterns:
+                      - x-user-id
+                    case_sensitive: false
+
   serviceMonitor:
     enabled: true
 

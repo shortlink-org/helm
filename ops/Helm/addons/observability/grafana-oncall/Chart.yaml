@@ -19,7 +19,7 @@ dependencies:
     tags:
       - monitoring
   - name: redis
-    version: 25.3.10
+    version: 25.3.11
     repository: oci://registry-1.docker.io/bitnamicharts
     condition: redis.enabled
     tags:

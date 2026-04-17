@@ -21,6 +21,6 @@ dependencies:
       - kafka
       - mq
   - name: kafka-ui
-    version: 1.6.2
+    version: 1.6.3
     repository: https://kafbat.github.io/helm-charts
     condition: kafka-ui.enabled

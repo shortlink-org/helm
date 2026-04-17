@@ -13,7 +13,7 @@ type: application
 deprecated: false
 dependencies:
   - name: open-feature-operator
-    version: v0.8.9
+    version: v0.9.0
     repository: https://open-feature.github.io/open-feature-operator
     condition: open-feature-operator.enabled
     tags:

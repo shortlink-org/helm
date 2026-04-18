@@ -1,0 +1,6 @@
+dependencies:
+- name: k8ssandra-operator
+  repository: https://helm.k8ssandra.io/stable
+  version: 1.31.0
+digest: sha256:3deda2237247a001368e17762b65762d316557a9a9b4c58f522f68a40c0c6740
+generated: "2026-04-18T06:51:20.153465+05:30"

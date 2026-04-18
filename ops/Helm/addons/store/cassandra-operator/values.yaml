@@ -1,0 +1,15 @@
+# Common default values for cassandra-operator (k8ssandra-operator).
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+#
+# The bundled cass-operator uses admission webhooks and expects cert-manager in the cluster.
+# For local rendering: helm template ... --api-versions=cert-manager.io/v1
+# Or under cassandra-operator.cass-operator: disableCertManagerCheck: true (not for production).
+
+cassandra-operator:
+  enabled: true
+
+  resources:
+    requests:
+      cpu: 15m
+      memory: 30Mi

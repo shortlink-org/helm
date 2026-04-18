@@ -1,0 +1,24 @@
+apiVersion: v2
+appVersion: "1.31.0"
+name: cassandra-operator
+version: 1.0.0
+kubeVersion: ">= 1.30.0 || >= v1.30.0-0"
+keywords:
+  - cassandra
+  - k8ssandra
+  - operator
+maintainers:
+  - email: batazor111@gmail.com
+    name: batazor
+    url: batazor.ru
+type: application
+deprecated: false
+dependencies:
+  - name: k8ssandra-operator
+    alias: cassandra-operator
+    version: 1.31.0
+    repository: https://helm.k8ssandra.io/stable
+    condition: cassandra-operator.enabled
+    tags:
+      - cassandra
+      - store

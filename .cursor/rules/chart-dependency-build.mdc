@@ -1,0 +1,27 @@
+---
+description: Когда запускать helm dependency build/update (только при обновлении версий чартов)
+alwaysApply: true
+---
+
+# Helm: dependency build только при обновлении чартов
+
+## Не делать на каждый чих
+
+Не запускай **`helm dependency update`**, **`helm dependency build`** и не пересобирай зависимости «для проверки» после правок шаблонов, `values.yaml`, манифестов GitOps или мелких правок в `Chart.yaml`, если **не менялись версии зависимостей** в `Chart.yaml` и цель — не подтянуть **новую** версию subchart / OCI-чарта.
+
+Обычные проверки без обновления lock:
+
+- `helm lint <chart>`
+- `helm template ...` (после `helm dependency build` **только если** `charts/` уже есть от предыдущей сборки; иначе один раз собрать зависимости — см. ниже)
+
+## Когда dependency build/update нужен
+
+Запускай **`helm dependency update`** (и коммить обновлённый **`Chart.lock`**) **только если**:
+
+- Повышаешь или меняешь **`version`** / **`repository`** у **`dependencies`** в `Chart.yaml`, **или**
+- Явно хочешь перейти на **более новую версию** внешнего чарта (bitnami, temporal, k8ssandra, shortlink-template и т.д.), **или**
+- Первичная инициализация чарта без `charts/*.tgz` (однократно).
+
+## Репозитории
+
+То же относится к репозиториям **helm**, **gitops** и **shop**: не гонять сборку зависимостей при каждом изменении конфигурации Argo CD или values в shop, если версии чартов в `Chart.yaml` не трогали.

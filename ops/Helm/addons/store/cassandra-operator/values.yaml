@@ -4,10 +4,12 @@
 #
 # The bundled cass-operator uses admission webhooks and expects cert-manager in the cluster.
 # For local rendering: helm template ... --api-versions=cert-manager.io/v1
-# Or under cassandra-operator.cass-operator: disableCertManagerCheck: true (not for production).
+# Or under k8ssandra-operator.cass-operator: disableCertManagerCheck: true (not for production).
 
-cassandra-operator:
+k8ssandra-operator:
   enabled: true
+  # Pre-upgrade CRD job pulls chart by name from repo; skip if it blocks sync (CRDs still ship with the chart).
+  disableCrdUpgraderJob: true
 
   resources:
     requests:

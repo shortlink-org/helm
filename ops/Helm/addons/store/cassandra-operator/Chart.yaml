@@ -14,11 +14,12 @@ maintainers:
 type: application
 deprecated: false
 dependencies:
+  # Do not use alias: k8ssandra-operator CRD hook passes .Chart.Name to --chartName; alias would
+  # break the PreSync Job (client looks for a chart named like the alias, not k8ssandra-operator).
   - name: k8ssandra-operator
-    alias: cassandra-operator
     version: 1.31.0
     repository: https://helm.k8ssandra.io/stable
-    condition: cassandra-operator.enabled
+    condition: k8ssandra-operator.enabled
     tags:
       - cassandra
       - store

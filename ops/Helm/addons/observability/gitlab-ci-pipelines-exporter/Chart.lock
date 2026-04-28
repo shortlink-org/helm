@@ -1,0 +1,6 @@
+dependencies:
+- name: gitlab-ci-pipelines-exporter
+  repository: https://mvisonneau.github.io/helm-charts
+  version: 0.3.5
+digest: sha256:903c8657397dbecc8675db32d642c5eb89c6aaf45911f70fe52b05c6a490693f
+generated: "2026-04-29T05:39:53.287469+07:00"

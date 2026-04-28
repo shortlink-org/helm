@@ -1,0 +1,24 @@
+apiVersion: v2
+appVersion: "1.0.0"
+name: gitlab-ci-pipelines-exporter
+version: 0.1.0
+kubeVersion: ">= 1.30.0 || >= v1.30.0-0"
+keywords:
+  - gitlab
+  - ci
+  - observability
+  - prometheus
+maintainers:
+  - email: batazor111@gmail.com
+    name: batazor
+    url: batazor.ru
+type: application
+deprecated: false
+dependencies:
+  - name: gitlab-ci-pipelines-exporter
+    version: 0.3.5
+    repository: https://mvisonneau.github.io/helm-charts
+    condition: gitlab-ci-pipelines-exporter.enabled
+    tags:
+      - observability
+      - metrics

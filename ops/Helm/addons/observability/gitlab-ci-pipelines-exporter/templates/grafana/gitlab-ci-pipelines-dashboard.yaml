@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: gitlab-ci-pipelines-dashboard
+  labels:
+    grafana_dashboard: "true"
+  annotations:
+    grafana_dashboard_folder: GitLab
+data:
+  gitlab-ci-pipelines-dashboard.json.url: "https://grafana.com/api/dashboards/10620/revisions/latest/download"

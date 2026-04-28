@@ -1,0 +1,70 @@
+# Common default values for gitlab-ci-pipelines-exporter.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+gitlabToken: ""
+
+gitlab-ci-pipelines-exporter:
+  enabled: true
+
+  gitlabSecret: gitlab-ci-pipelines-exporter
+
+  serviceMonitor:
+    enabled: true
+
+    labels:
+      release: prometheus-operator
+
+    endpoints:
+      - port: http
+        interval: 30s
+        scrapeTimeout: 10s
+
+  redis:
+    enabled: false
+
+  config:
+    log:
+      level: info
+
+    gitlab:
+      url: https://gitlab.com
+      maximum_requests_per_second: 5
+      burstable_requests_per_second: 10
+
+    pull:
+      projects_from_wildcards:
+        on_init: true
+        scheduled: true
+        interval_seconds: 1800
+
+    project_defaults:
+      pull:
+        environments:
+          enabled: true
+        refs:
+          branches:
+            enabled: true
+            regexp: "^(?:main|master)$"
+          tags:
+            enabled: true
+          merge_requests:
+            enabled: true
+            most_recent: 20
+        pipeline:
+          jobs:
+            enabled: true
+
+    wildcards:
+      - owner:
+          name: shortlink-org
+          kind: group
+        archived: false
+
+  resources:
+    limits:
+      cpu: 200m
+      memory: 256Mi
+    requests:
+      cpu: 50m
+      memory: 128Mi

@@ -84,7 +84,7 @@ grafana:
           sectionName: https
 
   env:
-    GF_FEATURE_TOGGLES_ENABLE: flameGraph,traceToProfiles,accessControlOnCall
+    GF_FEATURE_TOGGLES_ENABLE: flameGraph,traceToProfiles
     GF_DIAGNOSTICS_PROFILING_ENABLED: true
     GF_DIAGNOSTICS_PROFILING_ADDR: 0.0.0.0
     GF_DIAGNOSTICS_PROFILING_PORT: 6060
@@ -122,7 +122,6 @@ grafana:
 
   plugins:
     - grafana-polystat-panel
-    - grafana-oncall-app
     - hamedkarbasi93-kafka-datasource
     - grafana-pyroscope-app
 

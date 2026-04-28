@@ -7,11 +7,6 @@ data:
     spec:
       type: NodePort
       ports:
-        - name: status-port
-          port: 15021
-          protocol: TCP
-          targetPort: 15021
-          nodePort: 15021
         - name: http
           port: 80
           protocol: TCP

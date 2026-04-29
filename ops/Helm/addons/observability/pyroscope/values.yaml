@@ -1,6 +1,13 @@
 pyroscope:
   enabled: true
 
+  # Pyroscope v2 migration (Phase 3 / final state).
+  # v1 disabled: only v2 storage/read path remains.
+  architecture:
+    storage:
+      v1: false
+      v2: true
+
   extraArgs:
     log.level: info
 

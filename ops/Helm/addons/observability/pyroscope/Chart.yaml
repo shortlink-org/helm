@@ -20,13 +20,3 @@ dependencies:
     tags:
       - observability
       - profiling
-  # TODO: is it maintained?
-  - name: pyroscope-ebpf
-    version: 0.1.31
-    repository: https://pyroscope-io.github.io/helm-chart
-    condition: pyroscope-ebpf.enabled
-    tags:
-      - observability
-      - profiling
-      - ebpf
-

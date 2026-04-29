@@ -1,0 +1,23 @@
+apiVersion: v2
+appVersion: "2.12.3"
+name: kubernetes-replicator
+version: 0.1.0
+kubeVersion: ">= 1.30.0 || >= v1.30.0-0"
+keywords:
+  - kubernetes-replicator
+  - secrets
+  - configmaps
+maintainers:
+  - email: batazor111@gmail.com
+    name: batazor
+    url: batazor.ru
+type: application
+deprecated: false
+dependencies:
+  - name: kubernetes-replicator
+    version: 2.12.3
+    repository: https://helm.mittwald.de
+    condition: kubernetes-replicator.enabled
+    tags:
+      - security
+      - secrets

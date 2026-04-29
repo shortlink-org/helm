@@ -1,0 +1,174 @@
+{{- if .Values.sharedPostgres.enabled }}
+apiVersion: postgres-operator.crunchydata.com/v1
+kind: PostgresCluster
+metadata:
+  name: {{ .Values.sharedPostgres.name }}
+  namespace: {{ .Values.sharedPostgres.namespace }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
+spec:
+  image: {{ .Values.sharedPostgres.image }}
+  postgresVersion: {{ .Values.sharedPostgres.postgresVersion }}
+  metadata:
+    annotations:
+      replicator.v1.mittwald.de/replicate-to: {{ join "," .Values.sharedPostgres.consumerNamespaces | quote }}
+      replicator.v1.mittwald.de/strip-labels: "true"
+      sidecar.istio.io/inject: "false"
+  instances:
+    - name: shortlink
+      replicas: 1
+      metadata:
+        annotations:
+          sidecar.istio.io/inject: "false"
+      resources:
+        requests:
+          cpu: 100m
+          memory: 256Mi
+        limits:
+          cpu: 500m
+          memory: 512Mi
+      dataVolumeClaimSpec:
+        storageClassName: {{ .Values.sharedPostgres.storageClassName }}
+        accessModes:
+          - "ReadWriteOnce"
+        resources:
+          requests:
+            storage: {{ .Values.sharedPostgres.dataStorage }}
+      walVolumeClaimSpec:
+        storageClassName: {{ .Values.sharedPostgres.storageClassName }}
+        accessModes:
+          - "ReadWriteOnce"
+        resources:
+          requests:
+            storage: {{ .Values.sharedPostgres.walStorage }}
+  databaseInitSQL:
+    name: {{ .Values.sharedPostgres.name }}-init-sql
+    key: init.sql
+  # backups:
+  #   pgbackrest:
+  #     metadata:
+  #       annotations:
+  #         sidecar.istio.io/inject: "false"
+  #     repos:
+  #       - name: repo1
+  #         schedules:
+  #           full: "0 1 * * 0"
+  #           differential: "0 1 * * 1-6"
+  #         volume:
+  #           volumeClaimSpec:
+  #             storageClassName: {{ .Values.sharedPostgres.storageClassName }}
+  #             accessModes:
+  #               - "ReadWriteOnce"
+  #             resources:
+  #               requests:
+  #                 storage: 1Gi
+  proxy:
+    pgBouncer:
+      metadata:
+        annotations:
+          sidecar.istio.io/inject: "false"
+      replicas: 1
+      port: 5432
+      config:
+        global:
+          pool_mode: transaction
+      resources:
+        requests:
+          cpu: 10m
+          memory: 32Mi
+        limits:
+          cpu: 200m
+          memory: 128Mi
+  monitoring:
+    pgmonitor:
+      exporter:
+        image: registry.developers.crunchydata.com/crunchydata/crunchy-postgres-exporter:latest
+  instrumentation:
+    config:
+      exporters:
+        otlp/logging:
+          endpoint: http://grafana-tempo.grafana:4317
+          tls:
+            insecure: true
+        otlp/metrics:
+          endpoint: http://grafana-alloy.grafana.svc.cluster.local:4318
+    logs:
+      exporters: ['otlp/logging']
+      retentionPeriod: 2d
+    metrics:
+      exporters: ['otlp/metrics']
+  patroni:
+    dynamicConfiguration:
+      synchronous_mode: true
+      postgresql:
+        use_pg_rewind: true
+        parameters:
+          max_connections: 120
+          shared_buffers: 128MB
+          effective_cache_size: 384MB
+          maintenance_work_mem: 32MB
+          checkpoint_completion_target: 0.9
+          wal_buffers: 7864kB
+          default_statistics_target: 100
+          random_page_cost: 1.1
+          effective_io_concurrency: 200
+          work_mem: 4MB
+          huge_pages: off
+          min_wal_size: 512MB
+          max_wal_size: 2GB
+          max_worker_processes: 4
+          max_parallel_workers_per_gather: 2
+          max_parallel_workers: 4
+          max_parallel_maintenance_workers: 2
+          synchronous_commit: 'on'
+          enable_partition_pruning: 'on'
+          shared_preload_libraries: pg_stat_statements,auto_explain,pgaudit,pg_prewarm,uuid-ossp,pg_partman_bgw
+          pgmonitor_bgw.dbname: postgres,kratos,shop,spicedb,temporal
+          pgmonitor_bgw.role: "postgres"
+    syncPeriodSeconds: 60
+    leaderLeaseDurationSeconds: 300
+  users:
+    - name: admin
+      databases:
+        - postgres
+        - kratos
+        - shop
+        - spicedb
+        - temporal
+        - temporal_visibility
+        - partman
+      options: "SUPERUSER"
+    - name: grafana
+      databases:
+        - postgres
+        - kratos
+        - shop
+        - spicedb
+    - name: partman
+      databases:
+        - postgres
+        - partman
+        - shop
+    - name: kratos
+      databases:
+        - kratos
+      options: "SUPERUSER"
+    - name: shop
+      databases:
+        - shop
+      options: "SUPERUSER"
+    - name: oms
+      databases:
+        - shop
+    - name: delivery
+      databases:
+        - shop
+    - name: temporal
+      databases:
+        - temporal
+        - temporal_visibility
+    - name: spicedb
+      databases:
+        - spicedb
+      options: "SUPERUSER"
+{{- end }}

@@ -1,0 +1,80 @@
+{{- if .Values.sharedPostgres.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.sharedPostgres.name }}-init-sql
+  namespace: {{ .Values.sharedPostgres.namespace }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+data:
+  init.sql: |
+    -- shared auth database
+    \c kratos;
+    ALTER DATABASE kratos OWNER TO kratos;
+    GRANT CONNECT ON DATABASE kratos TO grafana;
+    GRANT pg_read_all_stats TO grafana;
+    GRANT pg_read_all_settings TO grafana;
+
+    -- shared spice database
+    \c spicedb;
+    ALTER DATABASE spicedb OWNER TO spicedb;
+    GRANT CONNECT ON DATABASE spicedb TO grafana;
+
+    -- shop database
+    \c shop;
+    CREATE SCHEMA AUTHORIZATION shop;
+    ALTER DATABASE shop OWNER TO shop;
+
+    -- Enable PostGIS extension for geospatial features (offices, delivery tracking)
+    CREATE EXTENSION IF NOT EXISTS postgis;
+
+    GRANT CONNECT ON DATABASE shop TO grafana;
+    GRANT USAGE ON SCHEMA shop TO grafana;
+    ALTER DEFAULT PRIVILEGES FOR ROLE shop IN SCHEMA shop GRANT SELECT ON TABLES TO grafana;
+    ALTER DEFAULT PRIVILEGES FOR ROLE shop IN SCHEMA shop GRANT USAGE ON SEQUENCES TO grafana;
+
+    -- statement_timeout applies globally to all connections (including Grafana and maintenance)
+    ALTER DATABASE shop SET statement_timeout = '180s';
+
+    -- Grant grafana access to pg_statio_user_tables via pg_read_all_stats role
+    GRANT pg_read_all_stats TO grafana;
+    GRANT pg_read_all_settings TO grafana;
+
+    -- OMS schema for Order Management System
+    CREATE SCHEMA IF NOT EXISTS oms AUTHORIZATION shop;
+    COMMENT ON SCHEMA oms IS 'Order Management System';
+
+    -- Grant OMS user access to oms schema
+    GRANT CONNECT ON DATABASE shop TO oms;
+    GRANT USAGE, CREATE ON SCHEMA oms TO oms;
+    GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA oms TO oms;
+    GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA oms TO oms;
+    ALTER DEFAULT PRIVILEGES FOR ROLE shop IN SCHEMA oms GRANT ALL ON TABLES TO oms;
+    ALTER DEFAULT PRIVILEGES FOR ROLE shop IN SCHEMA oms GRANT ALL ON SEQUENCES TO oms;
+
+    -- Grant CREATE on public schema for migration tracking tables
+    GRANT USAGE, CREATE ON SCHEMA public TO oms;
+
+    -- Grant grafana read access to oms schema for monitoring
+    GRANT USAGE ON SCHEMA oms TO grafana;
+    ALTER DEFAULT PRIVILEGES FOR ROLE shop IN SCHEMA oms GRANT SELECT ON TABLES TO grafana;
+
+    -- Delivery schema for Delivery Service
+    CREATE SCHEMA IF NOT EXISTS delivery AUTHORIZATION shop;
+    COMMENT ON SCHEMA delivery IS 'Delivery Service - courier management and order delivery';
+
+    -- Grant delivery user access to delivery schema
+    GRANT CONNECT ON DATABASE shop TO delivery;
+    GRANT USAGE, CREATE ON SCHEMA delivery TO delivery;
+    GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA delivery TO delivery;
+    GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA delivery TO delivery;
+    ALTER DEFAULT PRIVILEGES FOR ROLE shop IN SCHEMA delivery GRANT ALL ON TABLES TO delivery;
+    ALTER DEFAULT PRIVILEGES FOR ROLE shop IN SCHEMA delivery GRANT ALL ON SEQUENCES TO delivery;
+
+    -- Grant CREATE on public schema for migration tracking tables
+    GRANT USAGE, CREATE ON SCHEMA public TO delivery;
+
+    -- Grant grafana read access to delivery schema for monitoring
+    GRANT USAGE ON SCHEMA delivery TO grafana;
+    ALTER DEFAULT PRIVILEGES FOR ROLE shop IN SCHEMA delivery GRANT SELECT ON TABLES TO grafana;
+{{- end }}

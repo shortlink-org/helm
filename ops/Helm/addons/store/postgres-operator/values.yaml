@@ -17,3 +17,18 @@ pgo:
       requests:
         cpu: 200m
         memory: 128Mi
+
+sharedPostgres:
+  enabled: true
+  name: shortlink-postgres
+  namespace: postgres-operator
+  image: registry.developers.crunchydata.com/crunchydata/crunchy-postgres-gis:ubi9-18.1-3.6-2550
+  postgresVersion: 18
+  storageClassName: local-path
+  dataStorage: 4Gi
+  walStorage: 1Gi
+  connectionHost: shortlink-postgres-primary.postgres-operator.svc.cluster.local
+  consumerNamespaces:
+    - auth
+    - shortlink-shop
+    - spicedb-operator

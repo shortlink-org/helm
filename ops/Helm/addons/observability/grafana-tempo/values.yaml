@@ -3,6 +3,13 @@ tempo:
 
   tempoQuery:
     enabled: true
+    resources:
+      limits:
+        cpu: 300m
+        memory: 128Mi
+      requests:
+        cpu: 25m
+        memory: 64Mi
 
   tempo:
     reportingEnabled: false
@@ -10,10 +17,10 @@ tempo:
 
     resources:
       limits:
-        cpu: 2
-        memory: 3Gi
-      requests:
         cpu: 500m
+        memory: 512Mi
+      requests:
+        cpu: 100m
         memory: 256Mi
 
     metricsGenerator:

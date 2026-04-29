@@ -158,6 +158,35 @@ loki:
         cpu: 50m
         memory: 64Mi
 
+  resultsCache:
+    allocatedMemory: 384
+    resources:
+      limits:
+        cpu: 200m
+        memory: 512Mi
+      requests:
+        cpu: 25m
+        memory: 64Mi
+
+  chunksCache:
+    allocatedMemory: 384
+    resources:
+      limits:
+        cpu: 200m
+        memory: 512Mi
+      requests:
+        cpu: 25m
+        memory: 64Mi
+
+  memcachedExporter:
+    resources:
+      limits:
+        cpu: 100m
+        memory: 64Mi
+      requests:
+        cpu: 10m
+        memory: 16Mi
+
   tracing:
     enabled: true
     jaegerAgentHost: grafana-tempo.grafana:6831

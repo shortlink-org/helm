@@ -17,5 +17,5 @@ type: application
 deprecated: false
 dependencies:
   - name: harbor
-    version: 1.18.2
+    version: 1.18.3
     repository: https://helm.goharbor.io

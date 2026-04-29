@@ -13,6 +13,6 @@ type: application
 deprecated: false
 dependencies:
   - name: vector
-    version: 0.51.0
+    version: 0.52.0
     repository: https://helm.vector.dev
     condition: vector.enabled

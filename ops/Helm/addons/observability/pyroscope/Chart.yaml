@@ -14,7 +14,7 @@ type: application
 deprecated: false
 dependencies:
   - name: pyroscope
-    version: 1.21.0
+    version: 2.0.1
     repository: https://grafana.github.io/helm-charts
     condition: pyroscope.enabled
     tags:

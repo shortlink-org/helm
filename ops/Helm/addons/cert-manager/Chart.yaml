@@ -22,7 +22,7 @@ dependencies:
       - tls
   - name: cert-manager-approver-policy
     alias: certmanagerapproverpolicy
-    version: v0.24.0
+    version: v0.25.0
     repository: https://charts.jetstack.io
     condition: features.approverPolicy
     tags:

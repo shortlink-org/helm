@@ -14,6 +14,6 @@ deprecated: false
 dependencies:
   - name: kubescape-operator
     alias: kubescape
-    version: 1.30.6
+    version: 1.30.7
     repository: https://kubescape.github.io/helm-charts/
     condition: kubescape.enabled

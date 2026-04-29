@@ -102,6 +102,13 @@ spec:
       synchronous_mode: true
       postgresql:
         use_pg_rewind: true
+        # Allow SCRAM without TLS from in-cluster pod ranges. Crunchy-issued server certs include DNS SANs
+        # with trailing dots (FQDN form); Go TLS rejects them, so libpq/pgx cannot complete SSL handshakes.
+        # Prefer fixing upstream/custom TLS; this keeps mesh workloads working until then.
+        pg_hba:
+          - host all all 10.0.0.0/8 scram-sha-256
+          - host all all 172.16.0.0/12 scram-sha-256
+          - host all all 192.168.0.0/16 scram-sha-256
         parameters:
           max_connections: 120
           shared_buffers: 128MB

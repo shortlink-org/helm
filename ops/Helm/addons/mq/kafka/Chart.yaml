@@ -14,7 +14,7 @@ type: application
 deprecated: false
 dependencies:
   - name: strimzi-kafka-operator
-    version: 0.51.0
+    version: 1.0.0
     repository: https://strimzi.io/charts/
     condition: strimzi-kafka-operator.enabled
     tags:

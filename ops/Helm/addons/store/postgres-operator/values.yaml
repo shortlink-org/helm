@@ -12,8 +12,8 @@ pgo:
   resources:
     controller:
       limits:
-        cpu: 100m
+        cpu: "1"
         memory: 512Mi
       requests:
-        cpu: 20m
-        memory: 64Mi
+        cpu: 200m
+        memory: 128Mi

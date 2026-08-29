@@ -1,6 +1,6 @@
 dependencies:
 - name: open-feature-operator
   repository: https://open-feature.github.io/open-feature-operator
-  version: v0.9.0
-digest: sha256:019539e72a83114d2856e754512bd7a6b0548aace977a2f1507c856fd8990ae7
-generated: "2026-04-17T23:34:27.112523712Z"
+  version: v0.9.3
+digest: sha256:7676bd4105424a4866234ff8b7fd2359c43605f69ac20ace30ccd49313374041
+generated: "2026-08-29T14:49:09.14475814Z"

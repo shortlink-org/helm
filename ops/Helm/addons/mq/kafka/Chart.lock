@@ -1,9 +1,9 @@
 dependencies:
 - name: strimzi-kafka-operator
   repository: https://strimzi.io/charts/
-  version: 1.0.0
+  version: 1.2.0
 - name: kafka-ui
   repository: https://kafbat.github.io/helm-charts
   version: 1.6.5
-digest: sha256:7f33cc54c0fd0331aea6431a3d99c7863065dea3819f27958248c6ef183b3d1c
-generated: "2026-08-29T14:48:44.560351918Z"
+digest: sha256:cedf3effae684745cdc61688d86ee74d68aa7c8664c91c13c663d8d5055a9829
+generated: "2026-08-29T15:08:38.84502065Z"

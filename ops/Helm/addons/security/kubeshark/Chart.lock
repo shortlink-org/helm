@@ -1,6 +1,6 @@
 dependencies:
 - name: kubeshark
   repository: https://helm.kubeshark.com
-  version: 53.2.3
-digest: sha256:43a70ea6c00dae4af6b80e9a76628a73f4ab05bf1be37ce2b47f7a75c85e883f
-generated: "2026-04-29T02:32:10.327412219Z"
+  version: 53.4.0
+digest: sha256:6cef581b4dfd952de987cf853e852764587163913a493d226bd2d932bd1c412f
+generated: "2026-08-29T14:54:45.875945615Z"

@@ -1,6 +1,6 @@
 # grafana-alloy
 
-![Version: 0.2.2](https://img.shields.io/badge/Version-0.2.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
+![Version: 0.3.0](https://img.shields.io/badge/Version-0.3.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
 
 ## Maintainers
 
@@ -14,7 +14,7 @@ Kubernetes: `>= 1.30.0 || >= v1.30.0-0`
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://grafana.github.io/helm-charts | alloy | 1.6.2 |
+| https://grafana.github.io/helm-charts | alloy | 1.12.1 |
 
 ## Values
 
@@ -27,7 +27,7 @@ Kubernetes: `>= 1.30.0 || >= v1.30.0-0`
 	</thead>
 	<tbody>
 		<tr>
-			<td id="alloy--alloy--configMap--create"><a href="./values.yaml#L22">alloy.alloy.configMap.create</a></td>
+			<td id="alloy--alloy--configMap--create"><a href="./values.yaml#L29">alloy.alloy.configMap.create</a></td>
 			<td>
 bool
 </td>
@@ -41,7 +41,7 @@ false
 			<td></td>
 		</tr>
 		<tr>
-			<td id="alloy--alloy--configMap--key"><a href="./values.yaml#L24">alloy.alloy.configMap.key</a></td>
+			<td id="alloy--alloy--configMap--key"><a href="./values.yaml#L31">alloy.alloy.configMap.key</a></td>
 			<td>
 string
 </td>
@@ -55,7 +55,7 @@ string
 			<td></td>
 		</tr>
 		<tr>
-			<td id="alloy--alloy--configMap--name"><a href="./values.yaml#L23">alloy.alloy.configMap.name</a></td>
+			<td id="alloy--alloy--configMap--name"><a href="./values.yaml#L30">alloy.alloy.configMap.name</a></td>
 			<td>
 string
 </td>
@@ -69,7 +69,7 @@ string
 			<td></td>
 		</tr>
 		<tr>
-			<td id="alloy--alloy--extraPorts[0]--name"><a href="./values.yaml#L14">alloy.alloy.extraPorts[0].name</a></td>
+			<td id="alloy--alloy--extraPorts[0]--name"><a href="./values.yaml#L21">alloy.alloy.extraPorts[0].name</a></td>
 			<td>
 string
 </td>
@@ -83,7 +83,7 @@ string
 			<td></td>
 		</tr>
 		<tr>
-			<td id="alloy--alloy--extraPorts[0]--port"><a href="./values.yaml#L15">alloy.alloy.extraPorts[0].port</a></td>
+			<td id="alloy--alloy--extraPorts[0]--port"><a href="./values.yaml#L22">alloy.alloy.extraPorts[0].port</a></td>
 			<td>
 int
 </td>
@@ -97,7 +97,7 @@ int
 			<td></td>
 		</tr>
 		<tr>
-			<td id="alloy--alloy--extraPorts[0]--targetPort"><a href="./values.yaml#L16">alloy.alloy.extraPorts[0].targetPort</a></td>
+			<td id="alloy--alloy--extraPorts[0]--targetPort"><a href="./values.yaml#L23">alloy.alloy.extraPorts[0].targetPort</a></td>
 			<td>
 int
 </td>
@@ -111,7 +111,7 @@ int
 			<td></td>
 		</tr>
 		<tr>
-			<td id="alloy--alloy--extraPorts[1]--name"><a href="./values.yaml#L17">alloy.alloy.extraPorts[1].name</a></td>
+			<td id="alloy--alloy--extraPorts[1]--name"><a href="./values.yaml#L24">alloy.alloy.extraPorts[1].name</a></td>
 			<td>
 string
 </td>
@@ -125,7 +125,7 @@ string
 			<td></td>
 		</tr>
 		<tr>
-			<td id="alloy--alloy--extraPorts[1]--port"><a href="./values.yaml#L18">alloy.alloy.extraPorts[1].port</a></td>
+			<td id="alloy--alloy--extraPorts[1]--port"><a href="./values.yaml#L25">alloy.alloy.extraPorts[1].port</a></td>
 			<td>
 int
 </td>
@@ -139,7 +139,7 @@ int
 			<td></td>
 		</tr>
 		<tr>
-			<td id="alloy--alloy--extraPorts[1]--targetPort"><a href="./values.yaml#L19">alloy.alloy.extraPorts[1].targetPort</a></td>
+			<td id="alloy--alloy--extraPorts[1]--targetPort"><a href="./values.yaml#L26">alloy.alloy.extraPorts[1].targetPort</a></td>
 			<td>
 int
 </td>
@@ -153,7 +153,7 @@ int
 			<td></td>
 		</tr>
 		<tr>
-			<td id="alloy--alloy--fullnameOverride"><a href="./values.yaml#L3">alloy.alloy.fullnameOverride</a></td>
+			<td id="alloy--alloy--fullnameOverride"><a href="./values.yaml#L10">alloy.alloy.fullnameOverride</a></td>
 			<td>
 string
 </td>
@@ -167,7 +167,7 @@ string
 			<td></td>
 		</tr>
 		<tr>
-			<td id="alloy--alloy--serviceMonitor--additionalLabels--release"><a href="./values.yaml#L11">alloy.alloy.serviceMonitor.additionalLabels.release</a></td>
+			<td id="alloy--alloy--serviceMonitor--additionalLabels--release"><a href="./values.yaml#L18">alloy.alloy.serviceMonitor.additionalLabels.release</a></td>
 			<td>
 string
 </td>
@@ -181,7 +181,7 @@ string
 			<td></td>
 		</tr>
 		<tr>
-			<td id="alloy--alloy--serviceMonitor--enabled"><a href="./values.yaml#L8">alloy.alloy.serviceMonitor.enabled</a></td>
+			<td id="alloy--alloy--serviceMonitor--enabled"><a href="./values.yaml#L15">alloy.alloy.serviceMonitor.enabled</a></td>
 			<td>
 bool
 </td>
@@ -195,7 +195,7 @@ true
 			<td></td>
 		</tr>
 		<tr>
-			<td id="alloy--alloy--stabilityLevel"><a href="./values.yaml#L5">alloy.alloy.stabilityLevel</a></td>
+			<td id="alloy--alloy--stabilityLevel"><a href="./values.yaml#L12">alloy.alloy.stabilityLevel</a></td>
 			<td>
 string
 </td>
@@ -203,6 +203,34 @@ string
 				<div style="max-width: 300px;">
 <pre lang="json">
 "experimental"
+</pre>
+</div>
+			</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td id="attributes--cluster"><a href="./values.yaml#L6">attributes.cluster</a></td>
+			<td>
+string
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+"shortlink"
+</pre>
+</div>
+			</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td id="attributes--environment"><a href="./values.yaml#L5">attributes.environment</a></td>
+			<td>
+string
+</td>
+			<td>
+				<div style="max-width: 300px;">
+<pre lang="json">
+"production"
 </pre>
 </div>
 			</td>

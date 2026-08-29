@@ -1,3 +1,10 @@
+# Cluster-level resource attributes stamped onto every signal that passes
+# through the collector. Rendered into files/config.alloy by Helm — Alloy
+# itself does not expand ${VAR}, so these must not become env vars.
+attributes:
+  environment: production
+  cluster: shortlink
+
 alloy:
   alloy:
     fullnameOverride: grafana-alloy

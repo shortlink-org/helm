@@ -1,6 +1,6 @@
 # istio
 
-![Version: 0.4.0](https://img.shields.io/badge/Version-0.4.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.23.0](https://img.shields.io/badge/AppVersion-1.23.0-informational?style=flat-square)
+![Version: 0.5.0](https://img.shields.io/badge/Version-0.5.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.29.2](https://img.shields.io/badge/AppVersion-1.29.2-informational?style=flat-square)
 
 ## Maintainers
 
@@ -14,8 +14,8 @@ Kubernetes: `>= 1.30.0 || >= v1.30.0-0`
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://istio-release.storage.googleapis.com/charts | base | 1.29.1 |
-| https://istio-release.storage.googleapis.com/charts | istiod | 1.29.1 |
+| https://istio-release.storage.googleapis.com/charts | base | 1.29.2 |
+| https://istio-release.storage.googleapis.com/charts | istiod | 1.29.2 |
 
 ## Values
 
@@ -84,21 +84,7 @@ true
 			<td></td>
 		</tr>
 		<tr>
-			<td id="istiod--global--tracer--zipkin--address"><a href="./values.yaml#L15">istiod.global.tracer.zipkin.address</a></td>
-			<td>
-string
-</td>
-			<td>
-				<div style="max-width: 300px;">
-<pre lang="json">
-"grafana-tempo.grafana:9411"
-</pre>
-</div>
-			</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td id="istiod--istio_cni--enabled"><a href="./values.yaml#L28">istiod.istio_cni.enabled</a></td>
+			<td id="istiod--istio_cni--enabled"><a href="./values.yaml#L24">istiod.istio_cni.enabled</a></td>
 			<td>
 bool
 </td>
@@ -112,7 +98,7 @@ false
 			<td></td>
 		</tr>
 		<tr>
-			<td id="istiod--meshConfig--enablePrometheusMerge"><a href="./values.yaml#L34">istiod.meshConfig.enablePrometheusMerge</a></td>
+			<td id="istiod--meshConfig--enablePrometheusMerge"><a href="./values.yaml#L30">istiod.meshConfig.enablePrometheusMerge</a></td>
 			<td>
 bool
 </td>
@@ -126,7 +112,7 @@ true
 			<td></td>
 		</tr>
 		<tr>
-			<td id="istiod--meshConfig--enableTracing"><a href="./values.yaml#L33">istiod.meshConfig.enableTracing</a></td>
+			<td id="istiod--meshConfig--enableTracing"><a href="./values.yaml#L29">istiod.meshConfig.enableTracing</a></td>
 			<td>
 bool
 </td>
@@ -140,7 +126,7 @@ true
 			<td></td>
 		</tr>
 		<tr>
-			<td id="istiod--meshConfig--extensionProviders[0]--envoyOtelAls--port"><a href="./values.yaml#L39">istiod.meshConfig.extensionProviders[0].envoyOtelAls.port</a></td>
+			<td id="istiod--meshConfig--extensionProviders[0]--envoyOtelAls--port"><a href="./values.yaml#L45">istiod.meshConfig.extensionProviders[0].envoyOtelAls.port</a></td>
 			<td>
 int
 </td>
@@ -154,7 +140,7 @@ int
 			<td></td>
 		</tr>
 		<tr>
-			<td id="istiod--meshConfig--extensionProviders[0]--envoyOtelAls--service"><a href="./values.yaml#L38">istiod.meshConfig.extensionProviders[0].envoyOtelAls.service</a></td>
+			<td id="istiod--meshConfig--extensionProviders[0]--envoyOtelAls--service"><a href="./values.yaml#L44">istiod.meshConfig.extensionProviders[0].envoyOtelAls.service</a></td>
 			<td>
 string
 </td>
@@ -168,7 +154,7 @@ string
 			<td></td>
 		</tr>
 		<tr>
-			<td id="istiod--meshConfig--extensionProviders[0]--name"><a href="./values.yaml#L36">istiod.meshConfig.extensionProviders[0].name</a></td>
+			<td id="istiod--meshConfig--extensionProviders[0]--name"><a href="./values.yaml#L42">istiod.meshConfig.extensionProviders[0].name</a></td>
 			<td>
 string
 </td>
@@ -182,7 +168,7 @@ string
 			<td></td>
 		</tr>
 		<tr>
-			<td id="istiod--meshConfig--extensionProviders[1]--name"><a href="./values.yaml#L40">istiod.meshConfig.extensionProviders[1].name</a></td>
+			<td id="istiod--meshConfig--extensionProviders[1]--name"><a href="./values.yaml#L46">istiod.meshConfig.extensionProviders[1].name</a></td>
 			<td>
 string
 </td>
@@ -196,7 +182,7 @@ string
 			<td></td>
 		</tr>
 		<tr>
-			<td id="istiod--meshConfig--extensionProviders[1]--opentelemetry--port"><a href="./values.yaml#L43">istiod.meshConfig.extensionProviders[1].opentelemetry.port</a></td>
+			<td id="istiod--meshConfig--extensionProviders[1]--opentelemetry--port"><a href="./values.yaml#L49">istiod.meshConfig.extensionProviders[1].opentelemetry.port</a></td>
 			<td>
 int
 </td>
@@ -210,21 +196,21 @@ int
 			<td></td>
 		</tr>
 		<tr>
-			<td id="istiod--meshConfig--extensionProviders[1]--opentelemetry--service"><a href="./values.yaml#L42">istiod.meshConfig.extensionProviders[1].opentelemetry.service</a></td>
+			<td id="istiod--meshConfig--extensionProviders[1]--opentelemetry--service"><a href="./values.yaml#L48">istiod.meshConfig.extensionProviders[1].opentelemetry.service</a></td>
 			<td>
 string
 </td>
 			<td>
 				<div style="max-width: 300px;">
 <pre lang="json">
-"grafana-tempo.grafana.svc.cluster.local"
+"grafana-alloy.grafana.svc.cluster.local"
 </pre>
 </div>
 			</td>
 			<td></td>
 		</tr>
 		<tr>
-			<td id="istiod--pilot--env--ENABLE_INBOUND_RETRY_POLICY"><a href="./values.yaml#L25">istiod.pilot.env.ENABLE_INBOUND_RETRY_POLICY</a></td>
+			<td id="istiod--pilot--env--ENABLE_INBOUND_RETRY_POLICY"><a href="./values.yaml#L21">istiod.pilot.env.ENABLE_INBOUND_RETRY_POLICY</a></td>
 			<td>
 bool
 </td>
@@ -238,7 +224,7 @@ true
 			<td></td>
 		</tr>
 		<tr>
-			<td id="istiod--pilot--env--ENABLE_NATIVE_SIDECARS"><a href="./values.yaml#L22">istiod.pilot.env.ENABLE_NATIVE_SIDECARS</a></td>
+			<td id="istiod--pilot--env--ENABLE_NATIVE_SIDECARS"><a href="./values.yaml#L18">istiod.pilot.env.ENABLE_NATIVE_SIDECARS</a></td>
 			<td>
 string
 </td>
@@ -252,7 +238,7 @@ string
 			<td></td>
 		</tr>
 		<tr>
-			<td id="istiod--pilot--env--ISTIO_ENABLE_CONTROLLER_QUEUE_METRICS"><a href="./values.yaml#L23">istiod.pilot.env.ISTIO_ENABLE_CONTROLLER_QUEUE_METRICS</a></td>
+			<td id="istiod--pilot--env--ISTIO_ENABLE_CONTROLLER_QUEUE_METRICS"><a href="./values.yaml#L19">istiod.pilot.env.ISTIO_ENABLE_CONTROLLER_QUEUE_METRICS</a></td>
 			<td>
 string
 </td>
@@ -266,7 +252,7 @@ string
 			<td></td>
 		</tr>
 		<tr>
-			<td id="istiod--pilot--env--PILOT_ENABLE_IP_AUTOALLOCATE"><a href="./values.yaml#L24">istiod.pilot.env.PILOT_ENABLE_IP_AUTOALLOCATE</a></td>
+			<td id="istiod--pilot--env--PILOT_ENABLE_IP_AUTOALLOCATE"><a href="./values.yaml#L20">istiod.pilot.env.PILOT_ENABLE_IP_AUTOALLOCATE</a></td>
 			<td>
 bool
 </td>
@@ -280,7 +266,7 @@ true
 			<td></td>
 		</tr>
 		<tr>
-			<td id="istiod--pilot--traceSampling"><a href="./values.yaml#L19">istiod.pilot.traceSampling</a></td>
+			<td id="istiod--pilot--traceSampling"><a href="./values.yaml#L15">istiod.pilot.traceSampling</a></td>
 			<td>
 float
 </td>
@@ -294,7 +280,7 @@ float
 			<td></td>
 		</tr>
 		<tr>
-			<td id="istiod--telemetry--v2--metadataExchange--wasmEnabled"><a href="./values.yaml#L48">istiod.telemetry.v2.metadataExchange.wasmEnabled</a></td>
+			<td id="istiod--telemetry--v2--metadataExchange--wasmEnabled"><a href="./values.yaml#L54">istiod.telemetry.v2.metadataExchange.wasmEnabled</a></td>
 			<td>
 bool
 </td>
@@ -308,7 +294,7 @@ true
 			<td></td>
 		</tr>
 		<tr>
-			<td id="istiod--telemetry--v2--prometheus--enabled"><a href="./values.yaml#L50">istiod.telemetry.v2.prometheus.enabled</a></td>
+			<td id="istiod--telemetry--v2--prometheus--enabled"><a href="./values.yaml#L56">istiod.telemetry.v2.prometheus.enabled</a></td>
 			<td>
 bool
 </td>
@@ -322,7 +308,7 @@ true
 			<td></td>
 		</tr>
 		<tr>
-			<td id="istiod--telemetry--v2--prometheus--wasmEnabled"><a href="./values.yaml#L51">istiod.telemetry.v2.prometheus.wasmEnabled</a></td>
+			<td id="istiod--telemetry--v2--prometheus--wasmEnabled"><a href="./values.yaml#L57">istiod.telemetry.v2.prometheus.wasmEnabled</a></td>
 			<td>
 bool
 </td>

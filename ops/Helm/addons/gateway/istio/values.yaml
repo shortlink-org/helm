@@ -10,10 +10,6 @@ istiod:
     istiod:
       enableAnalysis: true
 
-    tracer:
-      zipkin:
-        address: grafana-tempo.grafana:9411
-
   ## Discovery Settings
   pilot:
     traceSampling: 100.0
@@ -32,6 +28,16 @@ istiod:
   meshConfig:
     enableTracing: true
     enablePrometheusMerge: true
+    # Both providers point at Grafana Alloy, our OTel collector: it resolves the
+    # sending pod against the Kubernetes API and stamps the same k8s.* and
+    # deployment.* resource attributes on mesh and application telemetry, so
+    # Envoy spans and SDK spans land in Tempo under one identity scheme.
+    #
+    # Envoy's OpenTelemetry tracer speaks W3C trace context only, and go-sdk
+    # registers TraceContext + Baggage (+ B3 on inject), so the incoming
+    # traceparent is extracted and mesh spans become children of the
+    # application trace. Do not add a zipkin tracer alongside this — two
+    # tracers on one proxy is what splits a request into two trace trees.
     extensionProviders:
       - name: otel
         envoyOtelAls:
@@ -39,7 +45,7 @@ istiod:
           port: 4317
       - name: otel-tracing
         opentelemetry:
-          service: grafana-tempo.grafana.svc.cluster.local
+          service: grafana-alloy.grafana.svc.cluster.local
           port: 4317
 
   telemetry:

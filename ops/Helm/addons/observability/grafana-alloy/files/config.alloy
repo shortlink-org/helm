@@ -5,6 +5,12 @@ logging {
 
 ////////////////////////////////////////////////////////////
 // OTLP receiver (metrics, logs, traces)
+//
+// Everything that emits OTLP goes here first: application SDKs,
+// Envoy access logs (meshConfig extensionProvider "otel") and
+// Envoy spans (extensionProvider "otel-tracing"). Alloy is the single
+// integration point in front of Tempo/Loki/Prometheus, so mesh and
+// application telemetry are enriched by the same rules.
 ////////////////////////////////////////////////////////////
 
 otelcol.receiver.otlp "in" {
@@ -12,72 +18,101 @@ otelcol.receiver.otlp "in" {
   http { endpoint = "0.0.0.0:4318" }
 
   output {
-    metrics = [otelcol.processor.transform.k8s_enrich.input]
-    logs    = [otelcol.processor.transform.k8s_enrich.input]
-    traces  = [otelcol.processor.transform.k8s_enrich.input]
+    metrics = [otelcol.processor.k8sattributes.k8s_enrich.input]
+    logs    = [otelcol.processor.k8sattributes.k8s_enrich.input]
+    traces  = [otelcol.processor.k8sattributes.k8s_enrich.input]
   }
 }
 
 ////////////////////////////////////////////////////////////
-// Enrich OTEL Resource attrs for ALL signals via OTTL
-// IMPORTANT: no sys.env() calls inside OTTL.
-// We only use River env expansion (${VAR}) to build string literals.
+// Enrich OTEL Resource attrs for ALL signals from the Kubernetes API.
+//
+// The pod is resolved from the sender, not from Alloy's own environment,
+// so every workload gets its own identity. Attributes that the sender
+// already set (service.name from an SDK Resource, service.name from the
+// Istio proxy) are left untouched — k8sattributes never overwrites an
+// existing resource attribute.
 ////////////////////////////////////////////////////////////
 
-otelcol.processor.transform "k8s_enrich" {
+otelcol.processor.k8sattributes "k8s_enrich" {
+  extract {
+    metadata = [
+      "k8s.namespace.name",
+      "k8s.pod.name",
+      "k8s.pod.uid",
+      "k8s.pod.ip",
+      "k8s.node.name",
+    ]
+
+    // Fallback identity for senders that ship no service.name of their own.
+    label {
+      from     = "pod"
+      key      = "app"
+      tag_name = "service.name"
+    }
+  }
+
+  // Resolve by connection source IP first; fall back to a pod IP the sender
+  // reported itself (batched exports arriving over a shared connection).
+  pod_association {
+    source {
+      from = "connection"
+    }
+  }
+
+  pod_association {
+    source {
+      from = "resource_attribute"
+      name = "k8s.pod.ip"
+    }
+  }
+
+  output {
+    metrics = [otelcol.processor.transform.env_enrich.input]
+    logs    = [otelcol.processor.transform.env_enrich.input]
+    traces  = [otelcol.processor.transform.env_enrich.input]
+  }
+}
+
+////////////////////////////////////////////////////////////
+// Cluster-level attributes and service.* fallbacks.
+//
+// IMPORTANT: Alloy does NOT expand ${VAR} inside configuration strings —
+// only sys.env() is evaluated, and it may not be used inside OTTL. Values
+// below are rendered by Helm (this file is passed through `tpl`), so they
+// are literals by the time Alloy parses them.
+////////////////////////////////////////////////////////////
+
+otelcol.processor.transform "env_enrich" {
   error_mode = "ignore"
 
   metric_statements {
     context = "resource"
     statements = [
-      `set(attributes["service.name"],        "${K8S_POD_LABEL_app}")`,
-      `set(attributes["service.namespace"],   "${K8S_NAMESPACE}")`,
-      `set(attributes["service.instance.id"], "${K8S_POD_NAME}")`,
-
-      `set(attributes["k8s.pod.name"],        "${K8S_POD_NAME}")`,
-      `set(attributes["k8s.pod.uid"],         "${K8S_POD_UID}")`,
-      `set(attributes["k8s.namespace.name"],  "${K8S_NAMESPACE}")`,
-      `set(attributes["k8s.node.name"],       "${K8S_NODE_NAME}")`,
-
-      `set(attributes["deployment.environment"], "${ENVIRONMENT}")`,
-      `set(attributes["version"],                "${APP_VERSION}")`,
-      `set(attributes["git.revision"],           "${GIT_COMMIT}")`,
+      `set(attributes["deployment.environment"], "{{ .Values.attributes.environment }}")`,
+      `set(attributes["k8s.cluster.name"],       "{{ .Values.attributes.cluster }}")`,
+      `set(attributes["service.namespace"],   attributes["k8s.namespace.name"]) where attributes["service.namespace"] == nil`,
+      `set(attributes["service.instance.id"], attributes["k8s.pod.name"])       where attributes["service.instance.id"] == nil`,
     ]
   }
 
   log_statements {
     context = "resource"
     statements = [
-      `set(attributes["service.name"],        "${K8S_POD_LABEL_app}")`,
-      `set(attributes["service.namespace"],   "${K8S_NAMESPACE}")`,
-      `set(attributes["service.instance.id"], "${K8S_POD_NAME}")`,
-
-      `set(attributes["k8s.pod.name"],        "${K8S_POD_NAME}")`,
-      `set(attributes["k8s.pod.uid"],         "${K8S_POD_UID}")`,
-      `set(attributes["k8s.namespace.name"],  "${K8S_NAMESPACE}")`,
-      `set(attributes["k8s.node.name"],       "${K8S_NODE_NAME}")`,
-
-      `set(attributes["deployment.environment"], "${ENVIRONMENT}")`,
-      `set(attributes["version"],                "${APP_VERSION}")`,
-      `set(attributes["git.revision"],           "${GIT_COMMIT}")`,
+      `set(attributes["deployment.environment"], "{{ .Values.attributes.environment }}")`,
+      `set(attributes["k8s.cluster.name"],       "{{ .Values.attributes.cluster }}")`,
+      `set(attributes["service.namespace"],   attributes["k8s.namespace.name"]) where attributes["service.namespace"] == nil`,
+      `set(attributes["service.instance.id"], attributes["k8s.pod.name"])       where attributes["service.instance.id"] == nil`,
     ]
   }
 
   trace_statements {
     context = "resource"
     statements = [
-      `set(attributes["service.name"],        "${K8S_POD_LABEL_app}")`,
-      `set(attributes["service.namespace"],   "${K8S_NAMESPACE}")`,
-      `set(attributes["service.instance.id"], "${K8S_POD_NAME}")`,
-
-      `set(attributes["k8s.pod.name"],        "${K8S_POD_NAME}")`,
-      `set(attributes["k8s.pod.uid"],         "${K8S_POD_UID}")`,
-      `set(attributes["k8s.namespace.name"],  "${K8S_NAMESPACE}")`,
-      `set(attributes["k8s.node.name"],       "${K8S_NODE_NAME}")`,
-
-      `set(attributes["deployment.environment"], "${ENVIRONMENT}")`,
-      `set(attributes["version"],                "${APP_VERSION}")`,
-      `set(attributes["git.revision"],           "${GIT_COMMIT}")`,
+      `set(attributes["deployment.environment"], "{{ .Values.attributes.environment }}")`,
+      `set(attributes["k8s.cluster.name"],       "{{ .Values.attributes.cluster }}")`,
+      `set(attributes["service.namespace"],   attributes["k8s.namespace.name"]) where attributes["service.namespace"] == nil`,
+      `set(attributes["service.instance.id"], attributes["k8s.pod.name"])       where attributes["service.instance.id"] == nil`,
     ]
   }
 

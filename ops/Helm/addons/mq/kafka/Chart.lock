@@ -4,6 +4,6 @@ dependencies:
   version: 1.0.0
 - name: kafka-ui
   repository: https://kafbat.github.io/helm-charts
-  version: 1.6.4
-digest: sha256:9d356d8a1992795f6e7ade7f7d40958f9b2d1f9c9594ac35a88c5ae06fdaab23
-generated: "2026-04-29T08:30:22.177191539Z"
+  version: 1.6.5
+digest: sha256:7f33cc54c0fd0331aea6431a3d99c7863065dea3819f27958248c6ef183b3d1c
+generated: "2026-08-29T14:48:44.560351918Z"

@@ -13,6 +13,6 @@ type: application
 deprecated: false
 dependencies:
   - name: keda
-    version: 2.19.0
+    version: 2.20.2
     repository: https://kedacore.github.io/charts
     condition: keda.enabled

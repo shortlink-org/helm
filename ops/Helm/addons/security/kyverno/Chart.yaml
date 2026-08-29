@@ -28,7 +28,7 @@ dependencies:
       - automatiozation
       - ui
   - name: kyverno-policies
-    version: 3.7.2
+    version: 3.9.0
     repository: https://kyverno.github.io/kyverno
     condition: kyverno-policies.enabled
     tags:

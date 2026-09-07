@@ -1,6 +1,6 @@
 dependencies:
 - name: oneuptime
   repository: https://helm-chart.oneuptime.com/
-  version: 10.0.31
-digest: sha256:c3b325e993dda21012b8208b8f9d665e67c3fbb2ce9784dedd7aeac68824a202
-generated: "2026-03-14T18:32:27.84390415Z"
+  version: 12.0.34
+digest: sha256:5ff3dbe3bdf3c12deef6f8957a08be51705165d0630a49d9e5917be754faab3a
+generated: "2026-09-07T16:58:10.089665058Z"

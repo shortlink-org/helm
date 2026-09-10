@@ -15,7 +15,7 @@ type: application
 deprecated: false
 dependencies:
   - name: kubernetes-replicator
-    version: 2.12.3
+    version: 2.12.4
     repository: https://helm.mittwald.de
     condition: kubernetes-replicator.enabled
     tags:
